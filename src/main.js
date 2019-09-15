@@ -3,12 +3,12 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 import './registerServiceWorker'
-import VueLazyload from "vue-lazyload"
+import VueLazyLoad from "vue-lazyload"
 
 Vue.config.productionTip = false;
-Vue.use(VueLazyload, {
+Vue.use(VueLazyLoad, {
     preLoad: 1.3,
-    error: 'src/assets/images/load-error.jpg',
+    error: require('./assets/image/load-error.jpg'),
     attempt: 1
 });
 
