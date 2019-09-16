@@ -6,9 +6,9 @@
         <main>
             <dropdown-menu :duration="0.4">
                 <dropdown-item v-model="sortValue" :options="sortOptions"></dropdown-item>
-                <dropdown-item title="全部分类" ref="classItem">
-                    <tree-select :items="items" :active-id.sync="activeId"
-                                 :main-active-index.sync="activeIndex"></tree-select>
+                <dropdown-item :title="treeTitle" ref="item" @close="dropdownClose">
+                    <tree-select :items="items" :active-id.sync="activeId" :main-active-index.sync="activeIndex"
+                                 @click-nav="systemChange" @click-item="typeChange"></tree-select>
                 </dropdown-item>
                 <dropdown-item v-model="filterValue" :options="filterOptions"></dropdown-item>
             </dropdown-menu>
@@ -21,6 +21,7 @@
 
 <script>
     import {Search, DropdownMenu, DropdownItem, TreeSelect} from 'vant'
+    import {getCourseSystemType} from "@/api/course";
 
     export default {
         name: "Course",
@@ -43,34 +44,59 @@
                     {text: '录播课程', value: 3},
                     {text: '直播课程', value: 4}
                 ],
-                activeId: 1,
+                treeTitle: '全部分类',
+                activeId: 0,
                 activeIndex: 0,
                 items: [
                     {
-                        // 导航名称
-                        text: '所有城市',
-                        // 导航名称右上角徽标
-                        info: 3,
-                        // 是否在导航名称右上角显示小红点
-                        dot: true,
-                        // 该导航下所有的可选项
-                        children: [
-                            {
-                                // 名称
-                                text: '温州',
-                                // id，作为匹配选中状态的标识符
-                                id: 1,
-                                // 禁用选项
-                                disabled: true
-                            },
-                            {
-                                text: '杭州',
-                                id: 2
-                            }
-                        ]
+                        text: '全部分类',
+                        id: 0,
+                        children: [{
+                            id: 0,
+                            text: '全部分类'
+                        }]
                     }
-                ]
+                ],
+                system: {},
+                type: null
             }
+        },
+        methods: {
+            async getSystemType() {
+                const res = await getCourseSystemType();
+                if (res) {
+                    for (let system of res.data) {
+                        let children = [];
+                        for (let type of system['CourseTypes']) {
+                            children.push({
+                                id: type['typeID'],
+                                text: type['typeName']
+                            })
+                        }
+                        this.items.push({
+                            id: system['systemID'],
+                            text: system['systemName'],
+                            children
+                        })
+                    }
+                }
+            },
+            systemChange(index) {
+                this.system = {id: this.items[index].id, name: this.items[index].text};
+            },
+            typeChange(data) {
+                this.type = data.id;
+                this.treeTitle = data.text;
+                this.$refs.item.toggle();
+            },
+            dropdownClose() {
+                if (!this.type) {
+                    if (this.system.name) this.treeTitle = this.system.name;
+                }
+            }
+        },
+        created() {
+            this.getSystemType();
         }
     }
 </script>
