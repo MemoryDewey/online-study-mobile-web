@@ -1,5 +1,5 @@
 <template>
-    <div class="course-card">
+    <div class="course-card-col">
         <div class="card-left">
             <div class="card-image">
                 <img v-lazy="image" alt>
@@ -13,7 +13,7 @@
                 {{desc}}
             </div>
             <div class="card-bottom">
-                <span class="info">{{sales}}人购买|好评{{rate}}%</span>
+                <span class="info">{{sales}}人报名 | 好评{{rate}}%</span>
                 <span v-if="price > 0" class="price" style="color: #ee0a24;">￥{{price}}</span>
                 <span v-else class="price" style="color: #42c02e;">免费</span>
             </div>
@@ -23,7 +23,7 @@
 
 <script>
     export default {
-        name: "CourseCard",
+        name: "CourseCardCol",
         props: {
             image: String,
             title: String,
@@ -36,9 +36,10 @@
 </script>
 
 <style lang="less">
-    .course-card {
+    .course-card-col {
+        @card-width: 35.6vw;
         position: relative;
-        padding: 0.75vh 0;
+        padding: 1vh 0 0;
 
         &:after {
             clear: both;
@@ -49,8 +50,8 @@
         .card-left {
             position: relative;
             flex: none;
-            width: 33.6vw;
-            height: calc(33.6vw * 9 / 16);
+            width: @card-width;
+            height: calc(@card-width * 9 / 16);
             float: left;
 
             .card-image {
@@ -71,7 +72,8 @@
         .card-right {
             position: relative;
             flex: none;
-            width: 60.4vw;
+            width: 58.4vw;
+            height: calc(@card-width * 9 / 16);
             float: right;
 
             .card-ellipsis {
@@ -83,7 +85,7 @@
             .card-title {
                 margin: 0 0 1vh 2vw;
                 font-weight: 500;
-                line-height: 2vh;
+                line-height: 2.2vh;
                 font-size: 2vh;
                 color: #333;
                 vertical-align: middle;
@@ -91,7 +93,7 @@
 
             .card-desc {
                 margin: 0 0 1vh 2vw;
-                line-height: 1.8vh;
+                line-height: 2.2vh;
                 font-size: 1.8vh;
                 color: #666;
                 vertical-align: middle;

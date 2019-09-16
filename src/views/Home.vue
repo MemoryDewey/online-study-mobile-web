@@ -6,73 +6,136 @@
         <main>
             <div class="banner">
                 <swipe :autoplay="3000">
-                    <swipe-item v-for="(image, index) in images" :key="index">
-                        <img v-lazy="image" alt/>
+                    <swipe-item v-for="banner in banners" :key="banner.id">
+                        <img v-lazy="banner.image" alt/>
                     </swipe-item>
                 </swipe>
             </div>
             <div class="main-item">
                 <van-row>
-                    <van-col span="12" class="head">精品课程</van-col>
+                    <van-col span="12" class="head">最新课程</van-col>
                     <van-col span="12" class="tail">全部</van-col>
                 </van-row>
-                <course-card title="区块链入门课程" desc="对于区块链还不了解？赶快来报名区块链入门课程" price="311"
-                             rate="98" sales="1234"
-                             image="/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg"></course-card>
-                <course-card title="区块链入门课程" desc="对于区块链还不了解？赶快来报名区块链入门课程" price="311"
-                             rate="98" sales="1234"
-                             image="/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg"></course-card>
+                <course-card-col v-for="course in newCourses" :key="course['courseID']"
+                                 :title="course['courseName']" :desc="course['courseDescription']"
+                                 :rate="course['favorableRate']" :sales="course['applyCount']"
+                                 :image="course['courseImage']" :price="course['price']"></course-card-col>
             </div>
             <div class="main-item">
                 <van-row>
                     <van-col span="12" class="head">火热抢购</van-col>
                 </van-row>
+                <section class="hot-course">
+                    <div class="course-wrap">
+                        <ul class="course-list">
+                            <li class="course-item">
+                                <course-card-row></course-card-row>
+                            </li>
+                            <li class="course-item">
+                                <course-card-row></course-card-row>
+                            </li>
+                            <li class="course-item">
+                                <course-card-row></course-card-row>
+                            </li>
+                            <li class="course-item">
+                                <course-card-row></course-card-row>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
             </div>
             <div class="main-item">
                 <van-row>
                     <van-col span="12" class="head">行业资讯</van-col>
                     <van-col span="12" class="tail">全部</van-col>
                 </van-row>
+                <div class="information">
+                    <ul class="info-list">
+                        <li class="info-item">
+                            <van-row>
+                                <van-col span="3">
+                                    <div class="info-image">
+                                        <img src="https://img.yzcdn.cn/vant/t-thirt.jpg" alt>
+                                    </div>
+                                </van-col>
+                                <van-col span="21">
+                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach</div>
+                                    <div class="info-read">999人已读</div>
+                                </van-col>
+                            </van-row>
+                        </li>
+                        <li class="info-item">
+                            <van-row>
+                                <van-col span="3">
+                                    <div class="info-image">
+                                        <img src="https://img.yzcdn.cn/vant/t-thirt.jpg" alt>
+                                    </div>
+                                </van-col>
+                                <van-col span="21">
+                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach</div>
+                                    <div class="info-read">999人已读</div>
+                                </van-col>
+                            </van-row>
+                        </li>
+                        <li class="info-item">
+                            <van-row>
+                                <van-col span="3">
+                                    <div class="info-image">
+                                        <img src="https://img.yzcdn.cn/vant/t-thirt.jpg" alt>
+                                    </div>
+                                </van-col>
+                                <van-col span="21">
+                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach</div>
+                                    <div class="info-read">999人已读</div>
+                                </van-col>
+                            </van-row>
+                        </li>
+                    </ul>
+                </div>
             </div>
-            <HelloWorld msg="Welcome to Your Vue.js App"/>
         </main>
     </div>
 </template>
 
 <script>
-    import HelloWorld from "@/components/HelloWorld"
-    import CourseCard from "@/components/CourseCard";
+    import CourseCardCol from "@/components/CourseCardCol"
+    import CourseCardRow from "@/components/CourseCardRow"
     import {NavBar, Swipe, SwipeItem, Search, Row, Col} from 'vant'
-    import {getHomeCourse} from "@/api/home";
+    import {getIndexBanner, getIndexCourse} from "@/api/home"
 
     export default {
         name: 'home',
         components: {
-            HelloWorld, CourseCard, SwipeItem, Swipe, Search, NavBar,
+            CourseCardCol, CourseCardRow,
+            SwipeItem, Swipe, Search, NavBar,
             "van-row": Row, "van-col": Col
         },
         data() {
             return {
-                images: [
-                    'https://img.yzcdn.cn/vant/apple-1.jpg',
-                    'https://img.yzcdn.cn/vant/apple-2.jpg'
-                ]
+                newCourses: [],
+                banners: [],
             }
         },
-        methods:{
-            async getRecommendCourse(){
-                const res = await getHomeCourse();
+        methods: {
+            async getNewCourse() {
+                const res = await getIndexCourse();
+                if (res) this.newCourses = res['courses'];
+            },
+            async getBanner() {
+                const res = await getIndexBanner();
+                if (res) this.banners = res.banners;
             }
         },
-        created(){
-            this.getRecommendCourse();
+        created() {
+            this.getNewCourse();
+            this.getBanner();
         }
     }
 </script>
 
 <style lang="less">
-    @home-head-height: 54px;
     .home {
+        @home-head-height: 54px;
         .head-search {
             top: 0;
             left: 0;
@@ -104,7 +167,7 @@
             }
 
             .main-item {
-                padding: 1.2vh 3vw;
+                padding: 1.2vh 3vw 0;
                 line-height: 2.2vh;
 
                 .head {
@@ -118,6 +181,64 @@
                     color: rgba(69, 90, 100, 0.6);
                 }
 
+            }
+
+            .hot-course {
+                overflow: hidden;
+                position: relative;
+
+                .course-wrap {
+                    overflow-x: auto;
+                    overflow-y: hidden;
+                    position: relative;
+                    margin-bottom: -1vh;
+                }
+
+                .course-list {
+                    list-style: none;
+                    white-space: nowrap;
+                    padding: 1vh 0;
+                }
+
+                .course-item {
+                    display: inline-block;
+                    position: relative;
+                    margin-right: 4vw;
+                }
+            }
+
+            .information {
+                padding: 1vh 0;
+
+                .info-list {
+                    margin-bottom: 1vh;
+                }
+
+                .info-item {
+                    margin-bottom: 1vh;
+
+                    .info-image {
+                        width: 10vw;
+                        height: 10vw;
+                        img {
+                            width: 100%;
+                            height: 100%;
+                            object-fit: contain;
+                        }
+                    }
+                    .info-title{
+                        font-size: 2vh;
+                        font-weight: 600;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        white-space: nowrap;
+                    }
+                    .info-read{
+                        font-size: 1.5vh;
+                        margin-top: 0.75vh;
+                        color: #999;
+                    }
+                }
             }
         }
     }
