@@ -1,119 +1,111 @@
 <template>
-    <div class="course-card-col">
-        <div class="card-left">
-            <div class="card-image">
-                <img v-lazy="image" alt>
-            </div>
+    <div class="course-card-row">
+        <div class="card-image">
+            <img src="/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg" alt>
         </div>
-        <div class="card-right">
-            <div class="card-title card-ellipsis">
-                <span>{{title}}</span>
+        <div class="card-content">
+            <div class="card-title">
+                <span>区块链课程源代码分析源代码分析源代码分析代码分析</span>
             </div>
-            <div class="card-desc card-ellipsis">
-                {{desc}}
+            <div class="card-info">
+                <div class="card-price">
+                    <div class="card-price">￥311.00<span class="card-tag">限时优惠</span></div>
+                    <div class="card-origin-price">￥356.00<span style="float: right">0人已抢</span></div>
+                </div>
             </div>
             <div class="card-bottom">
-                <span class="info">{{sales}}人报名 | 好评{{rate}}%</span>
-                <span v-if="price > 0" class="price" style="color: #ee0a24;">￥{{price}}</span>
-                <span v-else class="price" style="color: #42c02e;">免费</span>
+                <van-button type="warning" size="small">马上抢</van-button>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+    import {Tag, Button} from 'vant'
+
     export default {
-        name: "CourseCardCol",
-        props: {
-            image: String,
-            title: String,
-            desc: String,
-            sales: [Number, String],
-            rate: [Number, String],
-            price: [Number, String]
+        name: "CourseCardRow",
+        components: {
+            Tag, 'van-button': Button
         }
     }
 </script>
 
 <style lang="less">
-    .course-card-col {
+    .course-card-row {
         @card-width: 35.6vw;
-        position: relative;
-        padding: 1vh 0 0;
+        border-radius: 4px;
+        border: 1px solid #ebeef5;
+        background-color: #fff;
+        overflow: hidden;
+        padding: 0;
+        width: @card-width;
 
-        &:after {
-            clear: both;
-            content: "";
-            display: table;
+        .card-ellipsis {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
         }
 
-        .card-left {
-            position: relative;
-            flex: none;
-            width: @card-width;
-            height: calc(@card-width * 9 / 16);
-            float: left;
+        .card-image {
+            height: calc(@card-width / 16 * 9);
 
-            .card-image {
-                position: relative;
-                display: inline-block;
+            img {
                 width: 100%;
                 height: 100%;
-
-                img {
-                    width: 100%;
-                    height: 100%;
-                    object-fit: contain;
-                    border-radius: 3px;
-                }
+                object-fit: contain;
             }
         }
 
-        .card-right {
-            position: relative;
-            flex: none;
-            width: 58.4vw;
-            height: calc(@card-width * 9 / 16);
-            float: right;
-
-            .card-ellipsis {
-                overflow: hidden;
-                text-overflow: ellipsis;
-                white-space: nowrap;
-            }
+        .card-content {
+            height: 15vh;
+            padding: 0.5vh 1.5vw;
 
             .card-title {
-                margin: 0 0 1vh 2vw;
+                font-size: 1.8vh;
                 font-weight: 500;
-                line-height: 2.2vh;
-                font-size: 2vh;
-                color: #333;
-                vertical-align: middle;
+                white-space: normal;
+                overflow: hidden;
+                text-overflow: ellipsis;
+                display: -webkit-box;
+                -webkit-box-orient: vertical;
+                -webkit-line-clamp: 2;
             }
 
-            .card-desc {
-                margin: 0 0 1vh 2vw;
-                line-height: 2.2vh;
-                font-size: 1.8vh;
-                color: #666;
-                vertical-align: middle;
+            .card-info {
+                font-size: 1.5vh;
+
+                &:after {
+                    clear: both;
+                    content: "";
+                    display: table;
+                }
+
+                .card-price {
+                    color: #ee0a24;
+                    margin: 0.5vh 0;
+                }
+
+                .card-tag {
+                    padding: 0 0.5vw;
+                    margin-left: 2vw;
+                    border: 1px solid;
+                }
+
+                .card-origin-price {
+                    color: #7d7e80;
+                    text-align: left;
+                    text-decoration: line-through;
+                }
             }
 
             .card-bottom {
-                margin: 0 0 1vh 2vw;
-
-                .info {
-                    color: #999;
-                    font-size: 1.5vh;
-                    float: left;
+                button {
+                    width: 100%;
                 }
 
-                .price {
-                    font-size: 1.6vh;
-                    float: right;
-                }
+                text-align: center;
             }
         }
-
     }
 </style>

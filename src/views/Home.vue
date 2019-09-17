@@ -14,12 +14,14 @@
             <div class="main-item">
                 <van-row>
                     <van-col span="12" class="head">最新课程</van-col>
-                    <van-col span="12" class="tail">全部</van-col>
+                    <van-col span="12" class="tail">
+                        <router-link to="/course" tag="span">全部</router-link>
+                    </van-col>
                 </van-row>
-                <course-card-col v-for="course in newCourses" :key="course['courseID']"
+                <course-card-row v-for="course in newCourses" :key="course['courseID']"
                                  :title="course['courseName']" :desc="course['courseDescription']"
                                  :rate="course['favorableRate']" :sales="course['applyCount']"
-                                 :image="course['courseImage']" :price="course['price']"></course-card-col>
+                                 :image="course['courseImage']" :price="course['price']"></course-card-row>
             </div>
             <div class="main-item">
                 <van-row>
@@ -29,16 +31,16 @@
                     <div class="course-wrap">
                         <ul class="course-list">
                             <li class="course-item">
-                                <course-card-row></course-card-row>
+                                <course-card-col></course-card-col>
                             </li>
                             <li class="course-item">
-                                <course-card-row></course-card-row>
+                                <course-card-col></course-card-col>
                             </li>
                             <li class="course-item">
-                                <course-card-row></course-card-row>
+                                <course-card-col></course-card-col>
                             </li>
                             <li class="course-item">
-                                <course-card-row></course-card-row>
+                                <course-card-col></course-card-col>
                             </li>
                         </ul>
                     </div>
@@ -59,7 +61,8 @@
                                     </div>
                                 </van-col>
                                 <van-col span="21">
-                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach</div>
+                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach
+                                    </div>
                                     <div class="info-read">999人已读</div>
                                 </van-col>
                             </van-row>
@@ -72,7 +75,8 @@
                                     </div>
                                 </van-col>
                                 <van-col span="21">
-                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach</div>
+                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach
+                                    </div>
                                     <div class="info-read">999人已读</div>
                                 </van-col>
                             </van-row>
@@ -85,7 +89,8 @@
                                     </div>
                                 </van-col>
                                 <van-col span="21">
-                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach</div>
+                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach
+                                    </div>
                                     <div class="info-read">999人已读</div>
                                 </van-col>
                             </van-row>
@@ -98,8 +103,8 @@
 </template>
 
 <script>
-    import CourseCardCol from "@/components/CourseCardCol"
     import CourseCardRow from "@/components/CourseCardRow"
+    import CourseCardCol from "@/components/CourseCardCol"
     import {NavBar, Swipe, SwipeItem, Search, Row, Col} from 'vant'
     import {getIndexBanner, getIndexCourse} from "@/api/home"
 
@@ -136,6 +141,7 @@
 <style lang="less">
     .home {
         @home-head-height: 54px;
+
         .head-search {
             top: 0;
             left: 0;
@@ -220,20 +226,23 @@
                     .info-image {
                         width: 10vw;
                         height: 10vw;
+
                         img {
                             width: 100%;
                             height: 100%;
                             object-fit: contain;
                         }
                     }
-                    .info-title{
+
+                    .info-title {
                         font-size: 2vh;
                         font-weight: 600;
                         overflow: hidden;
                         text-overflow: ellipsis;
                         white-space: nowrap;
                     }
-                    .info-read{
+
+                    .info-read {
                         font-size: 1.5vh;
                         margin-top: 0.75vh;
                         color: #999;
