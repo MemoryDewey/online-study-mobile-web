@@ -1,0 +1,37 @@
+<template>
+    <div class="login-form">
+        <van-input v-model="account" placeholder="请输入手机号/邮箱" :border="false"></van-input>
+        <van-input v-model="password" placeholder="请输入登录密码" :border="false" type="password"></van-input>
+        <div class="login-text" style="text-align: right"><span>忘记密码</span></div>
+        <div style="padding: 10px 16px">
+            <van-button type="info" size="large" :disabled="!account || !password">登录</van-button>
+        </div>
+        <div class="login-text" style="text-align: center">
+            <router-link tag="span" to="/passport/login-phone">短信验证码登录</router-link>
+        </div>
+    </div>
+</template>
+
+<script>
+    import {Field, Button} from 'vant'
+
+    export default {
+        name: "LoginAccount",
+        components: {
+            "van-input": Field,
+            "van-button": Button
+        },
+        data() {
+            return {
+                account: '',
+                password: ''
+            }
+        },
+        beforeCreate() {
+            this.$emit('setTitle', '账号密码登录');
+        },
+        created() {
+
+        }
+    }
+</script>

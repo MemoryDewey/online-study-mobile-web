@@ -209,6 +209,9 @@
                 await this.getPage();
             }
         },
+        beforeCreate(){
+            this.$emit('setTab', true);
+        },
         async created() {
             await this.getSystemType();
             this.sortValue = this.$route.query.sort ? this.$route.query.sort : '0';

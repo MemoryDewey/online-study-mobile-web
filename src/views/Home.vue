@@ -131,6 +131,9 @@
                 if (res) this.banners = res.banners;
             }
         },
+        beforeCreate(){
+            this.$emit('setTab', true);
+        },
         created() {
             this.getNewCourse();
             this.getBanner();
