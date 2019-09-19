@@ -1,16 +1,22 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-Vue.use(Vuex)
+Vue.use(Vuex);
 
 export default new Vuex.Store({
-  state: {
-
-  },
-  mutations: {
-
-  },
-  actions: {
-
-  }
+    state: {
+        loginState: false,
+        userInfo: {}
+    },
+    mutations: {
+        login: (state, payload) => {
+            state.loginState = true;
+            state.userInfo = payload;
+        },
+        exit: state => {
+            state.loginState = false;
+            state.userInfo = {};
+        }
+    },
+    actions: {}
 })
