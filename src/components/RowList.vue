@@ -28,7 +28,7 @@
             overflow-x: auto;
             overflow-y: hidden;
             position: relative;
-            margin-bottom: -1.61vh;
+            margin-bottom: -1.3vh;
         }
 
         .row-list {

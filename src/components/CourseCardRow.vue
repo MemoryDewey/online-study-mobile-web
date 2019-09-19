@@ -69,7 +69,7 @@
         }
 
         .card-content {
-            height: 15vh;
+            height: 14vh;
             padding: 0.5vh 1.5vw;
 
             .card-title {
