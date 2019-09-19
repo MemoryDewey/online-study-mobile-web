@@ -50,6 +50,7 @@
                             if (res) {
                                 Toast.clear();
                                 localStorage.setItem('token', res.token);
+                                await this.$router.push('/profile');
                             }
                             break;
                         case 'reset':

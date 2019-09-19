@@ -35,6 +35,7 @@
                 const res = await loginByPsw({account: this.account, password: this.password});
                 if (res) {
                     localStorage.setItem('token', res.token);
+                    await this.$router.push('/profile');
                 }
             }
         },

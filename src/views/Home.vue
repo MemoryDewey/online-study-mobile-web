@@ -1,7 +1,7 @@
 <template>
     <div class="home">
         <div class="head-search">
-            <search placeholder="请输入课程关键词"></search>
+            <search v-model="searchValue" placeholder="请输入课程关键词" @search="searchCourse"></search>
         </div>
         <main>
             <div class="banner">
@@ -29,7 +29,9 @@
                 </van-row>
                 <row-list :list-data="hotCourse">
                     <template v-slot:item="{item}">
-                        <course-card-row :title="item.title" :image="item.image"></course-card-row>
+                        <course-card-row :title="item.title" :image="item.image" :tag="item.tag"
+                                         :sales="item.sales" :price="item.price" :origin-price="item.originPrice"
+                                         :bottom="item.bottom"></course-card-row>
                     </template>
                 </row-list>
             </div>
@@ -124,7 +126,7 @@
                     originPrice: 344,
                     sales: 100,
                     bottom: '马上抢'
-                },{
+                }, {
                     image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
                     title: '区块链入门课程3',
                     price: 311,
@@ -132,7 +134,7 @@
                     originPrice: 344,
                     sales: 100,
                     bottom: '马上抢'
-                },{
+                }, {
                     image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
                     title: '区块链入门课程4',
                     price: 311,
@@ -141,7 +143,8 @@
                     sales: 100,
                     bottom: '马上抢'
                 },
-                ]
+                ],
+                searchValue: null
             }
         },
         methods: {
@@ -152,7 +155,10 @@
             async getBanner() {
                 const res = await getIndexBanner();
                 if (res) this.banners = res.banners;
-            }
+            },
+            searchCourse(value) {
+                this.$router.push({path: '/course', query: {search: value}});
+            },
         },
         beforeCreate() {
             this.$emit('setTab', true);
