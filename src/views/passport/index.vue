@@ -4,13 +4,10 @@
         <div class="logo-text" v-if="this.$route.name!=='short-message'">
             <van-row>
                 <van-col span="7"></van-col>
-                <van-col span="4">
+                <van-col span="10">
                     <div class="logo">
                         <img src="../../assets/image/logo-bcs.png" alt>
                     </div>
-                </van-col>
-                <van-col span="6">
-                    <div style="font-size: 2vh">BAAS区块链在线学习</div>
                 </van-col>
                 <van-col span="7"></van-col>
             </van-row>
@@ -32,9 +29,6 @@
         components: {NavBar, "van-row": Row, "van-col": Col},
         beforeCreate() {
             this.$emit('setTab', false);
-        },
-        created() {
-
         },
         methods: {
             setTitle(title) {

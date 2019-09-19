@@ -1,5 +1,5 @@
 import axios from 'axios'
-import {Notify} from 'vant';
+import {Toast} from 'vant';
 
 const service = axios.create({
     baseURL: process.env.VUE_APP_BASE_API,
@@ -15,7 +15,11 @@ service.interceptors.response.use(
     response => {
         const res = response.data;
         if (res.status === 0) {
-            Notify({type: 'danger', message: res.msg || '错误', duration: 3 * 1000});
+            Toast.fail({
+                forbidClick: true,
+                loadingType: 'spinner',
+                message: res.msg || '错误'
+            });
             return false;
         } else if (res.status === 1) {
             return res;

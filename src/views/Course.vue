@@ -24,10 +24,10 @@
                           :error.sync="error" :finished="finished" @load="listOnload" :immediate-check="false">
                         <ul class="course-list">
                             <li v-for="course in courses" :key="course['courseID']">
-                                <course-card-row :title="course['courseName']" :desc="course['courseDescription']"
+                                <course-card-col :title="course['courseName']" :desc="course['courseDescription']"
                                                  :price="course['price']" :rate="course['favorableRate']"
                                                  :sales="course['applyCount']" :image="course['courseImage']">
-                                </course-card-row>
+                                </course-card-col>
                             </li>
                         </ul>
                     </list>
@@ -39,7 +39,7 @@
 
 <script>
     import {Search, DropdownMenu, DropdownItem, TreeSelect, List, Sticky, PullRefresh, NoticeBar, Toast} from 'vant'
-    import CourseCardRow from "@/components/CourseCardRow";
+    import CourseCardCol from "@/components/CourseCardCol";
     import {getCourseSystemType, getList, getListPage} from "@/api/course";
 
     export default {
@@ -47,7 +47,7 @@
         components: {
             Search, DropdownMenu, DropdownItem, TreeSelect,
             List, Sticky, PullRefresh, NoticeBar,
-            CourseCardRow
+            CourseCardCol
         },
         data() {
             return {
@@ -253,7 +253,7 @@
 
             section {
                 margin-top: 2vh;
-                padding: 0 12px 10px;
+                padding: 0 3vw;
 
                 .course-list {
                     list-style: none;

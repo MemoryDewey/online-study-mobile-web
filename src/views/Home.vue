@@ -18,33 +18,20 @@
                         <router-link to="/course" tag="span">全部</router-link>
                     </van-col>
                 </van-row>
-                <course-card-row v-for="course in newCourses" :key="course['courseID']"
+                <course-card-col v-for="course in newCourses" :key="course['courseID']"
                                  :title="course['courseName']" :desc="course['courseDescription']"
                                  :rate="course['favorableRate']" :sales="course['applyCount']"
-                                 :image="course['courseImage']" :price="course['price']"></course-card-row>
+                                 :image="course['courseImage']" :price="course['price']"></course-card-col>
             </div>
             <div class="main-item">
                 <van-row>
                     <van-col span="12" class="head">火热抢购</van-col>
                 </van-row>
-                <section class="hot-course">
-                    <div class="course-wrap">
-                        <ul class="course-list">
-                            <li class="course-item">
-                                <course-card-col></course-card-col>
-                            </li>
-                            <li class="course-item">
-                                <course-card-col></course-card-col>
-                            </li>
-                            <li class="course-item">
-                                <course-card-col></course-card-col>
-                            </li>
-                            <li class="course-item">
-                                <course-card-col></course-card-col>
-                            </li>
-                        </ul>
-                    </div>
-                </section>
+                <row-list :list-data="hotCourse">
+                    <template v-slot:item="{item}">
+                        <course-card-row :title="item.title" :image="item.image"></course-card-row>
+                    </template>
+                </row-list>
             </div>
             <div class="main-item">
                 <van-row>
@@ -105,12 +92,14 @@
 <script>
     import CourseCardRow from "@/components/CourseCardRow"
     import CourseCardCol from "@/components/CourseCardCol"
+    import RowList from "@/components/RowList";
     import {NavBar, Swipe, SwipeItem, Search, Row, Col} from 'vant'
     import {getIndexBanner, getIndexCourse} from "@/api/home"
 
     export default {
         name: 'home',
         components: {
+            RowList,
             CourseCardCol, CourseCardRow,
             SwipeItem, Swipe, Search, NavBar,
             "van-row": Row, "van-col": Col
@@ -119,6 +108,40 @@
             return {
                 newCourses: [],
                 banners: [],
+                hotCourse: [{
+                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
+                    title: '区块链入门课程1',
+                    price: 311,
+                    tag: '限时抢购',
+                    originPrice: 344,
+                    sales: 100,
+                    bottom: '马上抢'
+                }, {
+                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
+                    title: '区块链入门课程2',
+                    price: 311,
+                    tag: '限时抢购',
+                    originPrice: 344,
+                    sales: 100,
+                    bottom: '马上抢'
+                },{
+                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
+                    title: '区块链入门课程3',
+                    price: 311,
+                    tag: '限时抢购',
+                    originPrice: 344,
+                    sales: 100,
+                    bottom: '马上抢'
+                },{
+                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
+                    title: '区块链入门课程4',
+                    price: 311,
+                    tag: '限时抢购',
+                    originPrice: 344,
+                    sales: 100,
+                    bottom: '马上抢'
+                },
+                ]
             }
         },
         methods: {
@@ -131,7 +154,7 @@
                 if (res) this.banners = res.banners;
             }
         },
-        beforeCreate(){
+        beforeCreate() {
             this.$emit('setTab', true);
         },
         created() {
@@ -176,7 +199,7 @@
             }
 
             .main-item {
-                padding: 1.2vh 3vw 0;
+                padding: 2vh 3vw 0;
                 line-height: 2.2vh;
 
                 .head {
@@ -200,7 +223,7 @@
                     overflow-x: auto;
                     overflow-y: hidden;
                     position: relative;
-                    margin-bottom: -1vh;
+                    margin-bottom: -2vh;
                 }
 
                 .course-list {

@@ -35,8 +35,17 @@ export default new Router({
                 {
                     path: 'short-message-verify', name: 'short-message',
                     component: () => import('@/views/passport/ShortMessageCode')
+                },
+                {
+                    path: 'reset-password', name: 'reset-password',
+                    component: () => import('@/views/passport/ResetPassword')
                 }
             ]
+        },
+        {
+            path: '/profile',
+            name: 'profile',
+            component: () => import('@/views/Profile')
         }
     ]
 })

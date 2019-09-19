@@ -2,9 +2,11 @@
     <div class="login-form">
         <van-input v-model="account" placeholder="请输入手机号/邮箱" :border="false"></van-input>
         <van-input v-model="password" placeholder="请输入登录密码" :border="false" type="password"></van-input>
-        <div class="login-text" style="text-align: right"><span>忘记密码</span></div>
+        <div class="login-text" style="text-align: right">
+            <router-link tag="span" :to="{name:'reset-password'}">忘记密码</router-link>
+        </div>
         <div style="padding: 10px 16px">
-            <van-button type="info" size="large" :disabled="!account || !password">登录</van-button>
+            <van-button type="info" size="large" @click="login" :disabled="!account || !password">登录</van-button>
         </div>
         <div class="login-text" style="text-align: center">
             <router-link tag="span" to="/passport/login-phone">短信验证码登录</router-link>
@@ -14,6 +16,7 @@
 
 <script>
     import {Field, Button} from 'vant'
+    import {loginByPsw} from "@/api/passport";
 
     export default {
         name: "LoginAccount",
@@ -27,11 +30,16 @@
                 password: ''
             }
         },
+        methods: {
+            async login() {
+                const res = await loginByPsw({account: this.account, password: this.password});
+                if (res) {
+                    localStorage.setItem('token', res.token);
+                }
+            }
+        },
         beforeCreate() {
             this.$emit('setTitle', '账号密码登录');
-        },
-        created() {
-
         }
     }
 </script>
