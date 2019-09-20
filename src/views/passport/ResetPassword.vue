@@ -55,7 +55,7 @@
             }
         },
         beforeCreate() {
-            this.$emit('setTitle', '重置密码');
+            this.$emit('setTitle', this.$route.meta.title);
         },
     }
 </script>

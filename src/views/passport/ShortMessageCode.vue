@@ -5,7 +5,7 @@
         <code-input v-model="verifyCode" :mask="false" :focused="showKeyboard"
                     @focus="showKeyboard = true"></code-input>
         <number-keyboard :show="showKeyboard" @input="onInput" @delete="onDelete"
-                         @blur="showKeyboard = false"></number-keyboard>
+                         @blur="showKeyboard = false" safe-area-inset-bottom></number-keyboard>
         <div class="message-info" style="color: #409eff">
             <count-down v-if="!canResend" ref="countDown" :time="1000*90"
                         format="ss秒后重新发送" @finish="canResend = true"></count-down>
@@ -85,7 +85,7 @@
             }
         },
         beforeCreate() {
-            this.$emit('setTitle', '短信验证码');
+            this.$emit('setTitle', this.$route.meta.title);
         }
     }
 </script>

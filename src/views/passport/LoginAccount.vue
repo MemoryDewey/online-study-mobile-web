@@ -40,7 +40,7 @@
             }
         },
         beforeCreate() {
-            this.$emit('setTitle', '账号密码登录');
+            this.$emit('setTitle', this.$route.meta.title);
         }
     }
 </script>

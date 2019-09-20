@@ -1,5 +1,7 @@
 module.exports = {
     assetsDir: 'assets',  //静态资源目录
+    publicPath: './',
+    productionSourceMap: false,
     devServer: {
         open: true,
         proxy: {

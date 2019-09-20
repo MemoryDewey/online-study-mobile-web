@@ -38,7 +38,7 @@
             }
         },
         beforeCreate() {
-            this.$emit('setTitle', '短信验证码登录');
+            this.$emit('setTitle', this.$route.meta.title);
         },
     }
 </script>

@@ -1,6 +1,6 @@
 {
-  "name": "mbrowser",
-  "short_name": "mbrowser",
+  "name": "browser",
+  "short_name": "browser",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",

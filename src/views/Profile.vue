@@ -2,7 +2,7 @@
     <div id="profile">
         <section id="header">
             <cell-group :border="false">
-                <cell :to="isLogin?'':{name:'login-phone'}">
+                <cell :to="isLogin?{name:'user-information'}:{name:'login-phone'}">
                     <van-row style="padding: 1vh 0">
                         <van-col :span="6">
                             <div class="avatar" :class="{'not-login':!isLogin}">
@@ -56,7 +56,7 @@
             </cell>
         </section>
         <section>
-            <cell title="账号管理" clickable>
+            <cell title="设置" clickable @click="logout">
                 <icon slot="right-icon" name="setting-o" style="line-height: inherit;"></icon>
             </cell>
         </section>
@@ -66,7 +66,7 @@
 <script>
     import {CellGroup, Icon, Cell, Row, Col, Grid, GridItem} from 'vant'
     import RowList from "@/components/RowList";
-    import {checkLogin} from "@/api/passport";
+    import {checkLogin, logout} from "@/api/passport";
 
     export default {
         name: "Profile",
@@ -102,6 +102,17 @@
                 }]
             }
         },
+        methods: {
+            async logout() {
+                if (this.$store.state.loginState) {
+                    const res = await logout();
+                    if (res) {
+                        localStorage.removeItem('token');
+                        this.isLogin = false;
+                    }
+                }
+            }
+        },
         beforeCreate() {
             this.$emit('setTab', true);
         },
@@ -117,7 +128,6 @@
             } else {
                 this.isLogin = true;
                 this.userInfo = this.$store.state.userInfo;
-                console.log(this.userInfo);
             }
         }
     }
@@ -150,23 +160,23 @@
             height: 12.5vw;
             box-sizing: border-box;
 
-            .not-login {
-                background-color: #f6f6f6;
-                display: table-cell;
-                vertical-align: middle;
-                text-align: center;
-                border-radius: 50%;
-                border: 1px solid #f6f6f6;
-
-                i {
-                    margin: auto;
-                }
-            }
-
             img {
                 width: 100%;
                 height: 100%;
                 border-radius: 50%;
+            }
+        }
+
+        .not-login {
+            background-color: #f6f6f6;
+            display: table-cell;
+            vertical-align: middle;
+            text-align: center;
+            border-radius: 50%;
+            border: 1px solid #f6f6f6;
+
+            i {
+                margin: auto;
             }
         }
 
@@ -195,9 +205,8 @@
             padding: 0 16px;
 
             .study-item {
-                height: 9vh;
+                height: 12vh;
                 overflow: hidden;
-                padding-bottom: 10px;
 
                 .study-image {
                     width: calc(6vh * 16 / 9);
