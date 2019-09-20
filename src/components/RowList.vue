@@ -28,13 +28,13 @@
             overflow-x: auto;
             overflow-y: hidden;
             position: relative;
-            margin-bottom: -1.3vh;
+            margin-bottom: -6px;
         }
 
         .row-list {
             list-style: none;
             white-space: nowrap;
-            padding: 1vh 0;
+            padding: 7px 0;
         }
 
         .row-list-item {

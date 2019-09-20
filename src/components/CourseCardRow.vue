@@ -69,11 +69,11 @@
         }
 
         .card-content {
-            height: 14vh;
-            padding: 0.5vh 1.5vw;
+            height: 88px;
+            padding: 4px 7px;
 
             .card-title {
-                font-size: 1.8vh;
+                font-size: 13px;
                 font-weight: 500;
                 white-space: normal;
                 overflow: hidden;
@@ -84,7 +84,7 @@
             }
 
             .card-info {
-                font-size: 1.5vh;
+                font-size: 11px;
 
                 &:after {
                     clear: both;
@@ -94,12 +94,12 @@
 
                 .card-price {
                     color: #ee0a24;
-                    margin: 0.5vh 0;
+                    margin: 3.5px 0;
                 }
 
                 .card-tag {
-                    padding: 0 0.5vw;
-                    margin-left: 2vw;
+                    padding: 1px 4px;
+                    margin-left: 40px;
                     border: 1px solid;
                 }
 

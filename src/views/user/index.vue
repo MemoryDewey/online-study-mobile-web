@@ -20,6 +20,8 @@
         components: {NavBar},
         beforeCreate() {
             this.$emit('setTab', false);
+            console.log(window.innerHeight);
+            console.log(process.env.NODE_ENV);
         },
         methods: {
             setTitle(title) {
@@ -35,12 +37,8 @@
 <style lang="less">
     #user {
         background-color: #f6f6f6;
+        height: 100%;
         .user-view{
-            height: calc(100vh - 46px);
-            .van-cell, .van-cell__right-icon {
-                font-size: 2vh;
-                line-height: 3vh;
-            }
         }
     }
 </style>

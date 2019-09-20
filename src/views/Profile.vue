@@ -3,10 +3,10 @@
         <section id="header">
             <cell-group :border="false">
                 <cell :to="isLogin?{name:'user-information'}:{name:'login-phone'}">
-                    <van-row style="padding: 1vh 0">
+                    <van-row class="avatar-info">
                         <van-col :span="6">
                             <div class="avatar" :class="{'not-login':!isLogin}">
-                                <icon v-if="!isLogin" name="manager" size="8vw"></icon>
+                                <icon v-if="!isLogin" name="manager" size="30px"></icon>
                                 <img v-else :src="userInfo.avatarUrl" alt>
                             </div>
                         </van-col>
@@ -107,8 +107,8 @@
                 if (this.$store.state.loginState) {
                     const res = await logout();
                     if (res) {
-                        localStorage.removeItem('token');
                         this.isLogin = false;
+                        this.$store.commit('exit');
                     }
                 }
             }
@@ -135,29 +135,20 @@
 
 <style lang="less">
     #profile {
-        height: calc(100vh - 50px);
+        height: 100%;
         background-color: #f6f6f6;
 
         section {
-            margin-bottom: 1vh;
+            margin-bottom: 12px;
+        }
 
-            .van-cell, .van-cell__right-icon {
-                font-size: 2vh;
-                line-height: 3vh;
-            }
-
-            .van-grid-item__icon {
-                font-size: 3.81vh;
-            }
-
-            .van-grid-item__text {
-                font-size: 1.64vh;
-            }
+        .avatar-info{
+            padding: 7px 0;
         }
 
         .avatar {
-            width: 12.5vw;
-            height: 12.5vw;
+            width: 56px;
+            height: 56px;
             box-sizing: border-box;
 
             img {
@@ -185,11 +176,12 @@
         }
 
         .van-grid-item__content {
-            padding: 0 8px;
+            padding-bottom: 0;
+            padding-top: 0;
         }
 
         .info {
-            height: 12.5vw;
+            height: 56px;
             display: table-cell;
             vertical-align: middle;
 
@@ -205,11 +197,11 @@
             padding: 0 16px;
 
             .study-item {
-                height: 12vh;
+                height: 85px;
                 overflow: hidden;
 
                 .study-image {
-                    width: calc(6vh * 16 / 9);
+                    width: calc(48px * 16 / 9);
 
                     img {
                         width: 100%;
@@ -218,8 +210,8 @@
                 }
 
                 .study-content {
-                    width: calc(6vh * 16 / 9);
-                    font-size: 1.2vh;
+                    width: calc(48px * 16 / 9);
+                    font-size: 10px;
                     white-space: normal;
                     overflow: hidden;
                     text-overflow: ellipsis;

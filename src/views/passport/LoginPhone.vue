@@ -1,7 +1,7 @@
 <template>
     <div class="login-form">
         <van-input v-model="phone" placeholder="请输入手机号" maxlength="11" :border="false"></van-input>
-        <div style="padding: 10px 16px">
+        <div class="passport-btn">
             <van-button type="info" size="large" :disabled="!phoneCheck" @click="getShortMessageCode">获取验证码</van-button>
         </div>
         <div class="login-text" style="text-align: center">

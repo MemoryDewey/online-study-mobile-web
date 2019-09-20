@@ -3,9 +3,9 @@
         <section>
             <cell-group>
                 <cell title="头像" is-link class="cell-avatar" @click="avatarDialogShow = true">
-                    <van-image :src="userInfo.avatarUrl" height="7.5vh" width="7.5vh" round></van-image>
+                    <van-image :src="userInfo.avatarUrl" round></van-image>
                 </cell>
-                <cell title="昵称" is-link></cell>
+                <cell title="昵称" :value="userInfo.nickname" is-link></cell>
                 <cell title="姓名" is-link></cell>
                 <cell title="性别" is-link></cell>
                 <cell title="出生年月" is-link></cell>
@@ -13,8 +13,8 @@
         </section>
         <section>
             <cell-group>
-                <cell title="绑定手机" is-link></cell>
-                <cell title="绑定邮箱" is-link></cell>
+                <cell title="绑定手机" value="去修改" is-link></cell>
+                <cell title="绑定邮箱" value="去绑定" is-link></cell>
             </cell-group>
         </section>
         <van-dialog v-model="avatarDialogShow" title="头像选择" confirmButtonText="取消">
@@ -30,6 +30,7 @@
 
 <script>
     import {CellGroup, Image, GridItem, Grid, Cell, Uploader, Dialog} from 'vant'
+    import {getPersonalInfo} from "@/api/profile";
 
     export default {
         name: "Information",
@@ -49,9 +50,14 @@
         beforeCreate() {
             this.$emit('setTitle', this.$route.meta.title);
         },
-        methods: {},
+        methods: {
+            async getInfo(){
+                const res = getPersonalInfo();
+            }
+        },
         created() {
             this.userInfo = this.$store.state.userInfo;
+            this.getInfo();
         }
     }
 </script>
@@ -59,7 +65,7 @@
 <style lang="less">
     #user-info {
         section {
-            margin-top: 2.5vh;
+            margin-top: 18px;
         }
 
         .cell-avatar {
@@ -74,6 +80,8 @@
 
         .van-image {
             margin-right: 3vw;
+            height: 55px;
+            width: 55px;
         }
     }
 </style>

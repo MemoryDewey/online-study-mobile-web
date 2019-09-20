@@ -2,7 +2,8 @@ import Vue from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
-//import './registerServiceWorker'
+import './registerServiceWorker'
+import './utils/flexible'
 import VueLazyLoad from "vue-lazyload"
 import {checkLogin} from './api/passport'
 

@@ -3,7 +3,7 @@
         <div class="head-search">
             <search v-model="searchValue" placeholder="请输入课程关键词" @search="searchCourse"></search>
         </div>
-        <main>
+        <main ref="course-main">
             <sticky>
                 <dropdown-menu :duration="0.4">
                     <dropdown-item v-model="sortValue" :options="sortOptions" @change="sortChange"></dropdown-item>
@@ -90,7 +90,8 @@
                 loadingTimes: 1,
                 refreshLoading: false,
                 searchValue: null,
-                searchCount: 0
+                searchCount: 0,
+                height: ''
             }
         },
         methods: {
@@ -209,11 +210,13 @@
                 await this.getPage();
             }
         },
-        beforeCreate(){
+        beforeCreate() {
             this.$emit('setTab', true);
         },
         async created() {
+            this.height = document.documentElement.clientHeight - 54 - 49;
             await this.getSystemType();
+            this.$refs['course-main'].style.height = `${this.height}px`;
             this.sortValue = this.$route.query.sort ? this.$route.query.sort : '0';
             this.filterValue = this.$route.query.filter ? this.$route.query.filter : '0';
             this.activeIndex = this.$route.query.system ? parseInt(this.$route.query.system.toString()) : 0;
@@ -249,11 +252,10 @@
             margin-top: @head-height;
             position: relative;
             overflow: auto;
-            height: calc(100vh - @head-height - 50px);
 
             section {
-                margin-top: 2vh;
-                padding: 0 3vw;
+                margin-top: 16px;
+                padding: 0 10px;
 
                 .course-list {
                     list-style: none;

@@ -39,7 +39,7 @@
     .course-card-col {
         @card-width: 35.6vw;
         position: relative;
-        padding: 1.5vh 0 0;
+        padding: 10px 0 0;
 
         &:after {
             clear: both;
@@ -83,33 +83,39 @@
             }
 
             .card-title {
-                margin: 0 0 1vh 2vw;
+                padding: 0 0 9px 7px;
                 font-weight: 500;
-                line-height: 2.2vh;
-                font-size: 2vh;
+                line-height: 15px;
+                font-size: 14px;
                 color: #333;
                 vertical-align: middle;
             }
 
             .card-desc {
-                margin: 0 0 1vh 2vw;
-                line-height: 2.2vh;
-                font-size: 1.8vh;
+                padding: 6px 0 6px 7px;
+                line-height: 15px;
+                font-size: 12px;
                 color: #666;
                 vertical-align: middle;
             }
 
             .card-bottom {
-                margin: 0 0 1vh 2vw;
+                padding: 9px 0 0 7px;
+                line-height: 15px;
+                &:after {
+                    clear: both;
+                    content: "";
+                    display: table;
+                }
 
                 .info {
                     color: #999;
-                    font-size: 1.5vh;
+                    font-size: 12px;
                     float: left;
                 }
 
                 .price {
-                    font-size: 1.6vh;
+                    font-size: 12px;
                     float: right;
                 }
             }

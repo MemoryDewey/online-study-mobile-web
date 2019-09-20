@@ -1,11 +1,12 @@
 #passport {
+
   .logo-text {
-    margin-top: 8vh;
-    margin-bottom: 8vh;
+    margin-top: 54px;
+    margin-bottom: 54px;
     text-align: center;
 
     .logo {
-      height: 6vh;
+      height: 40px;
       width: auto;
 
       img {
@@ -17,37 +18,39 @@
   }
 
   .login-form {
-    @login-height: 6vh;
-    margin: 0 10vw;
+    margin: 0 40px;
 
     input {
       background-color: hsla(0, 0%, 71%, .1);
-      height: @login-height;
-      padding: 1.5vh;
+      padding: 10px;
       border-radius: 4px;
+    }
+
+    .passport-btn{
+      padding: 10px 16px
     }
 
     button {
       border-radius: 4px;
-      height: @login-height;
-      line-height: @login-height;
     }
 
     .login-text {
       padding: 10px 16px;
-      font-size: 2vh;
+      font-size: 14px;
     }
   }
 
   .no-logo-login-form {
-    margin: 5vh 10vw;
+    margin: 35px 10vw;
 
-    h2, .message-info {
+    h2{
+      font-size: 30px;
       font-weight: 500;
     }
 
     .message-info {
-      font-size: 0.85em;
+      font-size: 14px;
+      font-weight: 500;
       color: #666;
     }
 
@@ -56,7 +59,7 @@
     }
 
     .van-password-input {
-      margin: 3vh 0;
+      margin: 16px 0;
     }
   }
 }

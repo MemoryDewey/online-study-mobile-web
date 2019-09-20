@@ -3,7 +3,7 @@
         <div class="head-search">
             <search v-model="searchValue" placeholder="请输入课程关键词" @search="searchCourse"></search>
         </div>
-        <main>
+        <main ref="home-main">
             <div class="banner">
                 <swipe :autoplay="3000">
                     <swipe-item v-for="banner in banners" :key="banner.id">
@@ -144,13 +144,15 @@
                     bottom: '马上抢'
                 },
                 ],
-                searchValue: null
+                searchValue: null,
+                height: ''
             }
         },
         methods: {
             async getNewCourse() {
                 const res = await getIndexCourse();
                 if (res) this.newCourses = res['courses'];
+                this.$refs['home-main'].style.height = `${this.height}px`;
             },
             async getBanner() {
                 const res = await getIndexBanner();
@@ -164,6 +166,7 @@
             this.$emit('setTab', true);
         },
         created() {
+            this.height = document.documentElement.clientHeight - 54 - 49;
             this.getNewCourse();
             this.getBanner();
         }
@@ -172,14 +175,11 @@
 
 <style lang="less">
     .home {
-        @home-head-height: 54px;
 
         .head-search {
             top: 0;
             left: 0;
             width: 100%;
-            line-height: @home-head-height;
-            height: @home-head-height;
             text-align: center;
             z-index: 1;
             position: fixed;
@@ -188,8 +188,7 @@
         main {
             position: relative;
             overflow: auto;
-            margin-top: @home-head-height;
-            height: calc(100vh - @home-head-height - 50px);
+            margin-top: 54px;
 
             .banner {
                 padding: 0 12px 10px;
@@ -205,55 +204,31 @@
             }
 
             .main-item {
-                padding: 2vh 3vw 0;
-                line-height: 2.2vh;
+                padding: 15px 10px 0;
+                line-height: 15px;
 
                 .head {
-                    font-size: 2.2vh;
+                    font-size: 15px;
                     font-weight: 600;
                 }
 
                 .tail {
                     text-align: right;
-                    font-size: 1.8vh;
+                    font-size: 13px;
                     color: rgba(69, 90, 100, 0.6);
                 }
 
             }
 
-            .hot-course {
-                overflow: hidden;
-                position: relative;
-
-                .course-wrap {
-                    overflow-x: auto;
-                    overflow-y: hidden;
-                    position: relative;
-                    margin-bottom: -2vh;
-                }
-
-                .course-list {
-                    list-style: none;
-                    white-space: nowrap;
-                    padding: 1vh 0;
-                }
-
-                .course-item {
-                    display: inline-block;
-                    position: relative;
-                    margin-right: 4vw;
-                }
-            }
-
             .information {
-                padding: 1vh 0;
+                padding: 10px 0;
 
                 .info-list {
-                    margin-bottom: 1vh;
+                    margin-bottom: 10px;
                 }
 
                 .info-item {
-                    margin-bottom: 1vh;
+                    margin-bottom: 10px;
 
                     .info-image {
                         width: 10vw;
@@ -267,7 +242,7 @@
                     }
 
                     .info-title {
-                        font-size: 2vh;
+                        font-size: 13.5px;
                         font-weight: 600;
                         overflow: hidden;
                         text-overflow: ellipsis;
@@ -275,8 +250,8 @@
                     }
 
                     .info-read {
-                        font-size: 1.5vh;
-                        margin-top: 0.75vh;
+                        font-size: 10px;
+                        margin-top: 5px;
                         color: #999;
                     }
                 }

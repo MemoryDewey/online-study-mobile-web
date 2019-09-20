@@ -5,7 +5,7 @@
         <div class="login-text" style="text-align: right">
             <router-link tag="span" :to="{name:'reset-password'}">忘记密码</router-link>
         </div>
-        <div style="padding: 10px 16px">
+        <div class="passport-btn">
             <van-button type="info" size="large" @click="login" :disabled="!account || !password">登录</van-button>
         </div>
         <div class="login-text" style="text-align: center">
