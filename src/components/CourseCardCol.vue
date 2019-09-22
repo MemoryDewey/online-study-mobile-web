@@ -2,7 +2,7 @@
     <div class="course-card-col">
         <div class="card-left">
             <div class="card-image">
-                <img v-lazy="image" alt>
+                <img v-lazy="getImageUrl(image)" alt>
             </div>
         </div>
         <div class="card-right">
@@ -22,6 +22,8 @@
 </template>
 
 <script>
+    import {getImageUrl} from "@/utils/image"
+
     export default {
         name: "CourseCardCol",
         props: {
@@ -31,6 +33,11 @@
             sales: [Number, String],
             rate: [Number, String],
             price: [Number, String]
+        },
+        data() {
+            return {
+                getImageUrl
+            }
         }
     }
 </script>
@@ -102,6 +109,7 @@
             .card-bottom {
                 padding: 9px 0 0 7px;
                 line-height: 15px;
+
                 &:after {
                     clear: both;
                     content: "";

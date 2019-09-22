@@ -5,6 +5,7 @@ import store from './store'
 import './registerServiceWorker'
 import './utils/flexible'
 import VueLazyLoad from "vue-lazyload"
+import VueSvgIconPlugin from "vue-svgicon";
 import {checkLogin} from './api/passport'
 
 Vue.config.productionTip = false;
@@ -13,6 +14,7 @@ Vue.use(VueLazyLoad, {
     error: require('./assets/image/load-error.jpg'),
     attempt: 1
 });
+Vue.use(VueSvgIconPlugin, {tagName: "svg-icon"});
 router.beforeEach((to, from, next) => {
     if (to.meta.title) document.title = `区块链在线学习平台 - ${to.meta.title}`;
     if (to.meta.requireAuth) {
@@ -22,14 +24,14 @@ router.beforeEach((to, from, next) => {
                 if (res.status === 1) {
                     store.commit('login', res.data);
                     next();
-                }
-                else next('/passport')
+                } else next('/passport')
             }).catch(() => {
                 next('/passport')
             })
         }
     } else next();
 });
+
 
 new Vue({
     router,

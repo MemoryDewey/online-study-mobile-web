@@ -1,5 +1,7 @@
+const path = require('path');
+const svgFilePath = path.join(__dirname, './src/assets/icons/svg');
 module.exports = {
-    assetsDir: 'assets',  //静态资源目录
+    assetsDir: 'static',  //静态资源目录
     publicPath: process.env.NODE_ENV === 'development' ? '/' : './',
     productionSourceMap: false,
     devServer: {
@@ -31,5 +33,28 @@ module.exports = {
                 ]
             }
         }
+    },
+    chainWebpack: config => {
+        config.module
+            .rule('vue-svgicon')
+            .test(/\.svg$/)
+            .use('svgicon')
+            .loader('@yzfe/vue-svgicon-loader')
+            .options({
+                idSeparator: '_',
+                svgFilePath
+            });
+        config.module
+            .rule('vue')
+            .use('vue-loader')
+            .loader('vue-loader')
+            .tap(options => {
+                options.transformAssetUrls = options.transformAssetUrls || {};
+                options.transformAssetUrls['svg-icon'] = ['data'];
+                return options
+            });
+        config.module.rule('svg').exclude.add(svgFilePath);
+        config.resolve.alias.set('@icon', svgFilePath);
+        config.resolve.symlinks(false)
     }
 };

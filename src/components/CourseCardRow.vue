@@ -1,7 +1,7 @@
 <template>
     <div class="course-card-row">
         <div class="card-image">
-            <img v-lazy="image" alt>
+            <img v-lazy="getImageUrl(image)" alt>
         </div>
         <div class="card-content">
             <div class="card-title">
@@ -24,6 +24,7 @@
 
 <script>
     import {Tag, Button} from 'vant'
+    import {getImageUrl} from '@/utils/image'
 
     export default {
         name: "CourseCardRow",
@@ -38,6 +39,11 @@
         },
         components: {
             Tag, 'van-button': Button
+        },
+        data(){
+            return{
+                getImageUrl
+            }
         }
     }
 </script>

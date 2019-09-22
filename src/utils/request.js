@@ -2,7 +2,8 @@ import axios from 'axios'
 import {Toast} from 'vant';
 
 const service = axios.create({
-    baseURL: process.env.VUE_APP_BASE_API,
+    baseURL: process.env.NODE_ENV === 'development' ?
+        process.env.VUE_APP_BASE_API : process.env.VUE_APP_PRODUCTION_API,
     timeout: 5000
 });
 

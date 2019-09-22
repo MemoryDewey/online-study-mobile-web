@@ -7,7 +7,7 @@
             <div class="banner">
                 <swipe :autoplay="3000">
                     <swipe-item v-for="banner in banners" :key="banner.id">
-                        <img v-lazy="banner.image" alt/>
+                        <img v-lazy="getImageUrl(banner.image)" alt/>
                     </swipe-item>
                 </swipe>
             </div>
@@ -97,6 +97,7 @@
     import RowList from "@/components/RowList";
     import {NavBar, Swipe, SwipeItem, Search, Row, Col} from 'vant'
     import {getIndexBanner, getIndexCourse} from "@/api/home"
+    import {getImageUrl} from '@/utils/image'
 
     export default {
         name: 'home',
@@ -110,6 +111,7 @@
             return {
                 newCourses: [],
                 banners: [],
+                getImageUrl,
                 hotCourse: [{
                     image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
                     title: '区块链入门课程1',

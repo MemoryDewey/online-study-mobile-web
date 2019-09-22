@@ -1,14 +1,12 @@
 <template>
     <div id="user">
-        <nav-bar :title="title" left-arrow @click-left="routerGo"></nav-bar>
         <div class="user-view">
-            <router-view @setTitle="setTitle"/>
+            <router-view/>
         </div>
     </div>
 </template>
 
 <script>
-    import {NavBar} from 'vant'
 
     export default {
         name: "index",
@@ -17,19 +15,8 @@
                 title: null,
             }
         },
-        components: {NavBar},
         beforeCreate() {
             this.$emit('setTab', false);
-            console.log(window.innerHeight);
-            console.log(process.env.NODE_ENV);
-        },
-        methods: {
-            setTitle(title) {
-                this.title = title;
-            },
-            routerGo() {
-                this.$router.go(-1);
-            }
         }
     }
 </script>

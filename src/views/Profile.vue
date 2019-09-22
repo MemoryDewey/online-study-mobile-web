@@ -7,7 +7,7 @@
                         <van-col :span="6">
                             <div class="avatar" :class="{'not-login':!isLogin}">
                                 <icon v-if="!isLogin" name="manager" size="30px"></icon>
-                                <img v-else :src="userInfo.avatarUrl" alt>
+                                <img v-else :src="getImageUrl(userInfo.avatarUrl)" alt>
                             </div>
                         </van-col>
                         <van-col :span="12">
@@ -33,7 +33,7 @@
                 <template v-slot:item="{item}">
                     <div class="study-item">
                         <div class="study-image">
-                            <img v-lazy="item.image" alt>
+                            <img v-lazy="getImageUrl(item.image)" alt>
                         </div>
                         <div class="study-content">{{item.title}}</div>
                     </div>
@@ -65,8 +65,9 @@
 
 <script>
     import {CellGroup, Icon, Cell, Row, Col, Grid, GridItem} from 'vant'
-    import RowList from "@/components/RowList";
-    import {checkLogin, logout} from "@/api/passport";
+    import RowList from "@/components/RowList"
+    import {checkLogin, logout} from "@/api/passport"
+    import {getImageUrl} from '@/utils/image'
 
     export default {
         name: "Profile",
@@ -81,6 +82,7 @@
                     avatarUrl: '',
                     nickname: '',
                 },
+                getImageUrl,
                 course: [{
                     image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
                     title: '你最近学了啥课程呀，分享一下下下下下'
@@ -142,7 +144,7 @@
             margin-bottom: 12px;
         }
 
-        .avatar-info{
+        .avatar-info {
             padding: 7px 0;
         }
 

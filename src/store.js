@@ -6,7 +6,7 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         loginState: false,
-        userInfo: {}
+        userInfo: {nickname: '', avatarUrl: ''}
     },
     mutations: {
         login: (state, payload) => {
@@ -17,6 +17,12 @@ export default new Vuex.Store({
             state.loginState = false;
             state.userInfo = {};
             localStorage.removeItem('token');
+        },
+        changeAvatarUrl: (state, payload) => {
+            state.userInfo.avatarUrl = payload;
+        },
+        changeNickname: (state, payload) => {
+            state.userInfo.nickname = payload;
         }
     },
     actions: {}
