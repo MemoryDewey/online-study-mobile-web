@@ -8,12 +8,14 @@
                 <span>{{title}}</span>
             </div>
             <div class="card-info">
-                <div class="card-price">
-                    <div class="card-price">￥{{price}}<span class="card-tag">{{tag}}</span></div>
-                    <div class="card-origin-price">
-                        ￥{{originPrice}}<span style="float: right" v-if="sales">{{sales}}人已抢</span>
-                    </div>
-                </div>
+                <van-row class="card-price">
+                    <van-col span="12">￥{{price}}</van-col>
+                    <van-col span="12"><span class="card-tag">{{tag}}</span></van-col>
+                </van-row>
+                <van-row class="card-origin-price">
+                    <van-col span="12"><span style="text-decoration: line-through">￥{{originPrice}}</span></van-col>
+                    <van-col span="12"><span v-if="sales">{{sales}}人已抢</span></van-col>
+                </van-row>
             </div>
             <div class="card-bottom">
                 <van-button type="warning" size="small">{{bottom}}</van-button>
@@ -23,7 +25,7 @@
 </template>
 
 <script>
-    import {Tag, Button} from 'vant'
+    import {Button, Row, Col} from 'vant'
     import {getImageUrl} from '@/utils/image'
 
     export default {
@@ -38,10 +40,10 @@
             bottom: String
         },
         components: {
-            Tag, 'van-button': Button
+            'van-button': Button, 'van-row': Row, 'van-col': Col
         },
-        data(){
-            return{
+        data() {
+            return {
                 getImageUrl
             }
         }
@@ -105,14 +107,12 @@
 
                 .card-tag {
                     padding: 1px 4px;
-                    margin-left: 40px;
                     border: 1px solid;
                 }
 
                 .card-origin-price {
                     color: #7d7e80;
-                    text-align: left;
-                    text-decoration: line-through;
+                    margin: 3.5px 0;
                 }
             }
 

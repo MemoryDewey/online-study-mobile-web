@@ -27,8 +27,7 @@
             </cell-group>
         </section>
         <section>
-            <cell title="最近在学" is-link :border="false"
-                  :style="{paddingBottom:isLogin?'0':'10px'}"></cell>
+            <cell title="最近在学" is-link :border="false"></cell>
             <row-list :list-data="course" class="nearly-study" v-if="isLogin">
                 <template v-slot:item="{item}">
                     <div class="study-item">
@@ -197,13 +196,15 @@
         .nearly-study {
             background-color: #fff;
             padding: 0 16px;
+            margin-top: -10px;
 
             .study-item {
                 height: 85px;
                 overflow: hidden;
 
                 .study-image {
-                    width: calc(48px * 16 / 9);
+                    width: 85px;
+                    height: 46px;
 
                     img {
                         width: 100%;
@@ -212,7 +213,7 @@
                 }
 
                 .study-content {
-                    width: calc(48px * 16 / 9);
+                    width: 85px;
                     font-size: 10px;
                     white-space: normal;
                     overflow: hidden;

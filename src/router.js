@@ -58,6 +58,14 @@ export default new Router({
                 path: 'information', name: 'user-information',
                 component: () => import('@/views/user/Information'),
                 meta: {title: '个人资料', requireAuth: true}
+            }, {
+                path: 'change-real-name', name: 'user-change-real-name',
+                component: () => import('@/views/user/ChangeName'),
+                meta: {title: '修改姓名', requireAuth: true}
+            }, {
+                path: 'change-nickname', name: 'user-change-nickname',
+                component: () => import('@/views/user/ChangeName'),
+                meta: {title: '修改昵称', requireAuth: true}
             }]
         }
     ]

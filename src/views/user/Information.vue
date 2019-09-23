@@ -7,8 +7,8 @@
                     <cell title="头像" is-link class="cell-avatar" @click="avatarDialogShow = true">
                         <van-image :src="getImageUrl(userInfo.avatarUrl)" round></van-image>
                     </cell>
-                    <cell title="昵称" is-link>{{userInfo.nickname}}</cell>
-                    <cell title="姓名" is-link>{{realName}}</cell>
+                    <cell title="昵称" is-link :to="{name:'user-change-nickname'}">{{userInfo.nickname}}</cell>
+                    <cell title="姓名" is-link :to="{name:'user-change-real-name'}">{{realName}}</cell>
                     <cell title="性别" is-link @click="sexDialogShow = true">{{sex | sexFilter}}</cell>
                     <cell title="出生年月" is-link @click="birthdayDialogShow = true">
                         {{showBirthday?parseTime(birthday,'{y}-{m}-{d}'):'设置'}}
@@ -23,7 +23,7 @@
             </section>
             <van-dialog v-model="avatarDialogShow" title="头像选择" confirmButtonText="取消">
                 <grid :column-num="3" clickable square>
-                    <grid-item text="拍照" @click="takePicture">
+                    <grid-item text="拍照" @click="capturePicture">
                         <svg-icon slot="icon" data="@icon/camera.svg"></svg-icon>
                     </grid-item>
                     <grid-item class="upload-grid-item">
@@ -44,23 +44,25 @@
                          @input-file="inputFile"
                          @input-filter="fileInputFilter">
             </file-upload>
-            <van-dialog v-model="birthdayDialogShow" title="生日选择" class="dialog-border">
+            <van-dialog v-model="birthdayDialogShow" title="生日选择" :close-on-click-overlay="true"
+                        class="dialog-border" @confirm="setBirthday">
                 <datetime-picker v-model="birthday" type="date" :min-date="minDate" :max-date="maxDate"
                                  :show-toolbar="false" :visible-item-count="3"></datetime-picker>
             </van-dialog>
-            <van-dialog v-model="sexDialogShow" title="性别选择">
+            <van-dialog v-model="sexDialogShow" title="性别选择" :close-on-click-overlay="true"
+                        :showConfirmButton="false">
                 <grid :column-num="3" clickable square>
-                    <grid-item>
+                    <grid-item @click="setSex('M')">
                         <svg-icon slot="icon" data="@icon/male.svg" color="#1296db"></svg-icon>
                         <span slot="text" class="item-text" style="color: #1296db">男</span>
                     </grid-item>
-                    <grid-item>
+                    <grid-item @click="setSex('S')">
                         <template slot="icon">
                             <svg-icon data="@icon/question.svg" color="#515151"></svg-icon>
                             <span slot="text" class="item-text" style="color: #515151">保密</span>
                         </template>
                     </grid-item>
-                    <grid-item>
+                    <grid-item @click="setSex('F')">
                         <template slot="icon">
                             <svg-icon data="@icon/female.svg" color="#d4237a"></svg-icon>
                             <span slot="text" class="item-text" style="color: #d4237a">女</span>
@@ -77,7 +79,7 @@
             <vue-cropper
                     ref="cropper" :view-mode="1" class="cropper-dialog"
                     :auto-crop-area="1" :crop-box-resizable="false" drag-mode="move"
-                    :src="this.files[0]?this.files[0].url:''" :aspect-ratio="1"
+                    :src="cropperImageUrl" :aspect-ratio="1"
                     :background="false"
                     alt>
             </vue-cropper>
@@ -88,7 +90,7 @@
 <script>
     import {NavBar, CellGroup, Icon, Image, GridItem, Grid, Cell, Dialog, DatetimePicker, Toast} from 'vant'
     import {parseTime} from '@/utils/time'
-    import {getPersonalInfo, setDefaultAvatar} from "@/api/profile"
+    import {getPersonalInfo, setDefaultAvatar, updatePersonal} from "@/api/profile"
     import FileUpload from 'vue-upload-component'
     import VueCropper from 'vue-cropperjs'
     import 'cropperjs/dist/cropper.css'
@@ -131,23 +133,17 @@
                 files: [],
                 postUrl: '',
                 headers: {Authorization: localStorage.getItem('token')},
-                edit: false
+                edit: false,
+                cropperImageUrl: '',
+                capture: false
             }
         },
-
-        watch: {
-            edit(value) {
-                if (value && this.$refs.cropper) {
-                    this.$refs.cropper.replace(this.files[0].url);
-                }
-            }
-        },
-        mounted(){
+        mounted() {
             document.addEventListener("deviceready", onDeviceReady, false);
-            var me = this;
+            let _this = this;
+
             function onDeviceReady() {
-                alert('ready!');
-                me.msg="cordova is ready";
+                _this.msg = "cordove device ready.";
             }
         },
         methods: {
@@ -167,7 +163,26 @@
                 }
             },
             capturePicture() {
-                Toast.fail('该功能暂未开放');
+                if (!navigator.camera) Toast.fail('您的设备暂时不支持此功能');
+                else {
+                    let _this = this;
+                    navigator.camera.getPicture(onSuccess, onFail, {
+                        quality: 50,
+                        destinationType: Camera.DestinationType.FILE_URI,
+                        sourceType: 1
+                    });
+
+                    function onSuccess(imageURI) {
+                        _this.edit = true;
+                        _this.cropperImageUrl = imageURI;
+                        _this.avatarDialogShow = false;
+                        _this.capture = true;
+                    }
+
+                    function onFail() {
+                        this.edit = false;
+                    }
+                }
             },
             fileInputFilter(newFile, oldFile, prevent) {
                 if (newFile && !oldFile) {
@@ -189,10 +204,28 @@
             },
             inputFile(newFile, oldFile, prevent) {
                 if (newFile && !oldFile) {
-                    this.$nextTick(() => {
-                        this.avatarDialogShow = false;
-                        this.edit = true;
-                    })
+                    if (!this.capture) {
+                        this.$nextTick(() => {
+                            this.edit = true;
+                            this.avatarDialogShow = false;
+                            this.cropperImageUrl = this.files[0].url;
+                        })
+                    } else {
+                        this.capture = false;
+                        if (newFile.error) {
+                            Toast.clear();
+                            Toast.fail("修改失败");
+                        }
+                        if (newFile.success) {
+                            Toast.clear();
+                            const response = newFile.response;
+                            if (response.status === 1) {
+                                Toast.success('修改成功');
+                                this.userInfo.avatarUrl = response.avatarUrl;
+                                this.$store.commit('changeAvatarUrl', response.avatarUrl);
+                            } else Toast.fail(response.msg);
+                        }
+                    }
                 }
                 if (!newFile && oldFile) {
                     this.edit = false
@@ -214,14 +247,13 @@
                     }
                 }
             },
-            cropImage() {
-                let oldFile = this.files[0];
-                let binStr = atob(this.$refs.cropper.getCroppedCanvas().toDataURL(oldFile.type).split(',')[1]);
+            cropCapture() {
+                let binStr = atob(this.$refs.cropper.getCroppedCanvas().toDataURL("image/jpeg").split(',')[1]);
                 let arr = new Uint8Array(binStr.length);
                 for (let i = 0; i < binStr.length; i++) {
                     arr[i] = binStr.charCodeAt(i)
                 }
-                let file = new File([arr], oldFile.name, {type: oldFile.type});
+                let file = new File([arr], "capture-avatar.jpeg", {type: "image/jpeg"});
                 if (file.size > 2 * 1024 * 1024) Toast.fail('裁剪的图片超过2M，请更换图片文件再试');
                 else {
                     this.edit = false;
@@ -232,13 +264,40 @@
                         message: '正在提交'
                     });
                     this.$nextTick(() => {
-                        this.$refs.upload.update(oldFile.id, {
-                            file,
-                            type: file.type,
-                            size: file.size,
-                            active: true,
-                        })
+                        this.$refs.upload.add(file);
+                        this.$refs.upload.active = true;
                     });
+                }
+            },
+            cropImage() {
+                if (this.capture) {
+                    this.cropCapture()
+                } else {
+                    let oldFile = this.files[0];
+                    let binStr = atob(this.$refs.cropper.getCroppedCanvas().toDataURL(oldFile.type).split(',')[1]);
+                    let arr = new Uint8Array(binStr.length);
+                    for (let i = 0; i < binStr.length; i++) {
+                        arr[i] = binStr.charCodeAt(i)
+                    }
+                    let file = new File([arr], oldFile.name, {type: oldFile.type});
+                    if (file.size > 2 * 1024 * 1024) Toast.fail('裁剪的图片超过2M，请更换图片文件再试');
+                    else {
+                        this.edit = false;
+                        Toast.loading({
+                            duration: 30 * 1000,
+                            forbidClick: true,
+                            loadingType: 'spinner',
+                            message: '正在提交'
+                        });
+                        this.$nextTick(() => {
+                            this.$refs.upload.update(oldFile.id, {
+                                file,
+                                type: file.type,
+                                size: file.size,
+                                active: true,
+                            })
+                        });
+                    }
                 }
             },
             async setDefaultAvatar() {
@@ -250,18 +309,20 @@
                     this.$store.commit('changeAvatarUrl', res.avatarUrl);
                 }
             },
-            takePicture(){
-                var me= this;
-                navigator.camera.getPicture(onSuccess, onFail, { quality: 50,
-                    destinationType: Camera.DestinationType.FILE_URI,sourceType:0 });
-
-                function onSuccess(imageURI) {
-                    me.imgsrc = imageURI;
-                    alert(imageURI);
+            async setSex(val) {
+                const res = updatePersonal({sex: val});
+                if (res) {
+                    this.sex = val;
+                    this.sexDialogShow = false;
+                    Toast.success('修改成功');
                 }
-
-                function onFail(message) {
-                    alert('Failed because: ' + message);
+            },
+            async setBirthday() {
+                const res = updatePersonal({birthday: this.birthday});
+                if (res) {
+                    this.showBirthday = true;
+                    this.birthdayDialogShow = false;
+                    Toast.success('修改成功');
                 }
             }
         },
