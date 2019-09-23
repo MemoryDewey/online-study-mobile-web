@@ -1,9 +1,10 @@
 <template>
     <div class="home">
         <div class="head-search">
-            <search v-model="searchValue" placeholder="请输入课程关键词" @search="searchCourse"></search>
+            <search v-model="searchValue" placeholder="请输入课程关键词"
+                    @search="searchCourse" @focus="hiddenTab"></search>
         </div>
-        <main ref="home-main">
+        <main>
             <div class="banner">
                 <swipe :autoplay="3000">
                     <swipe-item v-for="banner in banners" :key="banner.id">
@@ -147,14 +148,13 @@
                 },
                 ],
                 searchValue: null,
-                height: ''
+                height: 0
             }
         },
         methods: {
             async getNewCourse() {
                 const res = await getIndexCourse();
                 if (res) this.newCourses = res['courses'];
-                this.$refs['home-main'].style.height = `${this.height}px`;
             },
             async getBanner() {
                 const res = await getIndexBanner();
@@ -163,14 +163,23 @@
             searchCourse(value) {
                 this.$router.push({path: '/course', query: {search: value}});
             },
+            hiddenTab() {
+                window.onresize = () => {
+                    if (window.innerHeight < this.height) {
+                        this.$emit('setTab', false);
+                    } else {
+                        this.$emit('setTab', true);
+                    }
+                };
+            }
         },
         beforeCreate() {
             this.$emit('setTab', true);
         },
         created() {
-            this.height = document.documentElement.clientHeight - 54 - 49;
             this.getNewCourse();
             this.getBanner();
+            this.height = window.innerHeight;
         }
     }
 </script>
@@ -191,6 +200,7 @@
             position: relative;
             overflow: auto;
             margin-top: 54px;
+            height: calc(100vh - 54px);
 
             .banner {
                 padding: 0 12px 10px;
@@ -218,6 +228,10 @@
                     text-align: right;
                     font-size: 13px;
                     color: rgba(69, 90, 100, 0.6);
+                }
+
+                &:last-child {
+                    padding-bottom: 50px;
                 }
 
             }
