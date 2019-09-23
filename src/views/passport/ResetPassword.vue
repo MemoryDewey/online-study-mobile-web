@@ -1,8 +1,8 @@
 <template>
     <div class="login-form">
-        <van-input v-model="phone" placeholder="请输入手机号" :border="false"></van-input>
-        <van-input v-model="password" placeholder="请输入密码(8-16位)" :border="false" type="password"></van-input>
-        <van-input v-model="confirm" placeholder="确认密码" :border="false" type="password"></van-input>
+        <van-input v-model="phone" placeholder="请输入手机号" :border="false" clearable></van-input>
+        <van-input v-model="password" placeholder="请输入密码(8-16位)" :border="false" type="password" clearable></van-input>
+        <van-input v-model="confirm" placeholder="确认密码" :border="false" type="password" clearable></van-input>
         <div style="padding: 10px 16px">
             <van-button type="info" size="large" @click="getShortMessageCode" :disabled="!passwordCheck || !phoneCheck">
                 重置
