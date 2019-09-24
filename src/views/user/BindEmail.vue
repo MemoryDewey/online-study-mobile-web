@@ -38,7 +38,7 @@
         },
         methods: {
             routerGo() {
-                this.$router.push('information')
+                this.$router.go(-1)
             },
             async sendEmail() {
                 if (this.canResend) {

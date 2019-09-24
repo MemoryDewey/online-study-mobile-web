@@ -70,6 +70,10 @@ export default new Router({
                 path: 'bind-email', name: 'user-bind-email',
                 component: () => import('@/views/user/BindEmail'),
                 meta: {title: '绑定邮箱', requireAuth: true}
+            }, {
+                path: 'change-phone', name: 'user-change-phone',
+                component: () => import('@/views/user/ChangePhone'),
+                meta: {title: '更换绑定手机', requireAuth: true}
             }]
         }
     ]
