@@ -77,11 +77,11 @@
                 this.verifyCode = this.verifyCode.slice(0, this.verifyCode.length - 1);
             },
             async resend() {
-                const res = await sendMessage({account: this.$route.query.phone, option: this.$route.query.option});
-                if (res) {
-                    this.canResend = false;
-                    this.$refs['countDown'].reset()
-                }
+                this.canResend = false;
+                this.$nextTick(()=>{
+                    this.$refs['countDown'].reset();
+                });
+                await sendMessage({account: this.$route.query.phone, option: this.$route.query.option});
             }
         },
         beforeCreate() {

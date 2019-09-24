@@ -10,7 +10,7 @@
                        placeholder="请输入邮箱验证码">
                 <van-button slot="button" size="small" type="primary" :disabled="!canResend || !isEmail(email)"
                             color="#1989fa" @click="sendEmail">
-                    <count-down v-if="!canResend" format="ss秒后重新发送"
+                    <count-down v-if="!canResend" format="ss秒后重新发送" ref="countDown"
                                 :time="1000*60" @finish="canResend = true">
                     </count-down>
                     <span v-else>发送验证码</span>
@@ -43,6 +43,9 @@
             async sendEmail() {
                 if (this.canResend) {
                     this.canResend = false;
+                    this.$nextTick(()=>{
+                        this.$refs['countDown'].reset();
+                    });
                     const res = await sendEmail({account: this.email});
                     if (res) Toast.success(res.msg);
                 }

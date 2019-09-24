@@ -17,7 +17,8 @@
             </section>
             <section>
                 <cell-group>
-                    <cell title="绑定手机" value="去修改" :to="{name:'user-change-phone'}" is-link></cell>
+                    <cell title="绑定手机" value="去修改" is-link
+                          :to="{name:'user-change-phone',query:{phone:this.$store.state.userInfo.mobile}}"></cell>
                     <cell title="绑定邮箱" :value="email?'解除绑定':'去绑定'" @click="bindEmail" is-link></cell>
                 </cell-group>
             </section>
