@@ -18,7 +18,7 @@
             <section>
                 <cell-group>
                     <cell title="绑定手机" value="去修改" is-link></cell>
-                    <cell title="绑定邮箱" value="去绑定" is-link></cell>
+                    <cell title="绑定邮箱" :value="email?'解除绑定':'去绑定'" @click="bindEmail" is-link></cell>
                 </cell-group>
             </section>
             <van-dialog v-model="avatarDialogShow" title="头像选择" confirmButtonText="取消">
@@ -77,11 +77,9 @@
                 <svg-icon class="nav-bar-icon" slot="right" data="@icon/choose.svg"></svg-icon>
             </nav-bar>
             <vue-cropper
-                    ref="cropper" :view-mode="1" class="cropper-dialog"
-                    :auto-crop-area="1" :crop-box-resizable="false" drag-mode="move"
-                    :src="cropperImageUrl" :aspect-ratio="1"
-                    :background="false"
-                    alt>
+                    ref="cropper" :view-mode="1" class="cropper-dialog" :auto-crop-area="1"
+                    :crop-box-resizable="false" drag-mode="move" :src="cropperImageUrl"
+                    :aspect-ratio="1" :background="false" alt>
             </vue-cropper>
         </article>
     </div>
@@ -95,6 +93,7 @@
     import VueCropper from 'vue-cropperjs'
     import 'cropperjs/dist/cropper.css'
     import {getImageUrl} from "@/utils/image"
+    import {deleteEmail} from "@/api/passport";
 
     export default {
         name: "Information",
@@ -129,6 +128,7 @@
                 sexDialogShow: false,
                 sex: "S",
                 realName: '',
+                email: null,
                 avatarDialogShow: false,
                 files: [],
                 postUrl: '',
@@ -151,15 +151,21 @@
                 this.$router.push({name: 'profile'});
             },
             async getInfo() {
-                const res = await getPersonalInfo();
+                let res = null;
+                if (this.$store.state.hasInfo) res = {data: this.$store.state.userInfo};
+                else {
+                    res = await getPersonalInfo();
+                    if (res) this.$store.commit('setInfo', res.data);
+                }
                 if (res) {
-                    if (res.msg.birthday) {
+                    if (res.data.birthday) {
                         this.showBirthday = true;
-                        const date = res.msg.birthday.split("-");
+                        const date = res.data.birthday.split("-");
                         this.birthday = new Date(parseInt(date[0]), parseInt(date[1]) - 1, parseInt(date[2]));
                     } else this.birthday = new Date();
-                    this.sex = res.msg.sex;
-                    this.realName = res.msg.realName;
+                    this.sex = res.data.sex;
+                    this.realName = res.data.realName;
+                    this.email = res.data.email;
                 }
             },
             capturePicture() {
@@ -222,7 +228,7 @@
                             if (response.status === 1) {
                                 Toast.success('修改成功');
                                 this.userInfo.avatarUrl = response.avatarUrl;
-                                this.$store.commit('changeAvatarUrl', response.avatarUrl);
+                                this.$store.commit('changeInfo', {key: 'avatarUrl', value: response.avatarUrl});
                             } else Toast.fail(response.msg);
                         }
                     }
@@ -242,7 +248,7 @@
                         if (response.status === 1) {
                             Toast.success('修改成功');
                             this.userInfo.avatarUrl = response.avatarUrl;
-                            this.$store.commit('changeAvatarUrl', response.avatarUrl);
+                            this.$store.commit('changeInfo', {key: 'avatarUrl', value: response.avatarUrl});
                         } else Toast.fail(response.msg);
                     }
                 }
@@ -306,7 +312,7 @@
                     this.avatarDialogShow = false;
                     Toast.success('修改成功');
                     this.userInfo.avatarUrl = res.avatarUrl;
-                    this.$store.commit('changeAvatarUrl', res.avatarUrl);
+                    this.$store.commit('changeInfo', {key: 'avatarUrl', value: res.avatarUrl});
                 }
             },
             async setSex(val) {
@@ -314,6 +320,7 @@
                 if (res) {
                     this.sex = val;
                     this.sexDialogShow = false;
+                    this.$store.commit('changeInfo', {key: 'sex', value: val});
                     Toast.success('修改成功');
                 }
             },
@@ -322,8 +329,23 @@
                 if (res) {
                     this.showBirthday = true;
                     this.birthdayDialogShow = false;
+                    this.$store.commit('changeInfo', {key: 'birthday', value: this.birthday});
                     Toast.success('修改成功');
                 }
+            },
+            async bindEmail() {
+                if (this.email) {
+                    Dialog.confirm({
+                        title: '解除绑定邮箱',
+                        message: '您确认要解除绑定的邮箱吗？'
+                    }).then(async () => {
+                        const res = await deleteEmail();
+                        if (res) {
+                            this.$store.commit('changeInfo', {key: 'email', value: null});
+                            this.email = null;
+                        }
+                    })
+                }else await this.$router.push({name: 'user-bind-email'})
             }
         },
         created() {

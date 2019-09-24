@@ -66,6 +66,10 @@ export default new Router({
                 path: 'change-nickname', name: 'user-change-nickname',
                 component: () => import('@/views/user/ChangeName'),
                 meta: {title: '修改昵称', requireAuth: true}
+            }, {
+                path: 'bind-email', name: 'user-bind-email',
+                component: () => import('@/views/user/BindEmail'),
+                meta: {title: '绑定邮箱', requireAuth: true}
             }]
         }
     ]

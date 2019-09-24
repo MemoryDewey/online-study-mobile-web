@@ -32,11 +32,19 @@
                 this.$router.push('information')
             },
             async saveName() {
-                let data = this.$route.name === 'user-change-nickname' ? {nickname: this.name} : {realName: this.name};
+                let data, change;
+                if (this.$route.name === 'user-change-nickname') {
+                    data = {nickname: this.name};
+                    change = {key: 'nickname', value: this.name};
+                } else {
+                    data = {realName: this.name};
+                    change = {key: 'realName', value: this.name};
+                }
                 const res = await updatePersonal(data);
                 if (res) {
                     Toast.success('保存成功');
-                    await this.$router.push('information')
+                    this.$store.commit('changeInfo', change);
+                    await this.$router.go(-1);
                 }
             }
         },

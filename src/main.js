@@ -22,7 +22,9 @@ router.beforeEach((to, from, next) => {
         else {
             checkLogin().then(res => {
                 if (res.status === 1) {
-                    store.commit('login', res.data);
+                    store.commit('login', {
+                        nickname: res.data.nickname, avatarUrl: res.data.avatarUrl
+                    });
                     next();
                 } else next('/passport')
             }).catch(() => {

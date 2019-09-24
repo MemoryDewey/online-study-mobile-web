@@ -6,23 +6,32 @@ Vue.use(Vuex);
 export default new Vuex.Store({
     state: {
         loginState: false,
-        userInfo: {nickname: '', avatarUrl: ''}
+        hasInfo: false,
+        userInfo: {
+            nickname: '', avatarUrl: '',
+            birthday: '', sex: '',
+            realName: '', bstAddress: '',
+            email: '', mobile: ''
+        }
     },
     mutations: {
         login: (state, payload) => {
             state.loginState = true;
-            state.userInfo = payload;
+            state.userInfo.nickname = payload.nickname;
+            state.userInfo.avatarUrl = payload.avatarUrl;
         },
         exit: state => {
             state.loginState = false;
+            state.hasInfo = false;
             state.userInfo = {};
             localStorage.removeItem('token');
         },
-        changeAvatarUrl: (state, payload) => {
-            state.userInfo.avatarUrl = payload;
+        setInfo: (state, payload) => {
+            state.hasInfo = true;
+            state.userInfo = payload;
         },
-        changeNickname: (state, payload) => {
-            state.userInfo.nickname = payload;
+        changeInfo: (state, payload) => {
+            state.userInfo[payload.key] = payload.value;
         }
     },
     actions: {}
