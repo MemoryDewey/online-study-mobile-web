@@ -1,7 +1,7 @@
 <template>
     <div class="login-form">
-        <van-input v-model="account" placeholder="请输入手机号/邮箱" :border="false"></van-input>
-        <van-input v-model="password" placeholder="请输入登录密码" :border="false" type="password"></van-input>
+        <van-input v-model="account" placeholder="请输入手机号/邮箱" :border="false" clearable></van-input>
+        <van-input v-model="password" placeholder="请输入登录密码" :border="false" type="password" clearable></van-input>
         <div class="login-text" style="text-align: right">
             <router-link tag="span" :to="{name:'reset-password'}">忘记密码</router-link>
         </div>

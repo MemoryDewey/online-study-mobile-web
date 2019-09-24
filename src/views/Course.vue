@@ -1,9 +1,10 @@
 <template>
     <div class="course">
         <div class="head-search">
-            <search v-model="searchValue" placeholder="请输入课程关键词" @search="searchCourse"></search>
+            <search v-model="searchValue" placeholder="请输入课程关键词"
+                    @search="searchCourse" @focus="hiddenTab"></search>
         </div>
-        <main ref="course-main">
+        <main>
             <sticky>
                 <dropdown-menu :duration="0.4">
                     <dropdown-item v-model="sortValue" :options="sortOptions" @change="sortChange"></dropdown-item>
@@ -91,10 +92,19 @@
                 refreshLoading: false,
                 searchValue: null,
                 searchCount: 0,
-                height: ''
+                height: 0
             }
         },
         methods: {
+            hiddenTab() {
+                window.onresize = () => {
+                    if (window.innerHeight < this.height) {
+                        this.$emit('setTab', false);
+                    } else {
+                        this.$emit('setTab', true);
+                    }
+                };
+            },
             systemChange(index) {
                 this.system = {id: this.items[index].id, name: this.items[index].text};
             },
@@ -214,9 +224,8 @@
             this.$emit('setTab', true);
         },
         async created() {
-            this.height = document.documentElement.clientHeight - 54 - 49;
+            this.height = window.innerHeight;
             await this.getSystemType();
-            this.$refs['course-main'].style.height = `${this.height}px`;
             this.sortValue = this.$route.query.sort ? this.$route.query.sort : '0';
             this.filterValue = this.$route.query.filter ? this.$route.query.filter : '0';
             this.activeIndex = this.$route.query.system ? parseInt(this.$route.query.system.toString()) : 0;
@@ -252,10 +261,11 @@
             margin-top: @head-height;
             position: relative;
             overflow: auto;
+            height: calc(100vh - 54px);
 
             section {
                 margin-top: 16px;
-                padding: 0 10px;
+                padding: 0 10px 50px;
 
                 .course-list {
                     list-style: none;

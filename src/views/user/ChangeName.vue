@@ -4,7 +4,9 @@
             <span slot="right">保存</span>
         </nav-bar>
         <section>
-            <field v-model="name" :placeholder="`请输入新${type}`"></field>
+            <van-input v-model="name" :placeholder="`请输入新${type}`" :border="false"
+                       clearable maxlength="15"></van-input>
+            <div class="bottom-text">可输入 <span style="color: #ee0a24">{{remainWord - name.length}}</span> 字</div>
         </section>
     </div>
 </template>
@@ -16,12 +18,13 @@
     export default {
         name: "ChangeName",
         components: {
-            NavBar, Field
+            NavBar, 'van-input': Field
         },
         data() {
             return {
                 type: '',
-                name: ''
+                name: '',
+                remainWord: 15
             }
         },
         methods: {
@@ -52,6 +55,20 @@
             height: 18px;
             width: 18px;
             vertical-align: middle;
+        }
+
+        .van-field {
+            background-color: transparent;
+
+            .van-field__body {
+                border-bottom: 1px solid #1989fa;
+            }
+        }
+
+        .bottom-text {
+            font-size: 12px;
+            padding: 0 16px;
+            text-align: right;
         }
     }
 </style>
