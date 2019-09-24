@@ -55,7 +55,7 @@
             </cell>
         </section>
         <section>
-            <cell title="设置" clickable @click="logout">
+            <cell title="设置" clickable :to="{name:'user-information'}">
                 <icon slot="right-icon" name="setting-o" style="line-height: inherit;"></icon>
             </cell>
         </section>
@@ -101,17 +101,6 @@
                     image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
                     title: '你最近学了啥课程呀，分享一下'
                 }]
-            }
-        },
-        methods: {
-            async logout() {
-                if (this.$store.state.loginState) {
-                    const res = await logout();
-                    if (res) {
-                        this.isLogin = false;
-                        this.$store.commit('exit');
-                    }
-                }
             }
         },
         beforeCreate() {

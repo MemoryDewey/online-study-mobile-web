@@ -22,6 +22,9 @@
                     <cell title="绑定邮箱" :value="email?'解除绑定':'去绑定'" @click="bindEmail" is-link></cell>
                 </cell-group>
             </section>
+            <section>
+                <cell title="注销" @click="logout" is-link></cell>
+            </section>
             <van-dialog v-model="avatarDialogShow" title="头像选择" confirmButtonText="取消">
                 <grid :column-num="3" clickable square>
                     <grid-item text="拍照" @click="capturePicture">
@@ -94,7 +97,7 @@
     import VueCropper from 'vue-cropperjs'
     import 'cropperjs/dist/cropper.css'
     import {getImageUrl} from "@/utils/image"
-    import {deleteEmail} from "@/api/passport";
+    import {deleteEmail, logout} from "@/api/passport";
 
     export default {
         name: "Information",
@@ -347,6 +350,20 @@
                         }
                     })
                 } else await this.$router.push({name: 'user-bind-email'})
+            },
+            async logout() {
+                Dialog.confirm({
+                    title: '注销',
+                    message: '您确认要注销吗？'
+                }).then(async () => {
+                    if (this.$store.state.loginState) {
+                        const res = await logout();
+                        if (res) {
+                            await this.$router.push({name: 'profile'});
+                            this.$store.commit('exit');
+                        }
+                    }
+                });
             }
         },
         created() {
