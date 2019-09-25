@@ -74,6 +74,10 @@ export default new Router({
                 path: 'change-phone', name: 'user-change-phone',
                 component: () => import('@/views/user/ChangePhone'),
                 meta: {title: '更换绑定手机', requireAuth: true}
+            }, {
+                path: 'balance', name: 'user-balance',
+                component: () => import('@/views/user/Balance'),
+                meta: {title: '我的余额', requireAuth: true}
             }]
         }
     ]

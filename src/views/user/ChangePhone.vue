@@ -118,8 +118,11 @@
 
             .safety-top {
                 display: flex;
+                display: -webkit-flex;
                 align-items: center;
+                -webkit-align-items: center;
                 flex-direction: column;
+                -webkit-flex-direction: column;
                 margin-bottom: 20px;
 
                 .safety-icon {

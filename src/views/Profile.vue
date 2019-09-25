@@ -47,7 +47,7 @@
             </cell-group>
         </section>
         <section>
-            <cell title="余额" is-link>
+            <cell title="余额" is-link :to="{name:'user-balance'}">
                 <template slot>
                     <icon name="gold-coin" style="line-height: inherit;vertical-align: middle"/>
                     <span style="vertical-align: middle;margin-left: 1vw">0.00</span>

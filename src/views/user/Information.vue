@@ -33,7 +33,7 @@
                     <grid-item class="upload-grid-item">
                         <label :for="'avatar'" class="item-upload">
                             <svg-icon data="@icon/picture.svg"></svg-icon>
-                            <div class="van-grid-item__text" style="text-align: center">相册</div>
+                            <span class="van-grid-item__text">相册</span>
                         </label>
                     </grid-item>
                     <grid-item text="默认" @click="setDefaultAvatar">
@@ -85,12 +85,35 @@
                     :crop-box-resizable="false" drag-mode="move" :src="cropperImageUrl"
                     :aspect-ratio="1" :background="false" alt>
             </vue-cropper>
+            <tabbar fixed>
+                <tabbar-item @click="rotate(-90)">
+                    <svg-icon slot="icon" data="@icon/rotate-left.svg" class="tab-bar-icon"></svg-icon>
+                </tabbar-item>
+                <tabbar-item @click="rotate(90)">
+                    <svg-icon slot="icon" data="@icon/rotate-right.svg" class="tab-bar-icon"></svg-icon>
+                </tabbar-item>
+                <tabbar-item @click="reset">
+                    <svg-icon slot="icon" data="@icon/reset.svg" class="tab-bar-icon"></svg-icon>
+                </tabbar-item>
+                <tabbar-item @click.prevent="flipX">
+                    <svg-icon slot="icon" data="@icon/flip.svg" class="tab-bar-icon"></svg-icon>
+                </tabbar-item>
+                <tabbar-item @click="zoom(0.2)">
+                    <svg-icon slot="icon" data="@icon/zoom-in.svg" class="tab-bar-icon"></svg-icon>
+                </tabbar-item>
+                <tabbar-item @click="zoom(-0.2)">
+                    <svg-icon slot="icon" data="@icon/zoom-out.svg" class="tab-bar-icon"></svg-icon>
+                </tabbar-item>
+            </tabbar>
         </article>
     </div>
 </template>
 
 <script>
-    import {NavBar, CellGroup, Icon, Image, GridItem, Grid, Cell, Dialog, DatetimePicker, Toast} from 'vant'
+    import {
+        Tabbar, TabbarItem, NavBar, CellGroup, Icon, Image,
+        GridItem, Grid, Cell, Dialog, DatetimePicker, Toast
+    } from 'vant'
     import {parseTime} from '@/utils/time'
     import {getPersonalInfo, setDefaultAvatar, updatePersonal} from "@/api/profile"
     import FileUpload from 'vue-upload-component'
@@ -102,7 +125,7 @@
     export default {
         name: "Information",
         components: {
-            Cell, CellGroup, Grid, GridItem, DatetimePicker, NavBar,
+            Cell, CellGroup, Grid, GridItem, DatetimePicker, NavBar, Tabbar, TabbarItem,
             "van-dialog": Dialog.Component, 'van-image': Image, Icon,
             FileUpload, VueCropper
         },
@@ -139,6 +162,7 @@
                 headers: {Authorization: localStorage.getItem('token')},
                 edit: false,
                 cropperImageUrl: '',
+                flip: false,
                 capture: false
             }
         },
@@ -152,7 +176,7 @@
         },
         methods: {
             routerGo() {
-                this.$router.push({name: 'profile'});
+                this.$router.replace({name: 'profile'});
             },
             async getInfo() {
                 let res = null;
@@ -310,6 +334,19 @@
                     }
                 }
             },
+            rotate(deg) {
+                this.$refs.cropper.rotate(deg);
+            },
+            reset() {
+                this.$refs.cropper.reset();
+            },
+            flipX() {
+                this.$refs.cropper.scaleX(this.flip ? 1 : -1);
+                this.flip = !this.flip;
+            },
+            zoom(percent) {
+                this.$refs.cropper.relativeZoom(percent);
+            },
             async setDefaultAvatar() {
                 let res = await setDefaultAvatar();
                 if (res) {
@@ -359,8 +396,8 @@
                     if (this.$store.state.loginState) {
                         const res = await logout();
                         if (res) {
-                            await this.$router.push({name: 'profile'});
                             this.$store.commit('exit');
+                            await this.$router.push({name: 'profile'});
                         }
                     }
                 });
@@ -405,11 +442,15 @@
 
         .upload-grid-item {
             .item-upload {
+                display: flex;
+                display: -webkit-flex;
+                justify-content: center;
+                -webkit-justify-content: center;
+                align-items: center;
+                -webkit-align-items: center;
+                flex-direction: column;
+                -webkit-flex-direction: column;
                 padding: 24px 38px;
-            }
-
-            .van-grid-item__content {
-                padding: 0;
             }
         }
 
@@ -436,12 +477,18 @@
             background-color: #000;
 
             .cropper-dialog {
-                height: 100vh;
+                height: calc(100vh - 97px);
             }
 
             .nav-bar-icon {
                 height: 18px;
                 width: 18px;
+                vertical-align: middle;
+            }
+
+            .tab-bar-icon {
+                height: 30px;
+                width: 30px;
                 vertical-align: middle;
             }
         }

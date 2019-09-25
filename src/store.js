@@ -23,7 +23,12 @@ export default new Vuex.Store({
         exit: state => {
             state.loginState = false;
             state.hasInfo = false;
-            state.userInfo = {};
+            state.userInfo = {
+                nickname: '', avatarUrl: '',
+                birthday: '', sex: '',
+                realName: '', bstAddress: '',
+                email: '', mobile: ''
+            };
             localStorage.removeItem('token');
         },
         setInfo: (state, payload) => {
