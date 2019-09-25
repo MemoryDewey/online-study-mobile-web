@@ -19,10 +19,11 @@
                         <router-link to="/course" tag="span">全部</router-link>
                     </van-col>
                 </van-row>
-                <course-card-col v-for="course in newCourses" :key="course['courseID']"
+                <course-card-col v-for="course in newCourses" :key="course['courseID']" :id="course['courseID']"
                                  :title="course['courseName']" :desc="course['courseDescription']"
                                  :rate="course['favorableRate']" :sales="course['applyCount']"
-                                 :image="course['courseImage']" :price="course['price']"></course-card-col>
+                                 :image="course['courseImage']" :price="course['price']">
+                </course-card-col>
             </div>
             <div class="main-item">
                 <van-row>

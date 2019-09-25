@@ -1,5 +1,5 @@
 <template>
-    <div class="course-card-col">
+    <div class="course-card-col" @click="routerGo">
         <div class="card-left">
             <div class="card-image">
                 <img v-lazy="getImageUrl(image)" alt>
@@ -32,11 +32,19 @@
             desc: String,
             sales: [Number, String],
             rate: [Number, String],
-            price: [Number, String]
+            price: [Number, String],
+            id: [Number, String]
         },
         data() {
             return {
                 getImageUrl
+            }
+        },
+        methods: {
+            routerGo() {
+                if (this.id) {
+                    this.$router.push({name: 'course-study', params: {id: this.id.toString()}});
+                }
             }
         }
     }

@@ -25,9 +25,10 @@
                           :error.sync="error" :finished="finished" @load="listOnload" :immediate-check="false">
                         <ul class="course-list">
                             <li v-for="course in courses" :key="course['courseID']">
-                                <course-card-col :title="course['courseName']" :desc="course['courseDescription']"
-                                                 :price="course['price']" :rate="course['favorableRate']"
-                                                 :sales="course['applyCount']" :image="course['courseImage']">
+                                <course-card-col :title="course['courseName']" :id="course['courseID']"
+                                                 :desc="course['courseDescription']" :price="course['price']"
+                                                 :rate="course['favorableRate']" :sales="course['applyCount']"
+                                                 :image="course['courseImage']">
                                 </course-card-col>
                             </li>
                         </ul>

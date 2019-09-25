@@ -9,20 +9,22 @@ export default new Router({
     base: process.env.BASE_URL,
     routes: [
         {
-            path: '/',
-            name: 'home',
+            path: '/', name: 'home',
             component: Home,
             meta: {title: '首页'}
         },
         {
-            path: '/course',
-            name: 'course',
+            path: '/course', name: 'course',
             component: () => import('@/views/Course'),
             meta: {title: '课程'}
         },
         {
-            path: '/passport',
-            name: 'passport',
+            path: '/study/:id', name: 'course-study',
+            component: () => import('@/views/Study'),
+            meta: {title: '课程详情'}
+        },
+        {
+            path: '/passport', name: 'passport',
             component: () => import('@/views/passport'),
             redirect: {name: 'login-account'},
             children: [{
@@ -44,14 +46,12 @@ export default new Router({
             }]
         },
         {
-            path: '/profile',
-            name: 'profile',
+            path: '/profile', name: 'profile',
             component: () => import('@/views/Profile'),
             meta: {title: '我的'}
         },
         {
-            path: '/user',
-            name: 'user',
+            path: '/user', name: 'user',
             component: () => import('@/views/user'),
             redirect: {name: 'user-information'},
             children: [{
