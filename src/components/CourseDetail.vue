@@ -1,5 +1,5 @@
 <template>
-    <div class="course-study-detail" v-if="getDataSuc">
+    <div class="course-study-detail" v-if="loadFinish">
         <div class="detail-cell">
             <div class="detail-title">
                 <span>{{title}}</span>
@@ -30,7 +30,12 @@
                 <span>授课教师</span>
             </div>
             <div class="teacher-info">
-                <van-image :src="teacherAvatar"></van-image>
+                <div class="teacher-avatar">
+                    <van-image :src="getImageUrl(teacherAvatar)"></van-image>
+                </div>
+                <div class="teacher-info-text">
+                    <div>{{teacherName}}</div>
+                </div>
             </div>
         </div>
     </div>
@@ -39,20 +44,23 @@
 <script>
     import {Image} from 'vant'
     import {getInfo} from '@/api/course'
+    import {getImageUrl} from '@/utils/image'
 
     export default {
         name: "CourseDetail",
         components: {'van-image': Image},
         data() {
             return {
-                getDataSuc: false,
+                loadFinish: false,
                 title: '',
                 apply: 0,
                 price: 0,
                 rate: 0,
                 content: '',
                 target: '',
+                teacherName: '',
                 teacherAvatar: '',
+                getImageUrl
             }
         },
         created() {
@@ -65,7 +73,9 @@
                     this.content = res.course.details['courseSummary'];
                     this.target = res.course.details['courseTarget'];
                     this.teacherAvatar = res.course.details['UserInformation'].avatarUrl;
-                    this.getDataSuc = true;
+                    this.teacherName = res.course.details['UserInformation'].nickname;
+                    this.$emit('setCourseType', res.course.info['courseForm'] === 'L');
+                    this.loadFinish = true;
                 }
             });
         }
@@ -99,15 +109,28 @@
         }
 
         .teacher-info {
-            height: 45px;
-            width: 45px;
             margin-top: 12px;
+            display: flex;
+            display: -webkit-flex;
+            align-items: center;
+            height: 45px;
+        }
+
+        .teacher-avatar {
+            width: 45px;
             background-color: #f6f6f6;
-            .van-image{
+
+            .van-image {
                 width: 35px;
                 height: 35px;
                 padding: 5px;
             }
+        }
+
+        .teacher-info-text {
+            padding: 0 10px;
+            font-size: 16px;
+            line-height: 16px;
         }
     }
 </style>
