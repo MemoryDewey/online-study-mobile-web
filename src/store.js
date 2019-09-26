@@ -12,6 +12,16 @@ export default new Vuex.Store({
             birthday: '', sex: '',
             realName: '', bstAddress: '',
             email: '', mobile: ''
+        },
+        isLive: false,
+        videoUrl: ''
+    },
+    getters: {
+        getVideoUrl: state => {
+            return state.videoUrl;
+        },
+        getIsLive: state => {
+            return state.isLive;
         }
     },
     mutations: {
@@ -37,6 +47,10 @@ export default new Vuex.Store({
         },
         changeInfo: (state, payload) => {
             state.userInfo[payload.key] = payload.value;
+        },
+        changeVideo: (state, payload) => {
+            state.isLive = payload.isLive;
+            state.videoUrl = payload.videoUrl;
         }
     },
     actions: {}

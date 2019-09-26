@@ -58,7 +58,7 @@
 <style lang="less">
     #course-study {
         .study-head {
-            background: rgba(0, 0, 0, 0.3);
+            background: rgba(0, 0, 0, 0);
 
             .van-icon {
                 color: #fff;
