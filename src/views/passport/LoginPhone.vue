@@ -5,7 +5,7 @@
             <van-button type="info" size="large" :disabled="!phoneCheck" @click="getShortMessageCode">获取验证码</van-button>
         </div>
         <div class="login-text" style="text-align: center">
-            <router-link tag="span" to="/passport/login-account">账号密码登录</router-link>
+            <router-link tag="span" :to="{name:'login-account',query: this.$route.query}">账号密码登录</router-link>
         </div>
     </div>
 </template>
@@ -34,7 +34,11 @@
             async getShortMessageCode() {
                 const res = await sendMessage({account: this.phone, option: 'login'});
                 if (res)
-                    await this.$router.push({name: 'short-message', query: {phone: this.phone, option: 'login'}})
+                    await this.$router.push({
+                        name: 'short-message', query: {
+                            phone: this.phone, option: 'login', origin: this.$route.query.origin
+                        }
+                    })
             }
         },
         beforeCreate() {

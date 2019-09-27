@@ -74,7 +74,11 @@
                     this.target = res.course.details['courseTarget'];
                     this.teacherAvatar = res.course.details['UserInformation'].avatarUrl;
                     this.teacherName = res.course.details['UserInformation'].nickname;
-                    this.$emit('setCourseType', res.course.info['courseForm'] === 'L');
+                    this.$store.commit('setCourseImage', res.course.info['courseImage']);
+                    this.$emit('setCourseType', {
+                        live: res.course.info['courseForm'] === 'L',
+                        text: res.course.info['price'] > 0 ? '立即购买' : '免费报名'
+                    });
                     this.loadFinish = true;
                 }
             });

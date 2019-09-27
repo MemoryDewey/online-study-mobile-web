@@ -1,54 +1,67 @@
 <template>
-    <div class="course-study-chapter" v-if="loadFinish">
-        <div class="chapter-header">
-            <span>授课方式：</span>
-            <span v-if="live"><svg-icon class="header-icon" data="@icon/live.svg"></svg-icon>直播</span>
-            <span><svg-icon class="header-icon" data="@icon/video.svg"></svg-icon>视频（{{videoNum}}）</span>
-        </div>
-        <collapse v-model="showName" accordion>
-            <collapse-item v-for="chapter in chapters" :key="chapter.number"
-                           :name="chapter.number" :title="chapter.name">
-                <cell v-for="video in chapter.video" :key="video.id" class="van-ellipsis" :title="video.name"
-                      :label="`${video.duration}分钟`" :border="false" clickable @click="setVideo(video.url)">
-                    <svg-icon class="video-icon" slot="icon" data="@icon/video.svg"></svg-icon>
-                </cell>
-            </collapse-item>
-            <collapse-item v-if="live" name="live" title="直播课程">
-                <cell class="van-ellipsis" :title="liveInfo.live?liveInfo.title:'暂无直播'"
-                      :label="liveInfo.live?liveInfo.state?'直播中':'未开播':'该课程暂无直播'"
-                      :border="false" clickable @click="setLive">
-                    <svg-icon class="video-icon" slot="icon" data="@icon/live.svg"></svg-icon>
-                </cell>
-            </collapse-item>
-        </collapse>
+    <div class="course-study-chapter">
+        <skeleton title :row="8" :loading="!loadFinish"></skeleton>
+        <template v-if="loadFinish">
+            <div class="chapter-header">
+                <span>授课方式：</span>
+                <span v-if="live"><svg-icon class="header-icon" data="@icon/live.svg"></svg-icon>直播</span>
+                <span><svg-icon class="header-icon" data="@icon/video.svg"></svg-icon>视频（{{videoNum}}）</span>
+            </div>
+            <collapse v-model="showName">
+                <collapse-item v-if="live" name="live" title="直播课程">
+                    <cell class="van-ellipsis" :title="liveInfo.live?liveInfo.title:'暂无直播'"
+                          :label="liveInfo.live?liveInfo.state?'直播中':'未开播':'该课程暂无直播'"
+                          :border="false" clickable @click="setLive">
+                        <svg-icon class="video-icon" slot="icon" data="@icon/live.svg"></svg-icon>
+                    </cell>
+                </collapse-item>
+                <collapse-item v-for="chapter in chapters" :key="chapter.number"
+                               :name="chapter.number" :title="chapter.name">
+                    <cell v-for="video in chapter.video" :key="video.id" class="van-ellipsis" :title="video.name"
+                          :label="`${video.duration}分钟`" :border="false" clickable @click="setVideo(video.url)">
+                        <svg-icon class="video-icon" slot="icon" data="@icon/video.svg"></svg-icon>
+                    </cell>
+                </collapse-item>
+            </collapse>
+        </template>
     </div>
 </template>
 
 <script>
-    import {Collapse, CollapseItem, Cell} from 'vant'
+    import {Collapse, CollapseItem, Cell, Skeleton, Toast} from 'vant'
     import {getLive, getVideo} from '@/api/course'
 
     export default {
         name: "CourseChapter",
-        components: {Collapse, CollapseItem, Cell},
+        components: {Collapse, CollapseItem, Cell, Skeleton},
         props: {
-            live: {type: Boolean, required: true}
+            live: {type: Boolean, required: true},
+            isApply: {type: Boolean, required: true}
         },
         data() {
             return {
                 chapters: [],
                 loadFinish: false,
-                showName: '',
+                showName: [],
                 videoNum: 0,
                 liveInfo: {live: false, streamName: null, state: false, title: null}
             }
         },
         methods: {
             setLive() {
-                this.$store.commit('changeVideo', {isLive: true, videoUrl: this.liveInfo.streamName})
+                if (!this.isApply) {
+                    Toast.fail('请先报名该课程');
+                } else this.$store.commit('changeVideo', {
+                    isLive: true,
+                    videoUrl: this.liveInfo.streamName
+                })
             },
             setVideo(url) {
-                this.$store.commit('changeVideo', {isLive: false, videoUrl: url})
+                if (!this.isApply) {
+                    Toast.fail('请先报名该课程');
+                } else this.$store.commit('changeVideo', {
+                    isLive: false, videoUrl: url
+                })
             }
         },
         created() {
@@ -74,6 +87,18 @@
         span {
             display: inline-block;
             box-sizing: border-box;
+        }
+
+        .van-skeleton__title, .van-skeleton__row {
+            height: 24px;
+        }
+
+        .van-skeleton__title {
+            margin-top: 10px;
+        }
+
+        .van-skeleton__row {
+            margin-top: 20px;
         }
 
         .chapter-header {

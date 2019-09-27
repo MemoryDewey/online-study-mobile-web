@@ -6,4 +6,4 @@ export const getList = params => get('/course/list', params);
 export const getInfo = params => get('/course/information', params);
 export const getLive = params => get('/course/information/live', params);
 export const getVideo = params => get('/course/information/video', params);
-
+export const checkApply = data => post('/course/information/class', data);

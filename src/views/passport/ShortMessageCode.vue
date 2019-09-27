@@ -50,7 +50,9 @@
                             if (res) {
                                 Toast.clear();
                                 localStorage.setItem('token', res.token);
-                                await this.$router.push('/profile');
+                                let path = this.$route.query.origin;
+                                if (!path) await this.$router.push('/profile');
+                                else await this.$router.push({path});
                             }
                             break;
                         case 'reset':

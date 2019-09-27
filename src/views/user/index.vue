@@ -1,7 +1,9 @@
 <template>
     <div id="user">
         <div class="user-view">
-            <router-view/>
+            <transition name="van-slide-right">
+                <router-view/>
+            </transition>
         </div>
     </div>
 </template>

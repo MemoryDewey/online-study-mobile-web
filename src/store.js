@@ -14,14 +14,15 @@ export default new Vuex.Store({
             email: '', mobile: ''
         },
         isLive: false,
-        videoUrl: ''
+        videoUrl: '',
+        courseImage: '',
     },
     getters: {
         getVideoUrl: state => {
             return state.videoUrl;
         },
-        getIsLive: state => {
-            return state.isLive;
+        getCourseImage: state => {
+            return state.courseImage;
         }
     },
     mutations: {
@@ -47,6 +48,9 @@ export default new Vuex.Store({
         },
         changeInfo: (state, payload) => {
             state.userInfo[payload.key] = payload.value;
+        },
+        setCourseImage: (state, payload) => {
+            state.courseImage = payload;
         },
         changeVideo: (state, payload) => {
             state.isLive = payload.isLive;

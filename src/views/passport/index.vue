@@ -37,6 +37,11 @@
             routerGo() {
                 this.$router.go(-1);
             }
+        },
+        beforeRouteEnter(to, from, next) {
+            if (localStorage.getItem('token')) {
+                next('/');
+            } else next();
         }
     }
 </script>

@@ -22,9 +22,7 @@ service.interceptors.response.use(
                 message: res.msg || '错误'
             });
             return false;
-        } else if (res.status === 1) {
-            return res;
-        } else return res.status;
+        } else return res;
     }
 );
 
