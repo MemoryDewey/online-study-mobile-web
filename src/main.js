@@ -6,6 +6,7 @@ import './utils/flexible'
 import VueLazyLoad from "vue-lazyload"
 import VueSvgIconPlugin from "vue-svgicon";
 import {checkLogin} from './api/passport'
+import {doubletap} from "./utils/vue-touch";
 
 Vue.config.productionTip = false;
 Vue.use(VueLazyLoad, {

@@ -1,6 +1,6 @@
 <template>
     <div class="course-study-video" ref="courseVideo">
-        <video-player v-if="videoExist" :src="src" :live="live"></video-player>
+        <player v-if="videoExist" :src="src" :live="live"></player>
         <div v-else class="video-not-exist">
             <van-button round type="warning">{{buttonText}}</van-button>
         </div>
@@ -9,13 +9,13 @@
 
 <script>
     import {Button} from 'vant'
-    import VideoPlayer from '@/components/VideoPlayer';
+    import Player from '@/components/Player'
     import {getImageUrl} from '@/utils/image'
     import {mapGetters} from 'vuex';
 
     export default {
         name: "CourseVideo",
-        components: {VideoPlayer, 'van-button': Button},
+        components: {Player, 'van-button': Button},
         props: {
             buttonText: String
         },

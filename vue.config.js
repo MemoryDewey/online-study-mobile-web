@@ -28,7 +28,8 @@ module.exports = {
                     require('postcss-plugin-px2rem')({
                         rootValue: 37.5,
                         mediaQuery: false,
-                        minPixelValue: 3
+                        minPixelValue: 3,
+                        exclude: /(plyr)/
                     })
                 ]
             }

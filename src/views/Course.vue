@@ -19,22 +19,24 @@
             <notice-bar v-if="this.$route.query.search" color="#1989fa" background="#ecf9ff" left-icon="info-o">
                 共找到{{searchCount}}门与"{{$route.query.search}}"相关课程
             </notice-bar>
-            <section>
-                <pull-refresh v-model="refreshLoading" @refresh="onRefresh">
-                    <list v-model="loading" error-text="请求失败，点击重新加载" finished-text="没有更多了"
-                          :error.sync="error" :finished="finished" @load="listOnload" :immediate-check="false">
-                        <ul class="course-list">
-                            <li v-for="course in courses" :key="course['courseID']">
-                                <course-card-col :title="course['courseName']" :id="course['courseID']"
-                                                 :desc="course['courseDescription']" :price="course['price']"
-                                                 :rate="course['favorableRate']" :sales="course['applyCount']"
-                                                 :image="course['courseImage']">
-                                </course-card-col>
-                            </li>
-                        </ul>
-                    </list>
-                </pull-refresh>
-            </section>
+            <keep-alive>
+                <section>
+                    <pull-refresh v-model="refreshLoading" @refresh="onRefresh">
+                        <list v-model="loading" error-text="请求失败，点击重新加载" finished-text="没有更多了"
+                              :error.sync="error" :finished="finished" @load="listOnload" :immediate-check="false">
+                            <ul class="course-list">
+                                <li v-for="course in courses" :key="course['courseID']">
+                                    <course-card-col :title="course['courseName']" :id="course['courseID']"
+                                                     :desc="course['courseDescription']" :price="course['price']"
+                                                     :rate="course['favorableRate']" :sales="course['applyCount']"
+                                                     :image="course['courseImage']">
+                                    </course-card-col>
+                                </li>
+                            </ul>
+                        </list>
+                    </pull-refresh>
+                </section>
+            </keep-alive>
         </main>
     </div>
 </template>

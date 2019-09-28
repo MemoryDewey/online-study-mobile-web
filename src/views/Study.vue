@@ -1,7 +1,7 @@
 <template>
     <div id="course-study">
         <nav-bar class="study-head-transparent" :title="headerShow?'课程详情':''"
-                 ref="navBar" fixed :border="false" @click-left="routerGo">
+                 ref="navBar" fixed :border="false" @click-left="routerGo" :z-index="100">
             <icon slot="left" name="arrow-left"></icon>
             <icon slot="right" name="star-o"></icon>
         </nav-bar>

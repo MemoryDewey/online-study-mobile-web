@@ -53,7 +53,7 @@
                     Toast.fail('请先报名该课程');
                 } else this.$store.commit('changeVideo', {
                     isLive: true,
-                    videoUrl: this.liveInfo.streamName
+                    videoUrl: this.liveInfo.state ? this.liveInfo.streamName : null
                 })
             },
             setVideo(url) {
@@ -65,6 +65,9 @@
             }
         },
         created() {
+            /*window.addEventListener("orientationchange", function(){
+                console.log(screen.orientation.type); // e.g. portrait
+            });*/
             getVideo({courseID: this.$route.params.id}).then(res => {
                 this.chapters = res.data;
                 this.videoNum = res.count;

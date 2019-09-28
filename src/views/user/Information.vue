@@ -30,12 +30,14 @@
                     <grid-item text="拍照" @click="capturePicture">
                         <svg-icon slot="icon" data="@icon/camera.svg"></svg-icon>
                     </grid-item>
-                    <grid-item class="upload-grid-item">
-                        <label :for="'avatar'" class="item-upload">
+                    <label class="van-grid-item van-grid-item--square" :for="'avatar'"
+                           style="flex-basis: 33.3333%; padding-top: 33.3333%;">
+                        <div class="van-grid-item__content van-grid-item__content--center
+                         van-grid-item__content--square van-grid-item__content--clickable van-hairline">
                             <svg-icon data="@icon/picture.svg"></svg-icon>
                             <span class="van-grid-item__text">相册</span>
-                        </label>
-                    </grid-item>
+                        </div>
+                    </label>
                     <grid-item text="默认" @click="setDefaultAvatar">
                         <svg-icon slot="icon" data="@icon/round-picture.svg"></svg-icon>
                     </grid-item>
@@ -164,14 +166,6 @@
                 cropperImageUrl: '',
                 flip: false,
                 capture: false
-            }
-        },
-        mounted() {
-            document.addEventListener("deviceready", onDeviceReady, false);
-            let _this = this;
-
-            function onDeviceReady() {
-                _this.msg = "cordove device ready.";
             }
         },
         methods: {
