@@ -7,3 +7,5 @@ export const getInfo = params => get('/course/information', params);
 export const getLive = params => get('/course/information/live', params);
 export const getVideo = params => get('/course/information/video', params);
 export const checkApply = data => post('/course/information/class', data);
+export const getComment = params => get('/course/information/comment', params);
+export const getCommentCount = params => get('/course/information/comment/count', params);

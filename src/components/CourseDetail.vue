@@ -7,7 +7,7 @@
             <div class="detail-info">
                 <span style="color:#dcbb70;font-size: 15px">{{price===0?'免费':`￥${price}`}}</span>
                 <span>{{apply}} 人已报名</span>
-                <span>好评 {{rate}}%</span>
+                <span>好评 {{rate*100}}%</span>
             </div>
         </div>
         <div class="detail-cell">
@@ -75,9 +75,10 @@
                     this.teacherAvatar = res.course.details['UserInformation'].avatarUrl;
                     this.teacherName = res.course.details['UserInformation'].nickname;
                     this.$store.commit('setCourseImage', res.course.info['courseImage']);
-                    this.$emit('setCourseType', {
+                    this.$emit('setCourse', {
                         live: res.course.info['courseForm'] === 'L',
-                        text: res.course.info['price'] > 0 ? '立即购买' : '免费报名'
+                        text: res.course.info['price'] > 0 ? '立即购买' : '免费报名',
+                        rate: res.course.info['favorableRate']
                     });
                     this.loadFinish = true;
                 }

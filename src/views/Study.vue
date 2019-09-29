@@ -9,13 +9,13 @@
             <course-video :button-text="bottomText"></course-video>
             <tabs color="#1989fa" title-active-color="#1989fa" @scroll="scroll" animated swipeable sticky>
                 <tab title="详情">
-                    <course-detail @setCourseType="setCourseType"></course-detail>
+                    <course-detail @setCourse="setCourse"></course-detail>
                 </tab>
                 <tab title="目录">
                     <course-chapter :live="live" :is-apply="isApply"></course-chapter>
                 </tab>
                 <tab title="评论">
-
+                    <course-comment :rate="rate"></course-comment>
                 </tab>
             </tabs>
             <tabbar fixed>
@@ -32,13 +32,13 @@
     import CourseVideo from '@/components/CourseVideo'
     import CourseDetail from '@/components/CourseDetail'
     import CourseChapter from '@/components/CourseChapter'
+    import CourseComment from '@/components/CourseComment'
     import {checkApply} from '@/api/course'
 
     export default {
         name: "index",
         components: {
-            CourseChapter,
-            CourseDetail, CourseVideo,
+            CourseChapter, CourseDetail, CourseVideo, CourseComment,
             Icon, NavBar, Tabs, Tab, Tabbar, TabbarItem, 'van-button': Button,
         },
         data() {
@@ -46,6 +46,7 @@
                 live: true,
                 free: true,
                 bottomText: '',
+                rate: 0,
                 headerShow: false,
                 isApply: false,
                 isLogin: false
@@ -55,8 +56,9 @@
             routerGo() {
                 this.$router.go(-1);
             },
-            setCourseType(val) {
+            setCourse(val) {
                 this.live = val.live;
+                this.rate = val.rate;
                 if (!this.isApply) this.bottomText = val.text;
                 else this.bottomText = '开始上课';
             },
