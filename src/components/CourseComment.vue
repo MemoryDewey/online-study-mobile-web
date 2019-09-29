@@ -29,21 +29,22 @@
                 </div>
                 <div><span>共{{count}}条评价</span></div>
             </div>
-            <van-button type="info" size="small">评价课程</van-button>
+            <van-button type="info" size="small"
+                        :to="{name:'course-comment-commit',params:{id:this.$route.params.id}}">评价课程
+            </van-button>
         </div>
         <div class="comment-body">
             <template v-if="count>0">
-                <div v-for="comment in comments" class="comment">
-                    <img :src="comment['UserInformation'].avatarUrl" alt>
-                    <div class="comment-content">
-                        <h3>{{comment['UserInformation'].nickname}}</h3>
-                        <p>{{comment.content}}</p>
-                    </div>
-                </div>
+                <comment-card v-for="comment in comments" :key="comment.id"
+                              :avatar="comment['UserInformation'].avatarUrl"
+                              :nickname="comment['UserInformation'].nickname"
+                              :rate="comment.star" :content="comment.content"
+                              :time="comment.time">
+                </comment-card>
                 <skeleton :loading="loading" title avatar :row="3"></skeleton>
                 <skeleton :loading="loading" title avatar :row="3"></skeleton>
                 <skeleton :loading="loading" title avatar :row="3"></skeleton>
-                <van-button type="info">查看更多</van-button>
+                <div class="comment-bottom"><span>查看全部</span></div>
             </template>
             <template v-else>
                 <div class="no-comment"><span>该课程暂无评价</span></div>
@@ -53,12 +54,13 @@
 </template>
 
 <script>
-    import {Button, Rate, Skeleton} from 'vant'
+    import {Button, Rate, Skeleton, Notify} from 'vant'
+    import CommentCard from '@/components/CommentCard'
     import {getComment, getCommentCount} from '@/api/course'
 
     export default {
         name: "CourseComment",
-        components: {'van-button': Button, Rate, Skeleton},
+        components: {'van-button': Button, Rate, Skeleton, CommentCard},
         props: {
             rate: {type: Number, required: true}
         },
@@ -67,7 +69,8 @@
                 rateStars: [],
                 count: 0,
                 loading: true,
-                comments: []
+                comments: [],
+                commentDialogShow: false,
             }
         },
         methods: {
@@ -166,14 +169,15 @@
         }
 
         .comment-body {
-            padding: 10px 16px;
+            padding: 0 16px 10px;
 
-            .no-comment {
+            .no-comment, .comment-bottom {
                 width: 100%;
                 display: flex;
                 display: -webkit-flex;
                 justify-content: center;
                 -webkit-justify-content: center;
+                margin-top: 10px;
 
                 span {
                     font-size: 18px;
@@ -181,33 +185,11 @@
                 }
             }
 
-            .comment {
+            .dialog-rate-title {
                 display: flex;
                 display: -webkit-flex;
-                padding: 0 16px;
-
-                img {
-                    flex-shrink: 0;
-                    -webkit-flex-shrink: 0;
-                    width: 32px;
-                    height: 32px;
-                    margin-right: 16px;
-                    border: 1px solid #ddd;
-                    border-radius: 50%;
-                }
-                .comment-content{
-                    padding-top: 6px;
-                    h3{
-                        margin: 0;
-                        font-size: 18px;
-                        line-height: 20px;
-                    }
-                    p{
-                        margin: 13px 0 0;
-                        font-size: 14px;
-                        line-height: 20px;
-                    }
-                }
+                justify-content: center;
+                -webkit-justify-content: center;
             }
         }
     }

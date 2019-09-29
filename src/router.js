@@ -24,9 +24,29 @@ export default new Router({
             meta: {title: '课程详情'}
         },
         {
-            path: '/passport', name: 'passport',
-            component: () => import('@/views/passport'),
-            redirect: {name: 'login-account'},
+            path: '/comment/:id', name: 'course-comment',
+            component: () => import('@/views/comment'),
+            redirect: {name: 'course-comment-list'},
+            children: [{
+                path: 'list', name: 'course-comment-list',
+                component: () => import('@/views/comment/CommentList'),
+                meta: {title: '评论列表'}
+            }, {
+                path: 'commit', name: 'course-comment-commit',
+                component: () => import('@/views/comment/CommitComment'),
+                meta: {title: '提交评论'}
+            }]
+        },
+        {
+            path: '/passport', name:
+                'passport',
+            component:
+                () => import('@/views/passport'),
+            redirect:
+                {
+                    name: 'login-account'
+                }
+            ,
             children: [{
                 path: 'login-account', name: 'login-account',
                 component: () => import('@/views/passport/LoginAccount'),
@@ -44,16 +64,29 @@ export default new Router({
                 component: () => import('@/views/passport/ResetPassword'),
                 meta: {title: '重置密码'}
             }]
-        },
+        }
+        ,
         {
-            path: '/profile', name: 'profile',
-            component: () => import('@/views/Profile'),
-            meta: {title: '我的'}
-        },
+            path: '/profile', name:
+                'profile',
+            component:
+                () => import('@/views/Profile'),
+            meta:
+                {
+                    title: '我的'
+                }
+        }
+        ,
         {
-            path: '/user', name: 'user',
-            component: () => import('@/views/user'),
-            redirect: {name: 'user-information'},
+            path: '/user', name:
+                'user',
+            component:
+                () => import('@/views/user'),
+            redirect:
+                {
+                    name: 'user-information'
+                }
+            ,
             children: [{
                 path: 'information', name: 'user-information',
                 component: () => import('@/views/user/Information'),
