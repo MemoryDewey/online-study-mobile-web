@@ -1,6 +1,6 @@
 <template>
     <div class="comment-card">
-        <img :src="avatar" alt>
+        <img :src="getImageUrl(avatar)" alt>
         <div class="comment-content">
             <div class="top">
                 <a class="van-ellipsis">{{nickname}}</a>
@@ -14,6 +14,7 @@
 
 <script>
     import {Rate} from 'vant'
+    import {getImageUrl} from "@/utils/image"
 
     export default {
         name: "CommentCard",
@@ -24,6 +25,11 @@
             rate: Number,
             content: String,
             time: String
+        },
+        data(){
+            return{
+                getImageUrl
+            }
         }
     }
 </script>

@@ -21,7 +21,7 @@
                 this.title = val;
             },
             toStudy() {
-                this.$router.push({name: 'course-study', id: this.$route.params.id})
+                this.$router.replace({name: 'course-study', id: this.$route.params.id})
             }
         }
     }

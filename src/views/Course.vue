@@ -2,7 +2,7 @@
     <div class="course">
         <div class="head-search">
             <search v-model="searchValue" placeholder="请输入课程关键词"
-                    @search="searchCourse" @focus="hiddenTab"></search>
+                    @search="searchCourse"></search>
         </div>
         <main>
             <sticky>
@@ -99,15 +99,6 @@
             }
         },
         methods: {
-            hiddenTab() {
-                window.onresize = () => {
-                    if (window.innerHeight < this.height) {
-                        this.$emit('setTab', false);
-                    } else {
-                        this.$emit('setTab', true);
-                    }
-                };
-            },
             systemChange(index) {
                 this.system = {id: this.items[index].id, name: this.items[index].text};
             },
@@ -228,6 +219,13 @@
         },
         async created() {
             this.height = window.innerHeight;
+            window.onresize = () => {
+                if (window.innerHeight < this.height) {
+                    this.$emit('setTab', false);
+                } else {
+                    this.$emit('setTab', true);
+                }
+            };
             await this.getSystemType();
             this.sortValue = this.$route.query.sort ? this.$route.query.sort : '0';
             this.filterValue = this.$route.query.filter ? this.$route.query.filter : '0';

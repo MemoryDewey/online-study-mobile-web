@@ -2,7 +2,7 @@
     <div class="home">
         <div class="head-search">
             <search v-model="searchValue" placeholder="请输入课程关键词"
-                    @search="searchCourse" @focus="hiddenTab"></search>
+                    @search="searchCourse"></search>
         </div>
         <main>
             <div class="banner">
@@ -163,15 +163,6 @@
             },
             searchCourse(value) {
                 this.$router.push({path: '/course', query: {search: value}});
-            },
-            hiddenTab() {
-                window.onresize = () => {
-                    if (window.innerHeight < this.height) {
-                        this.$emit('setTab', false);
-                    } else {
-                        this.$emit('setTab', true);
-                    }
-                };
             }
         },
         beforeCreate() {
@@ -181,6 +172,13 @@
             this.getNewCourse();
             this.getBanner();
             this.height = window.innerHeight;
+            window.onresize = () => {
+                if (window.innerHeight < this.height) {
+                    this.$emit('setTab', false);
+                } else {
+                    this.$emit('setTab', true);
+                }
+            };
         }
     }
 </script>

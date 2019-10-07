@@ -16,7 +16,7 @@
                 </div>
             </div>
         </div>
-        <tabbar fixed>
+        <tabbar fixed v-if="tabShow">
             <tabbar-item style="background-color: #1989fa">
                 <span class="bottom-btn-text">提交</span>
             </tabbar-item>
@@ -47,7 +47,8 @@
         data() {
             return {
                 rate: 5,
-
+                tabShow: true,
+                fixedHeight: 0
             }
         },
         computed: {
@@ -62,6 +63,12 @@
         },
         beforeCreate() {
             this.$emit('changeTitle', this.$route.meta.title);
+        },
+        created() {
+            this.fixedHeight = window.innerHeight;
+            window.onresize = () => {
+                this.tabShow = window.innerHeight >= this.fixedHeight;
+            };
         }
     }
 </script>
@@ -85,7 +92,7 @@
 
         .van-rate {
             i {
-                font-size: 25px
+                font-size: 30px
             }
         }
 
