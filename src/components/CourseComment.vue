@@ -29,7 +29,7 @@
                 </div>
                 <div><span>共{{count}}条评价</span></div>
             </div>
-            <van-button type="info" size="small"
+            <van-button type="info" size="small" :disabled="!isApply"
                         :to="{name:'course-comment-commit',params:{id:this.$route.params.id}}">评价课程
             </van-button>
         </div>
@@ -44,7 +44,11 @@
                 <skeleton :loading="loading" title avatar :row="3"></skeleton>
                 <skeleton :loading="loading" title avatar :row="3"></skeleton>
                 <skeleton :loading="loading" title avatar :row="3"></skeleton>
-                <div class="comment-bottom"><span>查看全部</span></div>
+                <div class="comment-bottom">
+                    <router-link tag="span" :to="{name:'course-comment-list',params:{id:this.$route.params.id,rate}}">
+                        查看全部
+                    </router-link>
+                </div>
             </template>
             <template v-else>
                 <div class="no-comment"><span>该课程暂无评价</span></div>
@@ -62,7 +66,8 @@
         name: "CourseComment",
         components: {'van-button': Button, Rate, Skeleton, CommentCard},
         props: {
-            rate: {type: Number, required: true}
+            rate: {type: Number, required: true},
+            isApply: {type: Boolean, required: true}
         },
         data() {
             return {

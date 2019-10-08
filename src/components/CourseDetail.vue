@@ -49,6 +49,9 @@
     export default {
         name: "CourseDetail",
         components: {'van-image': Image},
+        props: {
+            isApply: {type: Boolean, required: true}
+        },
         data() {
             return {
                 loadFinish: false,
@@ -63,26 +66,36 @@
                 getImageUrl
             }
         },
+        methods: {
+            getDetail() {
+                getInfo({courseID: this.$route.params.id}).then(res => {
+                    if (res) {
+                        this.title = res.course.info['courseName'];
+                        this.price = res.course.info['price'];
+                        this.rate = res.course.info['favorableRate'];
+                        this.apply = res.course.info['applyCount'];
+                        this.content = res.course.details['courseSummary'];
+                        this.target = res.course.details['courseTarget'];
+                        this.teacherAvatar = res.course.details['UserInformation'].avatarUrl;
+                        this.teacherName = res.course.details['UserInformation'].nickname;
+                        this.$store.commit('setCourseImage', res.course.info['courseImage']);
+                        this.$emit('setCourse', {
+                            live: res.course.info['courseForm'] === 'L',
+                            text: res.course.info['price'] > 0 ? '立即购买' : '免费报名',
+                            rate: res.course.info['favorableRate']
+                        });
+                        this.loadFinish = true;
+                    }
+                });
+            }
+        },
         created() {
-            getInfo({courseID: this.$route.params.id}).then(res => {
-                if (res) {
-                    this.title = res.course.info['courseName'];
-                    this.price = res.course.info['price'];
-                    this.rate = res.course.info['favorableRate'];
-                    this.apply = res.course.info['applyCount'];
-                    this.content = res.course.details['courseSummary'];
-                    this.target = res.course.details['courseTarget'];
-                    this.teacherAvatar = res.course.details['UserInformation'].avatarUrl;
-                    this.teacherName = res.course.details['UserInformation'].nickname;
-                    this.$store.commit('setCourseImage', res.course.info['courseImage']);
-                    this.$emit('setCourse', {
-                        live: res.course.info['courseForm'] === 'L',
-                        text: res.course.info['price'] > 0 ? '立即购买' : '免费报名',
-                        rate: res.course.info['favorableRate']
-                    });
-                    this.loadFinish = true;
-                }
-            });
+            this.getDetail();
+        },
+        watch:{
+            isApply(value){
+                if(value)this.getDetail();
+            }
         }
     }
 </script>

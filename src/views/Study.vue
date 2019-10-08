@@ -6,16 +6,17 @@
             <icon slot="right" name="star-o"></icon>
         </nav-bar>
         <div class="study-content">
-            <course-video :button-text="bottomText"></course-video>
-            <tabs color="#1989fa" title-active-color="#1989fa" @scroll="scroll" animated swipeable sticky>
+            <course-video></course-video>
+            <tabs v-model="activeTab" color="#1989fa" title-active-color="#1989fa" @scroll="scroll"
+                  animated swipeable sticky>
                 <tab title="详情">
-                    <course-detail @setCourse="setCourse"></course-detail>
+                    <course-detail @setCourse="setCourse" :is-apply="isApply"></course-detail>
                 </tab>
                 <tab title="目录">
                     <course-chapter :live="live" :is-apply="isApply"></course-chapter>
                 </tab>
                 <tab title="评论">
-                    <course-comment :rate="rate"></course-comment>
+                    <course-comment :rate="rate" :is-apply="isApply"></course-comment>
                 </tab>
             </tabs>
             <tabbar fixed>
@@ -33,7 +34,7 @@
     import CourseDetail from '@/components/CourseDetail'
     import CourseChapter from '@/components/CourseChapter'
     import CourseComment from '@/components/CourseComment'
-    import {checkApply} from '@/api/course'
+    import {checkApply, applyFree} from '@/api/course'
 
     export default {
         name: "index",
@@ -49,7 +50,8 @@
                 rate: 0,
                 headerShow: false,
                 isApply: false,
-                isLogin: false
+                isLogin: false,
+                activeTab: 0
             }
         },
         methods: {
@@ -74,8 +76,11 @@
                 });
             },
             async applyCourse() {
-                if (!this.isLogin) {
-                    await this.$router.push({name: 'login-phone', query: {origin: this.$route.path}});
+                if (!this.isLogin) await this.$router.push({name: 'login-phone', query: {origin: this.$route.path}});
+                if (this.isApply) this.activeTab = 1;
+                else if (this.free) {
+                    const res = await applyFree({courseID: this.$route.params.id});
+                    if (res) this.isApply = true;
                 }
             }
         },

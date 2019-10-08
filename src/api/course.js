@@ -9,3 +9,5 @@ export const getVideo = params => get('/course/information/video', params);
 export const checkApply = data => post('/course/information/class', data);
 export const getComment = params => get('/course/information/comment', params);
 export const getCommentCount = params => get('/course/information/comment/count', params);
+export const addComment = data => post('/course/information/comment', data);
+export const applyFree = data => post('/course/information/apply-free', data);

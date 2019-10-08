@@ -148,7 +148,6 @@
                         this.getCourse();
                     }
                 }, 500);
-
             },
             getTreeTitle(sid, tid) {
                 const system = this.items.find(temp => {

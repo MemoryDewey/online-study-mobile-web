@@ -8,16 +8,20 @@
                 <div class="van-cell__value van-cell__value--alone">
                     <div class="van-field__body">
                         <label style="width: 100%">
-                            <textarea rows="8" maxlength="1000" placeholder="课程怎么样？快来说说学习感受吧"
+                            <textarea v-model="comment" rows="8" minlength="15" maxlength="1000"
+                                      placeholder="课程怎么样？快来说说学习感受吧"
                                       class="van-field__control"></textarea>
                         </label>
                     </div>
-                    <div class="van-field__error-message van-field__error-message--right">0 / 1000</div>
+                    <div class="van-field__error-message van-field__error-message--right">
+                        <span :style="{color:getCommentLenColor}">{{comment.length}}</span>
+                        <span style="color: #969799">&nbsp;/ 1000</span>
+                    </div>
                 </div>
             </div>
         </div>
         <tabbar fixed v-if="tabShow">
-            <tabbar-item style="background-color: #1989fa">
+            <tabbar-item style="background-color: #1989fa" @click="commitComment">
                 <span class="bottom-btn-text">提交</span>
             </tabbar-item>
         </tabbar>
@@ -25,7 +29,8 @@
 </template>
 
 <script>
-    import {Rate, Button, Divider, Tabbar, TabbarItem} from 'vant'
+    import {Rate, Button, Divider, Tabbar, TabbarItem, Toast} from 'vant'
+    import {addComment} from '@/api/course'
 
     export default {
         name: "CommitComment",
@@ -48,7 +53,8 @@
             return {
                 rate: 5,
                 tabShow: true,
-                fixedHeight: 0
+                fixedHeight: 0,
+                comment: ''
             }
         },
         computed: {
@@ -59,6 +65,26 @@
                 };
                 if (this.rate < 3) return rateColor.worse;
                 else return rateColor.better;
+            },
+            getCommentLenColor() {
+                return (this.comment.length >= 15 && this.comment.length <= 1000) ? '#969799' : '#ee0a24';
+            }
+        },
+        methods: {
+            async commitComment() {
+                if (this.comment.length < 15 || this.comment.length > 1000) {
+                    Toast.fail('评论长度需在15到1000字');
+                } else {
+                    const res = await addComment({
+                        courseID: this.$route.params.id,
+                        star: this.rate,
+                        comment: this.comment
+                    });
+                    if (res) {
+                        Toast.success(res.msg);
+                        this.$router.go(-1);
+                    }
+                }
             }
         },
         beforeCreate() {
