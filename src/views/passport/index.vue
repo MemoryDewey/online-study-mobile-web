@@ -18,6 +18,7 @@
 
 <script>
     import {NavBar, Row, Col} from 'vant'
+    import {checkLogin} from '@/api/passport'
 
     export default {
         name: "index",
@@ -39,9 +40,10 @@
             }
         },
         beforeRouteEnter(to, from, next) {
-            if (localStorage.getItem('token')) {
-                next('/');
-            } else next();
+            checkLogin().then(res => {
+                if (res.status === 1) next('/');
+                else next();
+            }).catch(() => next());
         }
     }
 </script>

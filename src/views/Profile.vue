@@ -17,8 +17,8 @@
                         </van-col>
                     </van-row>
                 </cell>
-                <cell>
-                    <grid :column-num="3" :border="false">
+                <cell class="header-second">
+                    <grid :column-num="3" :border="false" clickable>
                         <grid-item icon="orders-o" text="课程管理"></grid-item>
                         <grid-item icon="balance-pay" text="我的钱包"></grid-item>
                         <grid-item icon="like-o" text="收藏"></grid-item>
@@ -27,14 +27,14 @@
             </cell-group>
         </section>
         <section>
-            <cell title="最近在学" is-link :border="false"></cell>
-            <row-list :list-data="course" class="nearly-study" v-if="isLogin">
+            <cell title="最近在学" :border="false"></cell>
+            <row-list :list-data="courses" class="nearly-study" v-if="isLogin">
                 <template v-slot:item="{item}">
                     <div class="study-item">
                         <div class="study-image">
-                            <img v-lazy="getImageUrl(item.image)" alt>
+                            <img v-lazy="getImageUrl(item['CourseInformation']['courseImage'])" alt>
                         </div>
-                        <div class="study-content">{{item.title}}</div>
+                        <div class="study-content">{{item['CourseInformation']['courseName']}}</div>
                     </div>
                 </template>
             </row-list>
@@ -65,8 +65,9 @@
 <script>
     import {CellGroup, Icon, Cell, Row, Col, Grid, GridItem} from 'vant'
     import RowList from "@/components/RowList"
-    import {checkLogin, logout} from "@/api/passport"
+    import {checkLogin} from "@/api/passport"
     import {getImageUrl} from '@/utils/image'
+    import {getLatestBrowseCourse} from "@/api/profile"
 
     export default {
         name: "Profile",
@@ -82,25 +83,7 @@
                     nickname: '',
                 },
                 getImageUrl,
-                course: [{
-                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
-                    title: '你最近学了啥课程呀，分享一下下下下下'
-                }, {
-                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
-                    title: '你最近学了啥课程呀，分享一下'
-                }, {
-                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
-                    title: '你最近学了啥课程呀，分享一下'
-                }, {
-                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
-                    title: '你最近学了啥课程呀，分享一下'
-                }, {
-                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
-                    title: '你最近学了啥课程呀，分享一下'
-                }, {
-                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
-                    title: '你最近学了啥课程呀，分享一下'
-                }]
+                courses: []
             }
         },
         beforeCreate() {
@@ -113,11 +96,17 @@
                         this.isLogin = true;
                         this.userInfo = res.data;
                         this.$store.commit('login', res.data);
+                        getLatestBrowseCourse().then(res => {
+                            this.courses = res['course'];
+                        });
                     }
                 });
             } else {
                 this.isLogin = true;
                 this.userInfo = this.$store.state.userInfo;
+                getLatestBrowseCourse().then(res => {
+                    this.courses = res['course'];
+                });
             }
         }
     }
@@ -161,13 +150,14 @@
             }
         }
 
-        #header .van-cell:not(:last-child)::after {
-            left: 0;
-        }
+        #header {
+            .van-cell:not(:last-child)::after {
+                left: 0;
+            }
 
-        .van-grid-item__content {
-            padding-bottom: 0;
-            padding-top: 0;
+            .header-second{
+                padding: 0;
+            }
         }
 
         .info {

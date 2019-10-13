@@ -4,4 +4,4 @@ export const getPersonalInfo = () => get('/profile/personal');
 export const setDefaultAvatar = () => get('/profile/personal/default-avatar');
 export const updatePersonal = data => post('/profile/personal/update', data);
 export const changePhone = data => post('/passport/change-mobile', data);
-
+export const getLatestBrowseCourse = () => get('/course/list/latest-browse');

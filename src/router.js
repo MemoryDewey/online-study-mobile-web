@@ -78,15 +78,11 @@ export default new Router({
         }
         ,
         {
-            path: '/user', name:
-                'user',
-            component:
-                () => import('@/views/user'),
-            redirect:
-                {
-                    name: 'user-information'
-                }
-            ,
+            path: '/user', name: 'user',
+            component: () => import('@/views/user'),
+            redirect: {
+                name: 'user-information'
+            },
             children: [{
                 path: 'information', name: 'user-information',
                 component: () => import('@/views/user/Information'),
