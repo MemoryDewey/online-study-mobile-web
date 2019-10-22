@@ -1,20 +1,47 @@
 <template>
     <div id="user">
+        <nav-bar v-if="navBarShow" left-arrow :title="this.$route.meta.title"
+                 @click-left="routerGo" @click-right="clickRight">
+            <span v-if="navBarRightShow" slot="right">{{navBarRightText}}</span>
+        </nav-bar>
         <div class="user-view">
-            <transition name="van-slide-right">
-                <router-view/>
+            <transition enter-class="van-slide-right" leave-class="van-slide-left">
+                <router-view ref="user-view" @setNavBarShow="setNavBarShow" @setNavBarRight="setNavBarRight"/>
             </transition>
         </div>
     </div>
 </template>
 
 <script>
+    import {NavBar} from 'vant'
 
     export default {
         name: "index",
+        components: {NavBar},
         data() {
             return {
-                title: null,
+                navBarShow: true,
+                navBarRightShow: false,
+                navBarRightText: null,
+                navBarRightFuncName: ''
+            }
+        },
+        methods: {
+            routerGo() {
+                this.$router.go(-1);
+            },
+            setNavBarShow(show) {
+                this.navBarShow = show;
+            },
+            setNavBarRight(val) {
+                this.navBarRightShow = val.show;
+                this.navBarRightText = val.text;
+                this.navBarRightFuncName = val.funcName;
+            },
+            clickRight() {
+                this.$nextTick(() => {
+                    this.$refs['user-view'][this.navBarRightFuncName]();
+                });
             }
         },
         beforeCreate() {
@@ -27,7 +54,8 @@
     #user {
         background-color: #f6f6f6;
         height: 100%;
-        .user-view{
+
+        .user-view {
         }
     }
 </style>

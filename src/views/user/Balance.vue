@@ -1,30 +1,44 @@
 <template>
     <div id="user-balance">
-        <nav-bar left-arrow :title="this.$route.meta.title" @click-left="routerGo">
-            <span slot="right">余额明细</span>
-        </nav-bar>
         <section>
             <span>总余额</span>
             <div class="balance">
-                <icon name="gold-coin" color="#dcbb70"></icon>
-                <a>0.00</a>
+                <svg-icon data="@icon/coin.svg" class="balance-icon" color="#dcbb70"></svg-icon>
+                <a>{{balance}}</a>
             </div>
         </section>
+        <div class="balance-intro">
+            <router-link :to="{name:'user-balance-intro'}" slot="right" tag="span">余额说明</router-link>
+        </div>
     </div>
 </template>
 
 <script>
-    import {NavBar, Icon} from 'vant'
+    import {NavBar} from 'vant'
+    import {getWalletInfo} from "@/api/wallet"
 
     export default {
         name: "Balance",
-        components: {
-            NavBar, Icon
+        components: {NavBar},
+        data() {
+            return {
+                balance: 0
+            }
         },
         methods: {
-            routerGo() {
-                this.$router.replace({name: 'profile'});
-            },
+            gotoBalanceLog() {
+                console.log('gotoLog')
+            }
+        },
+        created() {
+            this.$emit('setNavBarRight', {show: true, text: '余额明细', funcName: 'gotoBalanceLog'});
+            getWalletInfo().then(res => {
+                if (res) this.balance = parseFloat(res['wallet'].balance).toFixed(2);
+            });
+        },
+        beforeRouteLeave(to, from, next) {
+            this.$emit('setNavBarRight', {show: false});
+            next();
         }
     }
 </script>
@@ -45,16 +59,34 @@
             span {
                 font-size: 14px;
                 color: #7d7e80;
+                margin-left: 10px;
             }
 
             .balance {
                 margin-top: 5px;
                 font-size: 40px;
 
-                a, i {
+                a, svg {
                     vertical-align: middle;
-                    padding: 0 5px;
                 }
+            }
+
+            .balance-icon {
+                width: 35px;
+                height: 35px;
+                margin-right: 10px;
+            }
+        }
+
+        .balance-intro {
+            position: absolute;
+            width: 100%;
+            bottom: 30px;
+            text-align: center;
+
+            span {
+                font-size: 14px;
+                color: #1989fa;
             }
         }
     }

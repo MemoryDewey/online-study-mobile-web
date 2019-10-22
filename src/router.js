@@ -107,6 +107,10 @@ export default new Router({
                 path: 'balance', name: 'user-balance',
                 component: () => import('@/views/user/Balance'),
                 meta: {title: '我的余额', requireAuth: true}
+            }, {
+                path: 'balance-intro', name: 'user-balance-intro',
+                component: () => import('@/views/user/BalanceIntro'),
+                meta: {title: '余额说明', requireAuth: true}
             }]
         }
     ]

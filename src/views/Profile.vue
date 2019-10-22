@@ -49,8 +49,8 @@
         <section>
             <cell title="余额" is-link :to="{name:'user-balance'}">
                 <template slot>
-                    <icon name="gold-coin" style="line-height: inherit;vertical-align: middle"/>
-                    <span style="vertical-align: middle;margin-left: 1vw">0.00</span>
+                    <svg-icon data="@icon/coin.svg" class="balance-icon" color="#969799"></svg-icon>
+                    <span style="vertical-align: middle;margin-left: 1vw">{{balance}}</span>
                 </template>
             </cell>
         </section>
@@ -68,6 +68,7 @@
     import {checkLogin} from "@/api/passport"
     import {getImageUrl} from '@/utils/image'
     import {getLatestBrowseCourse} from "@/api/profile"
+    import {getWalletInfo} from "@/api/wallet"
 
     export default {
         name: "Profile",
@@ -83,7 +84,8 @@
                     nickname: '',
                 },
                 getImageUrl,
-                courses: []
+                courses: [],
+                balance: 0
             }
         },
         beforeCreate() {
@@ -99,6 +101,9 @@
                         getLatestBrowseCourse().then(res => {
                             this.courses = res['course'];
                         });
+                        getWalletInfo().then(res => {
+                            if (res) this.balance = parseFloat(res['wallet'].balance).toFixed(2);
+                        });
                     }
                 });
             } else {
@@ -106,6 +111,9 @@
                 this.userInfo = this.$store.state.userInfo;
                 getLatestBrowseCourse().then(res => {
                     this.courses = res['course'];
+                });
+                getWalletInfo().then(res => {
+                    if (res) this.balance = parseFloat(res['wallet'].balance).toFixed(2);
                 });
             }
         }
@@ -155,7 +163,7 @@
                 left: 0;
             }
 
-            .header-second{
+            .header-second {
                 padding: 0;
             }
         }
@@ -202,6 +210,13 @@
                     -webkit-line-clamp: 2;
                 }
             }
+        }
+
+        .balance-icon {
+            width: 18px;
+            height: 18px;
+            line-height: inherit;
+            vertical-align: middle;
         }
     }
 </style>

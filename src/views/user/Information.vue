@@ -1,7 +1,7 @@
 <template>
     <div id="user-info">
         <main v-if="!edit">
-            <nav-bar title="个人资料" left-arrow @click-left="routerGo"></nav-bar>
+            <!--<nav-bar title="个人资料" left-arrow @click-left="routerGo"></nav-bar>-->
             <section>
                 <cell-group>
                     <cell title="头像" is-link class="cell-avatar" @click="avatarDialogShow = true">
@@ -402,6 +402,12 @@
                 process.env.VUE_APP_BASE_API : process.env.VUE_APP_PRODUCTION_API;
             this.userInfo = this.$store.state.userInfo;
             this.getInfo();
+        },
+        watch: {
+            edit(val) {
+                if (val) this.$emit('setNavBarShow', false);
+                else this.$emit('setNavBarShow', true);
+            }
         },
         beforeRouteLeave(to, from, next) {
             if (this.edit) {

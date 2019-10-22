@@ -1,8 +1,5 @@
 <template>
     <div id="user-change-name">
-        <nav-bar left-arrow :title="this.$route.meta.title" @click-left="routerGo" @click-right="saveName">
-            <span slot="right">保存</span>
-        </nav-bar>
         <section>
             <van-input v-model="name" :placeholder="`请输入新${type}`" :border="false"
                        clearable maxlength="15"></van-input>
@@ -28,9 +25,6 @@
             }
         },
         methods: {
-            routerGo() {
-                this.$router.go(-1)
-            },
             async saveName() {
                 let data, change;
                 if (this.$route.name === 'user-change-nickname') {
@@ -49,7 +43,12 @@
             }
         },
         created() {
+            this.$emit('setNavBarRight', {show: true, text: '保存', funcName: 'saveName'});
             this.type = this.$route.name === 'user-change-nickname' ? '昵称' : '姓名';
+        },
+        beforeRouteLeave(to, from, next) {
+            this.$emit('setNavBarRight', {show: false});
+            next();
         }
     }
 </script>

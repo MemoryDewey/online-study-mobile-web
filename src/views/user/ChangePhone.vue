@@ -1,6 +1,5 @@
 <template>
     <div id="user-change-phone">
-        <nav-bar left-arrow :title="this.$route.meta.title" @click-left="routerGo"></nav-bar>
         <section>
             <div class="safety-top">
                 <svg-icon class="safety-icon" data="@icon/safety-setting.svg" color="#1296db"></svg-icon>
@@ -50,13 +49,13 @@
 </template>
 
 <script>
-    import {NavBar, Field, Button, CountDown, Toast} from 'vant'
+    import {Field, Button, CountDown, Toast} from 'vant'
     import {sendMessage} from "@/api/passport";
     import {changePhone} from "@/api/profile";
 
     export default {
         name: "ChangePhone",
-        components: {NavBar, 'van-input': Field, 'van-button': Button, CountDown},
+        components: {'van-input': Field, 'van-button': Button, CountDown},
         data() {
             return {
                 verifyCode: '',
@@ -72,9 +71,6 @@
             }
         },
         methods: {
-            routerGo() {
-                this.$router.go(-1)
-            },
             async sendMsg() {
                 if (this.step === 1) {
                     const regPhone = /^((13[0-9])|(14[5,7])|(15[0-3,5-9])|(17[0,3-8])|(18[0-9])|166|198|199|(147))\d{8}$/;

@@ -1,6 +1,5 @@
 <template>
     <div id="user-bind-email">
-        <nav-bar left-arrow :title="this.$route.meta.title" @click-left="routerGo"></nav-bar>
         <section>
             <van-input v-model="email" placeholder="请输入新绑定邮箱"
                        :error-message="(isEmail(email) || email.length===0)?'':'邮箱格式错误'"
@@ -21,13 +20,13 @@
 </template>
 
 <script>
-    import {NavBar, Field, Button, CountDown, Toast} from 'vant'
+    import {Field, Button, CountDown, Toast} from 'vant'
     import isEmail from 'validator/lib/isEmail'
     import {addEmail, sendEmail} from "@/api/passport"
 
     export default {
         name: "BindEmail",
-        components: {NavBar, 'van-input': Field, 'van-button': Button, CountDown},
+        components: {'van-input': Field, 'van-button': Button, CountDown},
         data() {
             return {
                 email: '',
@@ -37,9 +36,6 @@
             }
         },
         methods: {
-            routerGo() {
-                this.$router.go(-1)
-            },
             async sendEmail() {
                 if (this.canResend) {
                     this.canResend = false;
