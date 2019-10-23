@@ -41,7 +41,7 @@
                 <span>课程详情</span>
             </div>
             <p>{{content}}</p>
-            <img v-if="detailCover" class="detail-image" :src="detailCover" alt>
+            <img v-if="detailCover" class="detail-image" v-lazy="getImageUrl(detailCover)" alt>
         </div>
     </div>
 </template>
