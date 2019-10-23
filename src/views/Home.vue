@@ -4,7 +4,7 @@
             <search v-model="searchValue" placeholder="请输入课程关键词"
                     @search="searchCourse"></search>
         </div>
-        <main>
+        <main v-show="indexShow">
             <div class="banner">
                 <swipe :autoplay="3000">
                     <swipe-item v-for="banner in banners" :key="banner.id">
@@ -27,13 +27,13 @@
             </div>
             <div class="main-item">
                 <van-row>
-                    <van-col span="12" class="head">火热抢购</van-col>
+                    <van-col span="12" class="head">限时抢购</van-col>
                 </van-row>
-                <row-list :list-data="hotCourse">
+                <row-list :list-data="discountCourse">
                     <template v-slot:item="{item}">
-                        <course-card-row :title="item.title" :image="item.image" :tag="item.tag"
+                        <course-card-row :title="item.title" :image="item.image" tag="限时抢购"
                                          :sales="item.sales" :price="item.price" :origin-price="item.originPrice"
-                                         :bottom="item.bottom"></course-card-row>
+                                         bottom="马上抢购"></course-card-row>
                     </template>
                 </row-list>
             </div>
@@ -52,7 +52,8 @@
                                     </div>
                                 </van-col>
                                 <van-col span="21">
-                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach
+                                    <div class="info-title">What's you problem? Hello, thank you, thank you very
+                                        mach
                                     </div>
                                     <div class="info-read">999人已读</div>
                                 </van-col>
@@ -66,7 +67,8 @@
                                     </div>
                                 </van-col>
                                 <van-col span="21">
-                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach
+                                    <div class="info-title">What's you problem? Hello, thank you, thank you very
+                                        mach
                                     </div>
                                     <div class="info-read">999人已读</div>
                                 </van-col>
@@ -80,7 +82,8 @@
                                     </div>
                                 </van-col>
                                 <van-col span="21">
-                                    <div class="info-title">What's you problem? Hello, thank you, thank you very mach
+                                    <div class="info-title">What's you problem? Hello, thank you, thank you very
+                                        mach
                                     </div>
                                     <div class="info-read">999人已读</div>
                                 </van-col>
@@ -96,10 +99,11 @@
 <script>
     import CourseCardRow from "@/components/CourseCardRow"
     import CourseCardCol from "@/components/CourseCardCol"
-    import RowList from "@/components/RowList";
+    import RowList from "@/components/RowList"
     import {NavBar, Swipe, SwipeItem, Search, Row, Col} from 'vant'
     import {getIndexBanner, getIndexCourse} from "@/api/home"
     import {getImageUrl} from '@/utils/image'
+    import {getDiscount} from "@/api/course"
 
     export default {
         name: 'home',
@@ -111,43 +115,11 @@
         },
         data() {
             return {
+                indexShow: false,
                 newCourses: [],
                 banners: [],
                 getImageUrl,
-                hotCourse: [{
-                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
-                    title: '区块链入门课程1',
-                    price: 311,
-                    tag: '限时抢购',
-                    originPrice: 344,
-                    sales: 100,
-                    bottom: '马上抢'
-                }, {
-                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
-                    title: '区块链入门课程2',
-                    price: 311,
-                    tag: '限时抢购',
-                    originPrice: 344,
-                    sales: 100,
-                    bottom: '马上抢'
-                }, {
-                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
-                    title: '区块链入门课程3',
-                    price: 311,
-                    tag: '限时抢购',
-                    originPrice: 344,
-                    sales: 100,
-                    bottom: '马上抢'
-                }, {
-                    image: '/images/course-cover/f812dd0f071a38ecd64d6153167cac0d.jpeg',
-                    title: '区块链入门课程4',
-                    price: 311,
-                    tag: '限时抢购',
-                    originPrice: 344,
-                    sales: 100,
-                    bottom: '马上抢'
-                },
-                ],
+                discountCourse: [],
                 searchValue: null,
                 height: 0
             }
@@ -160,6 +132,23 @@
             async getBanner() {
                 const res = await getIndexBanner();
                 if (res) this.banners = res.banners;
+                this.indexShow = true;
+            },
+            async getDiscountCourse() {
+                const res = await getDiscount();
+                if (res) {
+                    for (let course of res.courses) {
+                        if (new Date(course['discountTime']).getTime() > new Date().getTime()) {
+                            this.discountCourse.push({
+                                title: course['courseName'],
+                                image: course['courseImage'],
+                                sales: course['applyCount'],
+                                originPrice: course['price'],
+                                price: (course['price'] * course['discount'] / 100).toFixed(2)
+                            })
+                        }
+                    }
+                }
             },
             searchCourse(value) {
                 this.$router.push({path: '/course', query: {search: value}});
@@ -168,9 +157,10 @@
         beforeCreate() {
             this.$emit('setTab', true);
         },
-        created() {
-            this.getNewCourse();
+        async created() {
             this.getBanner();
+            this.getNewCourse();
+            this.getDiscountCourse();
             this.height = window.innerHeight;
             window.onresize = () => {
                 if (window.innerHeight < this.height) {

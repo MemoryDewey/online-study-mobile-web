@@ -3,7 +3,7 @@
         <nav-bar class="study-head-transparent" :title="headerShow?'课程详情':''"
                  ref="navBar" fixed :border="false" @click-left="routerGo" :z-index="100">
             <icon slot="left" name="arrow-left"></icon>
-            <icon slot="right" name="star-o"></icon>
+            <icon slot="right" :name="collection?'star':'star-o'" @click="collectCourse"></icon>
         </nav-bar>
         <div class="study-content">
             <course-video></course-video>
@@ -29,12 +29,12 @@
 </template>
 
 <script>
-    import {NavBar, Icon, Tabs, Tab, Tabbar, TabbarItem, Button} from 'vant'
+    import {NavBar, Icon, Tabs, Tab, Tabbar, TabbarItem, Button, Toast} from 'vant'
     import CourseVideo from '@/components/CourseVideo'
     import CourseDetail from '@/components/CourseDetail'
     import CourseChapter from '@/components/CourseChapter'
     import CourseComment from '@/components/CourseComment'
-    import {checkApply, applyFree} from '@/api/course'
+    import {checkApply, applyFree, collectCourse} from '@/api/course'
 
     export default {
         name: "index",
@@ -44,6 +44,7 @@
         },
         data() {
             return {
+                collection: false,
                 live: true,
                 free: true,
                 bottomText: '',
@@ -61,6 +62,7 @@
             setCourse(val) {
                 this.live = val.live;
                 this.rate = val.rate;
+                this.collection = val.collection;
                 if (!this.isApply) this.bottomText = val.text;
                 else this.bottomText = '开始上课';
             },
@@ -81,6 +83,17 @@
                 else if (this.free) {
                     const res = await applyFree({courseID: this.$route.params.id});
                     if (res) this.isApply = true;
+                }
+            },
+            async collectCourse() {
+                const value = this.collection ? 0 : 1;
+                if (!localStorage.getItem('token')) Toast.fail('需要登录才能收藏该课程');
+                else {
+                    const res = await collectCourse({courseID: this.$route.params.id, value});
+                    if (res) {
+                        Toast.success(res.msg);
+                        this.collection = !this.collection;
+                    }
                 }
             }
         },
@@ -112,6 +125,10 @@
 
             .van-icon {
                 color: #fff;
+            }
+
+            .van-icon-star {
+                color: #1989fa;
             }
         }
 

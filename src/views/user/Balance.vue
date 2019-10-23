@@ -79,9 +79,8 @@
         }
 
         .balance-intro {
-            position: absolute;
             width: 100%;
-            bottom: 30px;
+            margin-top: 420px;
             text-align: center;
 
             span {

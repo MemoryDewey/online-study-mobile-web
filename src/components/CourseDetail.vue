@@ -5,24 +5,21 @@
                 <span>{{title}}</span>
             </div>
             <div class="detail-info">
-                <span style="color:#dcbb70;font-size: 15px">{{price===0?'免费':`￥${price}`}}</span>
+                <span v-if="!isDiscount" class="price">{{price===0?'免费':`${price} 课程币`}}</span>
                 <span>{{apply}} 人已报名</span>
                 <span>好评 {{rate*100}}%</span>
             </div>
-        </div>
-        <div class="detail-cell">
-            <div class="detail-title">
-                <svg-icon class="detail-icon" data="@icon/detail.svg" color="#1989fa"></svg-icon>
-                <span>课程详情</span>
+            <div class="detail-discount" v-if="checkDiscountTime(discountTime)">
+                <span class="discount-price">{{discountPrice}}币 <span class="old-price">{{price}}币</span></span>
+                <count-down :time="time">
+                    <template v-slot="timeData">
+                        <span>据结束 {{ timeData.days }}天 </span>
+                        <span class="item">{{ formatDiscountTime(timeData.hours) }}</span>:
+                        <span class="item">{{ formatDiscountTime(timeData.minutes) }}</span>:
+                        <span class="item">{{ formatDiscountTime(timeData.seconds) }}</span>
+                    </template>
+                </count-down>
             </div>
-            <p>{{content}}</p>
-        </div>
-        <div class="detail-cell">
-            <div class="detail-title">
-                <svg-icon class="detail-icon" data="@icon/target.svg" color="#1989fa"></svg-icon>
-                <span>课程目标</span>
-            </div>
-            <p>{{target}}</p>
         </div>
         <div class="detail-cell" style="border: 0">
             <div class="detail-title">
@@ -38,29 +35,46 @@
                 </div>
             </div>
         </div>
+        <div class="detail-cell">
+            <div class="detail-title">
+                <svg-icon class="detail-icon" data="@icon/detail.svg" color="#1989fa"></svg-icon>
+                <span>课程详情</span>
+            </div>
+            <p>{{content}}</p>
+            <img v-if="detailCover" class="detail-image" :src="detailCover" alt>
+        </div>
     </div>
 </template>
 
 <script>
-    import {Image} from 'vant'
+    import {Image, CountDown, Col, Row} from 'vant'
     import {getInfo} from '@/api/course'
     import {getImageUrl} from '@/utils/image'
 
     export default {
         name: "CourseDetail",
-        components: {'van-image': Image},
+        components: {'van-image': Image, CountDown, 'van-col': Col, 'van-row': Row},
         props: {
             isApply: {type: Boolean, required: true}
         },
+        filters: {
+
+        },
         data() {
             return {
+                isCreate: true,
                 loadFinish: false,
                 title: '',
                 apply: 0,
                 price: 0,
                 rate: 0,
                 content: '',
-                target: '',
+                detailCover: '',
+                isDiscount: false,
+                time: 0,
+                discountTime: 0,
+                discount: 100,
+                discountPrice: 0,
                 teacherName: '',
                 teacherAvatar: '',
                 getImageUrl
@@ -70,31 +84,52 @@
             getDetail() {
                 getInfo({courseID: this.$route.params.id}).then(res => {
                     if (res) {
-                        this.title = res.course.info['courseName'];
-                        this.price = res.course.info['price'];
-                        this.rate = res.course.info['favorableRate'];
-                        this.apply = res.course.info['applyCount'];
-                        this.content = res.course.details['courseSummary'];
-                        this.target = res.course.details['courseTarget'];
-                        this.teacherAvatar = res.course.details['UserInformation'].avatarUrl;
-                        this.teacherName = res.course.details['UserInformation'].nickname;
-                        this.$store.commit('setCourseImage', res.course.info['courseImage']);
+                        this.title = res['course'].info['courseName'];
+                        this.price = res['course'].info['price'];
+                        this.rate = res['course'].info['favorableRate'];
+                        this.apply = res['course'].info['applyCount'];
+                        this.content = res['course'].details['detail'];
+                        this.detailCover = res['course'].details['coverUrl'];
+                        this.discountTime = res['course'].info.discountTime;
+                        this.discount = res['course'].info.discount;
+                        this.teacherAvatar = res['course'].details['UserInformation'].avatarUrl;
+                        this.teacherName = res['course'].details['UserInformation'].nickname;
+                        this.$store.commit('setCourseImage', res['course'].info['courseImage']);
                         this.$emit('setCourse', {
-                            live: res.course.info['courseForm'] === 'L',
-                            text: res.course.info['price'] > 0 ? '立即购买' : '免费报名',
-                            rate: res.course.info['favorableRate']
+                            live: res['course'].info['courseForm'] === 'L',
+                            text: res['course'].info['price'] > 0 ? '立即购买' : '免费报名',
+                            rate: res['course'].info['favorableRate'],
+                            collection: res.collection
                         });
                         this.loadFinish = true;
                     }
                 });
+            },
+            checkDiscountTime(time) {
+                if (time === null) {
+                    this.isDiscount = false;
+                    return false;
+                }
+                let subTime = new Date(time).getTime() - new Date().getTime();
+                this.isDiscount = subTime > 0;
+                if (this.isDiscount) {
+                    this.discountPrice = (this.price * this.discount / 100).toFixed(2);
+                    this.time = subTime;
+                }
+                return this.isDiscount;
+            },
+            formatDiscountTime(time) {
+                if (time < 10) return '0' + time.toString();
+                return time;
             }
         },
         created() {
             this.getDetail();
+            this.isCreate = true;
         },
-        watch:{
-            isApply(value){
-                if(value)this.getDetail();
+        watch: {
+            isApply(value) {
+                if (value && !this.isCreate) this.getDetail();
             }
         }
     }
@@ -117,6 +152,55 @@
             span {
                 padding-right: 15px;
             }
+
+            .price {
+                color: #dcbb70;
+                font-size: 15px
+            }
+        }
+
+        .detail-discount {
+            height: 48px;
+            margin-top: 12px;
+            background-color: #ff4343;
+            color: #fff;
+            padding: 0 10px;
+            display: flex;
+            display: -webkit-flex;
+            justify-content: space-between;
+            -webkit-justify-content: space-between;
+            align-items: center;
+            -webkit-align-items: center;
+
+            .van-count-down {
+                color: #fff;
+                font-size: 12px;
+                display: inline-block;
+
+                .item {
+                    display: inline-block;
+                    width: 22px;
+                    margin-right: 5px;
+                    color: #fff;
+                    font-size: 12px;
+                    text-align: center;
+                    background-color: #db2d20;
+                }
+            }
+
+            .discount-price {
+                font-size: 16px;
+                margin-right: 10px;
+            }
+
+            .old-price {
+                font-size: 14px;
+                text-decoration: line-through;
+            }
+        }
+
+        .detail-image {
+            width: 100%;
         }
 
         .detail-icon {

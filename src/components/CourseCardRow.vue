@@ -9,12 +9,15 @@
             </div>
             <div class="card-info">
                 <van-row class="card-price">
-                    <van-col span="12">￥{{price}}</van-col>
-                    <van-col span="12"><span class="card-tag">{{tag}}</span></van-col>
+                    <van-col span="3">
+                        <svg-icon data="@icon/coin.svg" class="card-svg-icon" color="#ee0c24"></svg-icon>
+                    </van-col>
+                    <van-col span="10">{{price}}</van-col>
+                    <van-col span="11"><span class="card-tag">{{tag}}</span></van-col>
                 </van-row>
                 <van-row class="card-origin-price">
-                    <van-col span="12"><span style="text-decoration: line-through">￥{{originPrice}}</span></van-col>
-                    <van-col span="12"><span v-if="sales">{{sales}}人已抢</span></van-col>
+                    <van-col span="13"><span style="text-decoration: line-through">{{originPrice}} 课程币</span></van-col>
+                    <van-col span="11"><span v-if="sales">{{sales}}人已抢</span></van-col>
                 </van-row>
             </div>
             <div class="card-bottom">
@@ -92,12 +95,17 @@
             }
 
             .card-info {
-                font-size: 11px;
+                font-size: 12px;
 
                 &:after {
                     clear: both;
                     content: "";
                     display: table;
+                }
+
+                .card-svg-icon{
+                    width: 12px;
+                    height: 12px;
                 }
 
                 .card-price {

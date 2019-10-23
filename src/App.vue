@@ -32,9 +32,6 @@
         components: {
             Tabbar, TabbarItem
         },
-        created() {
-
-        },
         mounted() {
             document.addEventListener("deviceready", onDeviceReady, false);
             let _this = this;
