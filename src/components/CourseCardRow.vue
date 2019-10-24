@@ -21,7 +21,7 @@
                 </van-row>
             </div>
             <div class="card-bottom">
-                <van-button type="warning" size="small">{{bottom}}</van-button>
+                <van-button type="warning" size="small" @click="routerGo">{{bottom}}</van-button>
             </div>
         </div>
     </div>
@@ -40,7 +40,8 @@
             price: [Number, String],
             originPrice: [Number, String],
             sales: [Number, String],
-            bottom: String
+            bottom: String,
+            id: [Number, String]
         },
         components: {
             'van-button': Button, 'van-row': Row, 'van-col': Col
@@ -48,6 +49,13 @@
         data() {
             return {
                 getImageUrl
+            }
+        },
+        methods: {
+            routerGo() {
+                if (this.id) {
+                    this.$router.push({name: 'course-study', params: {id: this.id.toString()}});
+                }
             }
         }
     }
@@ -103,7 +111,7 @@
                     display: table;
                 }
 
-                .card-svg-icon{
+                .card-svg-icon {
                     width: 12px;
                     height: 12px;
                 }

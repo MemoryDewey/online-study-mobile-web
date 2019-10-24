@@ -31,7 +31,7 @@
                 </van-row>
                 <row-list :list-data="discountCourse">
                     <template v-slot:item="{item}">
-                        <course-card-row :title="item.title" :image="item.image" tag="限时抢购"
+                        <course-card-row :title="item.title" :image="item.image" tag="限时抢购" :id="item.id"
                                          :sales="item.sales" :price="item.price" :origin-price="item.originPrice"
                                          bottom="马上抢购"></course-card-row>
                     </template>
@@ -140,6 +140,7 @@
                     for (let course of res.courses) {
                         if (new Date(course['discountTime']).getTime() > new Date().getTime()) {
                             this.discountCourse.push({
+                                id: course['courseID'],
                                 title: course['courseName'],
                                 image: course['courseImage'],
                                 sales: course['applyCount'],
