@@ -3,7 +3,11 @@
         <van-list v-model="loading" finished-text="没有更多了" :finished="finished"
                   :immediate-check="false" @load="listOnload">
             <cell v-for="(log,index) in logs" :key="index"
-                  :title="log['details']" :label="setStatusText(log['status'])"></cell>
+                  :title="log['details']" :label="setStatusText(log['status'])">
+                <span :style="{color:log['type']==='Income'?'#1989fa':'#323233'}">{{
+                    `${log['type']==='Income'?'+':'-'}${log['amount']}`}}</span>
+                <div>{{log['createdAt']}}</div>
+            </cell>
         </van-list>
     </div>
 </template>
@@ -20,6 +24,7 @@
         data() {
             return {
                 loading: false,
+                page: 1,
                 loadingTimes: 1,
                 finished: false,
                 logs: []
@@ -29,6 +34,7 @@
             async getWalletLog(page) {
                 let res = await getWalletLog({page});
                 if (res) {
+                    this.page = res['pageSum'];
                     this.loading = false;
                     for (let log of res.logs) {
                         this.logs.push(log);
@@ -46,7 +52,7 @@
                     }
                 }, 500);
             },
-            setStatusText(status){
+            setStatusText(status) {
                 switch (status) {
                     case 'Accept':
                         return '交易成功';

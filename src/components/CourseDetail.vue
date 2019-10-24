@@ -57,9 +57,6 @@
         props: {
             isApply: {type: Boolean, required: true}
         },
-        filters: {
-
-        },
         data() {
             return {
                 isCreate: true,
