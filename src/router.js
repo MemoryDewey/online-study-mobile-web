@@ -113,6 +113,10 @@ export default new Router({
                 path: 'balance-log', name: 'user-balance-log',
                 component: () => import('@/views/user/BalanceLog'),
                 meta: {title: '余额明细', requireAuth: true}
+            }, {
+                path: 'collection', name: 'user-collection',
+                component: () => import('@/views/user/Collection'),
+                meta: {title: '收藏', requireAuth: true}
             }]
         }
     ]
