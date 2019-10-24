@@ -27,7 +27,7 @@
         },
         methods: {
             gotoBalanceLog() {
-                console.log('gotoLog')
+                this.$router.push({name: 'user-balance-log'});
             }
         },
         created() {

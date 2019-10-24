@@ -64,8 +64,7 @@ export default new Router({
                 component: () => import('@/views/passport/ResetPassword'),
                 meta: {title: '重置密码'}
             }]
-        }
-        ,
+        },
         {
             path: '/profile', name:
                 'profile',
@@ -75,8 +74,7 @@ export default new Router({
                 {
                     title: '我的'
                 }
-        }
-        ,
+        },
         {
             path: '/user', name: 'user',
             component: () => import('@/views/user'),
@@ -111,6 +109,10 @@ export default new Router({
                 path: 'balance-intro', name: 'user-balance-intro',
                 component: () => import('@/views/user/BalanceIntro'),
                 meta: {title: '余额说明', requireAuth: true}
+            }, {
+                path: 'balance-log', name: 'user-balance-log',
+                component: () => import('@/views/user/BalanceLog'),
+                meta: {title: '余额明细', requireAuth: true}
             }]
         }
     ]
