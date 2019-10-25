@@ -74,5 +74,8 @@
         height: calc(100vh - 46px);
         position: relative;
         overflow: auto;
+        .van-cell{
+            padding: 16px;
+        }
     }
 </style>
