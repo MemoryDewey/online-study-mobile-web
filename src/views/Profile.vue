@@ -30,7 +30,7 @@
             <cell title="最近在学" :border="false"></cell>
             <row-list :list-data="courses" class="nearly-study" v-if="isLogin">
                 <template v-slot:item="{item}">
-                    <div class="study-item">
+                    <div class="study-item" @click="routerGO(item['courseID'])">
                         <div class="study-image">
                             <img v-lazy="getImageUrl(item['CourseInformation']['courseImage'])" alt>
                         </div>
@@ -72,10 +72,7 @@
 
     export default {
         name: "Profile",
-        components: {
-            Cell, Icon, CellGroup, "van-row": Row, "van-col": Col, Grid, GridItem,
-            RowList
-        },
+        components: {Cell, Icon, CellGroup, "van-row": Row, "van-col": Col, Grid, GridItem, RowList},
         data() {
             return {
                 isLogin: false,
@@ -86,6 +83,11 @@
                 getImageUrl,
                 courses: [],
                 balance: 0
+            }
+        },
+        methods: {
+            routerGO(courseID) {
+                this.$router.push({name: 'course-study', params: {id: courseID}})
             }
         },
         beforeCreate() {
@@ -186,7 +188,7 @@
             margin-top: -10px;
 
             .study-item {
-                height: 85px;
+                height: 75px;
                 overflow: hidden;
 
                 .study-image {

@@ -3,7 +3,7 @@
         <nav-bar class="study-head-transparent" :title="headerShow?'课程详情':''"
                  ref="navBar" fixed :border="false" @click-left="routerGo" :z-index="100">
             <icon slot="left" name="arrow-left"></icon>
-            <icon slot="right" :name="collection?'star':'star-o'" @click="collectCourse"></icon>
+            <icon slot="right" :name="collection?'like':'like-o'" @click="collectCourse"></icon>
         </nav-bar>
         <div class="study-content">
             <course-video></course-video>
@@ -127,7 +127,7 @@
                 color: #fff;
             }
 
-            .van-icon-star {
+            .van-icon-like {
                 color: #1989fa;
             }
         }

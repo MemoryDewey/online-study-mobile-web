@@ -1,37 +1,50 @@
 <template>
-    <div class="user-collection">
-        <checkbox-group v-model="result" ref="checkboxGroup">
-            <cell-group>
-                <cell v-for="(item, index) in list" clickable :key="item" @click="toggle(index)">
-                    <checkbox v-if="titleRight==='cancel'" :name="item" ref="checkboxes" slot="icon"/>
-                    <van-row class="collection-cell">
-                        <van-col :span="titleRight==='cancel'?10:9">
-                            <img v-lazy="`/images/course-cover/9bc1873da8cdaab9a72f0d5fc6fb242a.jpg`" alt>
-                        </van-col>
-                        <van-col :span="titleRight==='cancel'?14:15">
-                            <h3 class="course-name">JAVA零基础到架构师全套课程第三模块(核心API)IT全明星IT全明星</h3>
-                            <p class="course-info">
-                                <span class="course-price">311 课程币</span>
-                                <span class="course-apply">500人报名</span>
-                            </p>
-                        </van-col>
-                    </van-row>
-                </cell>
-            </cell-group>
-        </checkbox-group>
-        <div class="grid-fixed">
-            <grid :column-num="2" v-if="titleRight==='cancel'" clickable>
-                <grid-item @click="selectAll">{{isSelectAll?'取消全选':'全选'}}</grid-item>
-                <grid-item :class="{'delete-disable':!getListLength,'delete-active':!!getListLength}">
-                    删除{{getListLength}}
-                </grid-item>
-            </grid>
+    <div v-show="show" class="user-collection" :class="{'user-collection-selected':!titleSet}">
+        <template v-if="list.length>0">
+            <checkbox-group v-model="result" ref="checkboxGroup">
+                <cell-group>
+                    <cell v-for="(item, index) in list" clickable :key="item['courseID']" @click="toggle(index)">
+                        <checkbox v-if="!titleSet" :name="item['courseID']" ref="checkboxes" slot="icon"/>
+                        <van-row class="collection-cell">
+                            <van-col :span="titleSet?9:10">
+                                <img v-lazy="getImageUrl(item['CourseInformation']['courseImage'])" alt>
+                            </van-col>
+                            <van-col :span="titleSet?15:14">
+                                <h3 class="course-name">{{item['CourseInformation']['courseName']}}</h3>
+                                <p class="course-info">
+                                <span class="course-price" :class="{free:item['CourseInformation']['price']===0}">
+                                    {{
+                                    item['CourseInformation']['price']===0?'免费'
+                                    : `${item['CourseInformation']['price']} 课程币`
+                                    }}</span>
+                                    <span class="course-apply">{{item['CourseInformation']['applyCount']}}人报名</span>
+                                </p>
+                            </van-col>
+                        </van-row>
+                    </cell>
+                </cell-group>
+            </checkbox-group>
+            <div class="grid-fixed">
+                <grid :column-num="2" v-if="!titleSet" clickable>
+                    <grid-item @click="selectAll">{{isSelectAll?'取消全选':'全选'}}</grid-item>
+                    <grid-item @click="deleteCollection"
+                               :class="{'delete-disable':!getListLength,'delete-active':!!getListLength}">
+                        删除{{getListLength}}
+                    </grid-item>
+                </grid>
+            </div>
+        </template>
+        <div v-else class="no-collection">
+            <svg-icon class="page-null-icon" data="@icon/page-null.svg" color="#999"></svg-icon>
+            <div class="page-null-text">暂无收藏的课程</div>
         </div>
     </div>
 </template>
 
 <script>
     import {Cell, CellGroup, Grid, GridItem, Checkbox, CheckboxGroup, Row, Col} from 'vant'
+    import {getCollection, deleteCollection} from "@/api/course"
+    import {getImageUrl} from "@/utils/image"
 
     export default {
         name: "Collection",
@@ -40,33 +53,50 @@
         },
         data() {
             return {
-                titleRight: 'set',
+                show: false,
+                titleSet: true,
                 isSelectAll: false,
                 result: [],
                 collectionList: [{}],
-                list: ['a', 'b', 'c', 'd']
+                list: [],
+                getImageUrl
             }
         },
         computed: {
             getListLength() {
-                if (this.result.length === this.list.length) this.isSelectAll = true;
+                this.isSelectAll = this.result.length === this.list.length;
                 return this.result.length > 0 ? `(${this.result.length})` : null;
             }
         },
         methods: {
+            getCollectionCourse() {
+                getCollection().then(res => {
+                    if (res) {
+                        this.list = res.courses;
+                        this.show = true;
+                        if (this.list.length > 0) this.$emit('setNavBarRight', {
+                            show: true,
+                            text: '管理',
+                            funcName: 'titleRightSet'
+                        });
+                    }
+                });
+            },
             titleRightSet() {
-                this.titleRight = 'cancel';
+                this.titleSet = false;
                 this.isSelectAll = false;
                 this.$emit('setNavBarRight', {show: true, text: '取消', funcName: 'titleRightCancel'});
             },
             titleRightCancel() {
-                this.titleRight = 'set';
+                this.titleSet = true;
                 this.isSelectAll = false;
                 this.result = [];
                 this.$emit('setNavBarRight', {show: true, text: '管理', funcName: 'titleRightSet'});
             },
             toggle(index) {
-                this.$refs.checkboxes[index].toggle();
+                if (this.titleSet) {
+                    this.$router.push({name: 'course-study', params: {id: this.list[index]['courseID']}})
+                } else this.$refs.checkboxes[index].toggle();
             },
             selectAll() {
                 this.isSelectAll = !this.isSelectAll;
@@ -75,16 +105,38 @@
                 } else {
                     this.$refs.checkboxGroup.toggleAll();
                 }
+            },
+            deleteCollection() {
+                let data;
+                if (this.result.length === this.list.length) data = {list: 'all'};
+                else data = {list: this.result};
+                this.result = [];
+                deleteCollection(data).then(async res => {
+                    if (res) {
+                        res = await getCollection();
+                        if (res) {
+                            this.list = res.courses;
+                            if (this.list.length === 0) {
+                                this.titleSet = true;
+                                this.$emit('setNavBarRight', {show: false});
+                            }
+                        }
+                    }
+                })
             }
         },
         created() {
-            this.$emit('setNavBarRight', {show: true, text: '管理', funcName: 'titleRightSet'});
+            this.getCollectionCourse();
         }
     }
 </script>
 
 <style lang="less">
     .user-collection {
+        height: calc(100vh - 46px);
+        position: relative;
+        overflow: auto;
+
         .collection-cell {
             .van-col {
                 height: 68px;
@@ -96,6 +148,7 @@
             }
 
             .course-name {
+                min-height: 40px;
                 font-size: 16px;
                 font-weight: 400;
                 line-height: 20px;
@@ -122,7 +175,11 @@
                 color: #ee0a24;
             }
 
-            .course-apply{
+            .free {
+                color: #42c02e;
+            }
+
+            .course-apply {
                 font-size: 12px;
                 margin-left: 10px;
                 color: #999;
@@ -138,6 +195,7 @@
             bottom: 0;
             left: 0;
             width: 100vw;
+            height: 52px;
 
             .van-grid-item__content {
                 font-size: 16px;
@@ -158,5 +216,31 @@
                 }
             }
         }
+
+        .no-collection {
+            margin-top: 10px;
+            display: flex;
+            display: -webkit-flex;
+            justify-content: center;
+            -webkit-justify-content: center;
+            align-items: center;
+            -webkit-align-items: center;
+            flex-direction: column;
+
+            .page-null-icon {
+                width: 100px;
+                height: 100px;
+            }
+
+            .page-null-text {
+                color: #999;
+                margin-top: 10px;
+                font-size: 18px;
+            }
+        }
+    }
+
+    .user-collection-selected {
+        height: calc(100vh - 98px);
     }
 </style>
