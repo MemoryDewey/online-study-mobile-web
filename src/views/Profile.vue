@@ -20,7 +20,7 @@
                 <cell class="header-second">
                     <grid :column-num="3" :border="false" clickable>
                         <grid-item icon="orders-o" text="课程管理"></grid-item>
-                        <grid-item icon="balance-pay" text="我的钱包"></grid-item>
+                        <grid-item icon="balance-pay" text="我的钱包" :to="{name:'wallet-info'}"></grid-item>
                         <grid-item icon="like-o" text="收藏" :to="{name:'user-collection'}"></grid-item>
                     </grid>
                 </cell>

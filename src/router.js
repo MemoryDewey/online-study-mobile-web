@@ -38,15 +38,9 @@ export default new Router({
             }]
         },
         {
-            path: '/passport', name:
-                'passport',
-            component:
-                () => import('@/views/passport'),
-            redirect:
-                {
-                    name: 'login-account'
-                }
-            ,
+            path: '/passport', name: 'passport',
+            component: () => import('@/views/passport'),
+            redirect: {name: 'login-account'},
             children: [{
                 path: 'login-account', name: 'login-account',
                 component: () => import('@/views/passport/LoginAccount'),
@@ -66,21 +60,14 @@ export default new Router({
             }]
         },
         {
-            path: '/profile', name:
-                'profile',
-            component:
-                () => import('@/views/Profile'),
-            meta:
-                {
-                    title: '我的'
-                }
+            path: '/profile', name: 'profile',
+            component: () => import('@/views/Profile'),
+            meta: {title: '我的'}
         },
         {
             path: '/user', name: 'user',
             component: () => import('@/views/user'),
-            redirect: {
-                name: 'user-information'
-            },
+            redirect: {name: 'user-information'},
             children: [{
                 path: 'information', name: 'user-information',
                 component: () => import('@/views/user/Information'),
@@ -117,6 +104,16 @@ export default new Router({
                 path: 'collection', name: 'user-collection',
                 component: () => import('@/views/user/Collection'),
                 meta: {title: '收藏', requireAuth: true}
+            }]
+        },
+        {
+            path: '/wallet', name: 'wallet',
+            component: () => import('@/views/wallet'),
+            redirect: {name: 'wallet-info'},
+            children: [{
+                path: 'info', name: 'wallet-info',
+                component: () => import('@/views/wallet/WalletInfo'),
+                meta: {title: '我的钱包', requireAuth: true}
             }]
         }
     ]
