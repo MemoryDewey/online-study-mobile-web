@@ -4,9 +4,10 @@ import router from './router'
 import store from './store'
 import './utils/flexible'
 import VueLazyLoad from "vue-lazyload"
-import VueSvgIconPlugin from "vue-svgicon";
+import VueClipboard from "vue-clipboard2"
+import VueSvgIconPlugin from "vue-svgicon"
+import {VueHammer} from "vue2-hammer"
 import {checkLogin} from './api/passport'
-import {doubletap} from "./utils/vue-touch";
 
 Vue.config.productionTip = false;
 Vue.use(VueLazyLoad, {
@@ -14,6 +15,12 @@ Vue.use(VueLazyLoad, {
     error: require('./assets/image/load-error.jpg'),
     attempt: 1
 });
+VueClipboard.config.autoSetContainer = true;
+Vue.use(VueClipboard);
+VueHammer.config.press = {
+    time: 500
+};
+Vue.use(VueHammer);
 Vue.use(VueSvgIconPlugin, {tagName: "svg-icon"});
 router.beforeEach((to, from, next) => {
     if (to.meta.title) document.title = `区块链在线学习平台 - ${to.meta.title}`;

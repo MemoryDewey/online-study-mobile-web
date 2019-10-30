@@ -1,5 +1,5 @@
 <template>
-    <div id="vue-player" v-doubletap="playOrPause">
+    <div id="vue-player">
         <video ref="player" playsinline controls></video>
     </div>
 </template>
