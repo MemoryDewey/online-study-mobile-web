@@ -28,7 +28,7 @@
         <van-dialog v-model="walletInfoShow" class="wallet-info-dialog" show-cancel-button
                     cancel-button-text="解绑" @cancel="unbindBstAddress">
             <div class="wallet-info-title" slot="title">
-                <img class="avatar" :src="avatarUrl" alt>
+                <img class="avatar" :src="getImageUrl(avatarUrl)" alt>
                 <div class="info van-ellipsis">{{nickname}}</div>
             </div>
             <img class="qr-code-image" :src="qrCodeUrl" alt>
@@ -49,6 +49,7 @@
     import {Cell, CellGroup, Button, Field, Toast, Dialog} from 'vant'
     import {getBstBalance, getWalletInfo} from "@/api/wallet"
     import {deleteBstWalletAddress, getPersonalInfo, setBstWalletAddress} from "@/api/profile"
+    import {getImageUrl} from '@/utils/image'
     import QRCode from 'qrcode'
     import NodeRSA from 'node-rsa'
 
@@ -69,7 +70,8 @@
                 avatarUrl: null,
                 qrCodeUrl: null,
                 bindDialogShow: false,
-                bindAddress: null
+                bindAddress: null,
+                getImageUrl
             }
         },
         methods: {
