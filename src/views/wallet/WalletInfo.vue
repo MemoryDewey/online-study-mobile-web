@@ -17,7 +17,7 @@
         <cell-group>
             <template v-if="bstAddress">
                 <cell title="钱包账号" icon="paid" @click="openWalletInfoDialog" is-link/>
-                <cell title="更换账号" icon="exchange" is-link></cell>
+                <cell title="更换账号" icon="exchange" @click="bindDialogShow=true" is-link></cell>
             </template>
             <cell v-else title="添加账号" icon="add-o" @click="bindDialogShow=true" is-link></cell>
             <cell title="交易记录" icon="orders-o" is-link :to="{name:'user-balance-log'}"></cell>
@@ -36,9 +36,11 @@
                 {{bstAddress}}
             </button>
         </van-dialog>
-        <van-dialog v-model="bindDialogShow" title="添加 / 更新 BST 钱包账号" show-cancel-button>
-            <van-input v-model="bindAddress"
-                       clearable placeholder="请输入钱包私钥"></van-input>
+        <van-dialog v-model="bindDialogShow" title="请输入 BST 钱包密钥" class="wallet-change-dialog"
+                    @confirm="setBstAddress" show-cancel-button>
+            <div class="dialog-hint">只有绑定钱包后才能进行购买课程操作</div>
+            <van-input v-model="bindAddress" clearable
+                       placeholder="每个用户只能绑定一个钱包哦"></van-input>
         </van-dialog>
     </div>
 </template>
@@ -46,8 +48,9 @@
 <script>
     import {Cell, CellGroup, Button, Field, Toast, Dialog} from 'vant'
     import {getBstBalance, getWalletInfo} from "@/api/wallet"
-    import {deleteBstWalletAddress, getPersonalInfo} from "@/api/profile"
+    import {deleteBstWalletAddress, getPersonalInfo, setBstWalletAddress} from "@/api/profile"
     import QRCode from 'qrcode'
+    import NodeRSA from 'node-rsa'
 
     export default {
         name: "WalletInfo",
@@ -98,6 +101,20 @@
                     this.walletInfoShow = false;
                     await this.getPersonal();
                     await this.getBstBalance();
+                }
+            },
+            async setBstAddress() {
+                if (!this.bindAddress) Toast.fail('请输入内容');
+                else{
+                    const rsa = new NodeRSA();
+                    rsa.importKey(this.key, 'pkcs8-public');
+                    let res = await setBstWalletAddress({address: rsa.encrypt(this.bindAddress, 'base64', 'utf8')});
+                    if (res) {
+                        Toast.success(res.msg);
+                        this.bindAddress = null;
+                        await this.getPersonal();
+                        await this.getBstBalance();
+                    }
                 }
             },
             openWalletInfoDialog() {
@@ -181,7 +198,7 @@
             height: 21px;
         }
 
-        .van-cell-group{
+        .van-cell-group {
             .van-cell {
                 padding: 16px;
                 font-size: 18px;
@@ -243,6 +260,25 @@
                     background-color: #fff;
                     border: 0;
                 }
+            }
+        }
+
+        .wallet-change-dialog {
+            text-align: center;
+
+            .van-dialog__content {
+                padding: 0 15px;
+            }
+
+            .van-field {
+                background-color: #f6f6f6;
+                margin-bottom: 20px;
+            }
+
+            .dialog-hint {
+                margin: 10px 0;
+                font-size: 13px;
+                color: #969799;
             }
         }
     }

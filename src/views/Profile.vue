@@ -185,7 +185,7 @@
         .nearly-study {
             background-color: #fff;
             padding: 0 16px;
-            margin-top: -10px;
+            margin-top: -5px;
 
             .study-item {
                 height: 75px;
