@@ -18,7 +18,7 @@ Vue.use(VueLazyLoad, {
 VueClipboard.config.autoSetContainer = true;
 Vue.use(VueClipboard);
 VueHammer.config.press = {
-    time: 500
+    time: 400
 };
 Vue.use(VueHammer);
 Vue.use(VueSvgIconPlugin, {tagName: "svg-icon"});

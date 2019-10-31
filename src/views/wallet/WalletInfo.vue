@@ -21,7 +21,7 @@
             </template>
             <cell v-else title="添加账号" icon="add-o" @click="bindDialogShow=true" is-link></cell>
             <cell title="交易记录" icon="orders-o" is-link :to="{name:'user-balance-log'}"></cell>
-            <cell title="BST账单" is-link>
+            <cell title="BST账单" :to="{name:'wallet-bst-log'}" is-link>
                 <svg-icon data="@icon/bst-orders.svg" slot="icon"></svg-icon>
             </cell>
         </cell-group>
@@ -32,9 +32,9 @@
                 <div class="info van-ellipsis">{{nickname}}</div>
             </div>
             <img class="qr-code-image" :src="qrCodeUrl" alt>
-            <button class="bst-address van-ellipsis" v-clipboard:success="copyBstAddress" v-clipboard:copy="bstAddress">
+            <div class="bst-address van-ellipsis" v-hammer:press="copyBstAddress">
                 {{bstAddress}}
-            </button>
+            </div>
         </van-dialog>
         <van-dialog v-model="bindDialogShow" title="请输入 BST 钱包密钥" class="wallet-change-dialog"
                     @confirm="setBstAddress" show-cancel-button>
@@ -133,10 +133,15 @@
                 }
             },
             copyBstAddress() {
-                Toast.success('已复制钱包地址');
+                this.$copyText(this.bstAddress).then(() => {
+                    Toast.success('已复制钱包地址');
+                }).catch((err) => {
+                    console.log("err:" + err);
+                    Toast.fail('您的设备暂不支持复制功能');
+                })
             },
-            toRecharge(){
-                this.$router.push({name:'wallet-recharge'})
+            toRecharge() {
+                this.$router.push({name: 'wallet-recharge'})
             }
         },
         async created() {

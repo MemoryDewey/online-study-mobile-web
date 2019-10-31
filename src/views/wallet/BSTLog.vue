@@ -1,11 +1,12 @@
 <template>
-    <div class="user-balance-log">
+    <div class="wallet-bst-log">
         <van-list v-model="loading" finished-text="没有更多了" :finished="finished"
                   :immediate-check="false" @load="listOnload">
-            <cell v-for="(log,index) in logs" :key="index"
-                  :title="log['details']" :label="setStatusText(log['status'])">
-                <span :style="{color:log['type']==='Income'?'#1989fa':'#323233'}">{{
-                    `${log['type']==='Income'?'+':'-'}${log['amount']}`}}</span>
+            <cell v-for="(log,index) in logs" :key="index" clickable @click="copyTxHash(log['txHash'])"
+                  :title="setProductTypeText(log['productType'])">
+                <div slot="label" class="tx-hash van-ellipsis">{{log['txHash']}}</div>
+                <span :style="{color:log['productType']==='Expend'?'#1989fa':'#323233'}">{{
+                    `${log['productType']==='Expend'?'+':'-'}${log['amount']}`}} BST</span>
                 <div>{{log['createdAt']}}</div>
             </cell>
         </van-list>
@@ -14,12 +15,12 @@
 
 <script>
     import {List, Cell, Toast} from 'vant'
-    import {getWalletLog} from "@/api/wallet"
+    import {getBstWalletLog} from "@/api/wallet"
 
     export default {
-        name: "BalanceLog",
+        name: "BSTLog",
         components: {
-            'van-list': List, Cell
+            Cell, 'van-list': List
         },
         data() {
             return {
@@ -32,7 +33,7 @@
         },
         methods: {
             async getWalletLog(page) {
-                let res = await getWalletLog({page});
+                let res = await getBstWalletLog({page});
                 if (res) {
                     this.page = res['pageSum'];
                     this.loading = false;
@@ -53,15 +54,22 @@
                     }
                 }, 500);
             },
-            setStatusText(status) {
-                switch (status) {
-                    case 'Accept':
-                        return '交易成功';
-                    case 'Reject':
-                        return '交易失败';
-                    case 'Pending':
-                        return '交易中..';
+            setProductTypeText(productType) {
+                switch (productType) {
+                    case 'Course':
+                        return '购买课程';
+                    case 'Expend':
+                        return '课程币兑换';
+                    case 'Recharge':
+                        return '课程币充值';
                 }
+            },
+            copyTxHash(txHash) {
+                this.$copyText(txHash).then(() => {
+                    Toast.success('已成功复制区块信息');
+                }).catch(() => {
+                    Toast.fail('您的设备暂不支持复制功能');
+                })
             }
         },
         created() {
@@ -76,10 +84,14 @@
 </script>
 
 <style lang="less">
-    .user-balance-log {
+    .wallet-bst-log {
         height: calc(100vh - 46px);
         position: relative;
         overflow: auto;
+
+        .tx-hash {
+            width: 164px;
+        }
 
         .van-cell {
             padding: 16px;

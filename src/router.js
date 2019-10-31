@@ -118,6 +118,10 @@ export default new Router({
                 path: 'recharge', name: 'wallet-recharge',
                 component: () => import('@/views/wallet/Recharge'),
                 meta: {title: '课程币充值', requireAuth: true}
+            }, {
+                path: 'bst-log', name: 'wallet-bst-log',
+                component: () => import('@/views/wallet/BSTLog'),
+                meta: {title: 'BST账单', requireAuth: true}
             }]
         }
     ]

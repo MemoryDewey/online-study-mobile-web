@@ -2,6 +2,9 @@
     <div class="course-card-col" @click="routerGo">
         <div class="card-left">
             <div class="card-image">
+                <div v-if="discount" class="course-tag">
+                    <van-tag type="danger" size="medium" mark>限时</van-tag>
+                </div>
                 <img v-lazy="getImageUrl(image)" alt>
             </div>
         </div>
@@ -23,6 +26,7 @@
 
 <script>
     import {getImageUrl} from "@/utils/image"
+    import {Tag} from 'vant'
 
     export default {
         name: "CourseCardCol",
@@ -30,11 +34,13 @@
             image: String,
             title: String,
             desc: String,
+            discount: Boolean,
             sales: [Number, String],
             rate: [Number, String],
             price: [Number, String],
             id: [Number, String]
         },
+        components: {'van-tag': Tag},
         data() {
             return {
                 getImageUrl
@@ -81,6 +87,12 @@
                     object-fit: contain;
                     border-radius: 3px;
                 }
+            }
+
+            .course-tag {
+                position: absolute;
+                left: 0;
+                top: 0;
             }
         }
 

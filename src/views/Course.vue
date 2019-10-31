@@ -29,7 +29,7 @@
                                     <course-card-col :title="course['courseName']" :id="course['courseID']"
                                                      :desc="course['courseDescription']" :price="course['price']"
                                                      :rate="course['favorableRate']" :sales="course['applyCount']"
-                                                     :image="course['courseImage']">
+                                                     :image="course['courseImage']" :discount="!!course['discount']">
                                     </course-card-col>
                                 </li>
                             </ul>
