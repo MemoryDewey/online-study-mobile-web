@@ -5,7 +5,7 @@
                 <svg-icon data="@icon/coin.svg" class="coin-svg" color="#fff"></svg-icon>
                 <span class="wallet-balance-info">课程币</span>
                 <span class="wallet-balance-info balance">{{balance}}</span>
-                <span class="balance-btn">充值</span>
+                <span class="balance-btn" @click="toRecharge">充值</span>
             </div>
             <div class="wallet-balance bst">
                 <svg-icon data="@icon/bst-coin.svg" class="coin-svg" color="#fff"></svg-icon>
@@ -47,7 +47,7 @@
 
 <script>
     import {Cell, CellGroup, Button, Field, Toast, Dialog} from 'vant'
-    import {getBstBalance, getWalletInfo} from "@/api/wallet"
+    import {getBstBalance, getKey, getWalletInfo, refreshRecharge} from "@/api/wallet"
     import {deleteBstWalletAddress, getPersonalInfo, setBstWalletAddress} from "@/api/profile"
     import {getImageUrl} from '@/utils/image'
     import QRCode from 'qrcode'
@@ -92,6 +92,7 @@
                     forbidClick: true,
                     loadingType: 'spinner'
                 });
+                await refreshRecharge();
                 let res = await getBstBalance({refresh});
                 this.bstBalance = res.balance;
                 Toast.clear();
@@ -107,10 +108,11 @@
             },
             async setBstAddress() {
                 if (!this.bindAddress) Toast.fail('请输入内容');
-                else{
+                else {
+                    let res = await getKey();
                     const rsa = new NodeRSA();
-                    rsa.importKey(this.key, 'pkcs8-public');
-                    let res = await setBstWalletAddress({address: rsa.encrypt(this.bindAddress, 'base64', 'utf8')});
+                    rsa.importKey(res.key, 'pkcs8-public');
+                    res = await setBstWalletAddress({address: rsa.encrypt(this.bindAddress, 'base64', 'utf8')});
                     if (res) {
                         Toast.success(res.msg);
                         this.bindAddress = null;
@@ -132,6 +134,9 @@
             },
             copyBstAddress() {
                 Toast.success('已复制钱包地址');
+            },
+            toRecharge(){
+                this.$router.push({name:'wallet-recharge'})
             }
         },
         async created() {

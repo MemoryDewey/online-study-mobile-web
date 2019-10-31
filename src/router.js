@@ -114,6 +114,10 @@ export default new Router({
                 path: 'info', name: 'wallet-info',
                 component: () => import('@/views/wallet/WalletInfo'),
                 meta: {title: '我的钱包', requireAuth: true}
+            }, {
+                path: 'recharge', name: 'wallet-recharge',
+                component: () => import('@/views/wallet/Recharge'),
+                meta: {title: '课程币充值', requireAuth: true}
             }]
         }
     ]

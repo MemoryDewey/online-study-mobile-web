@@ -5,8 +5,6 @@
             <span v-if="navBarRightShow" slot="right">{{navBarRightText}}</span>
         </nav-bar>
         <div class="user-view">
-            <!--name="van-slide-left"-->
-            <!--enter-active-class="animated slideInLeft faster" leave-active-class="animated slideInLeft faster"-->
             <transition enter-active-class="animated slideInLeft faster">
                 <router-view ref="user-view" @setNavBarShow="setNavBarShow" @setNavBarRight="setNavBarRight"/>
             </transition>

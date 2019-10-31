@@ -40,6 +40,7 @@
         display: -webkit-flex;
         padding: 8px 16px;
         border-bottom: 1px solid #ebedf0;
+        height: 110px;
 
 
         img {
