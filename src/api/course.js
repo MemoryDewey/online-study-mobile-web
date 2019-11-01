@@ -16,3 +16,7 @@ export const addComment = data => post('/course/information/comment', data);
 export const applyFree = data => post('/course/information/apply-free', data);
 export const collectCourse = params => get('/course/information/collect-course', params);
 export const deleteCollection = data => post('/course/information/collection/delete', data);
+export const checkBstConfirmation = params => get('/course/information/check-bst-confirmation', params);
+export const applyCourseByBalance = data => post('/course/information/buy-course', data);
+export const applyChargeByBst = data => post('/course/information/buy-course-bst', data);
+export const checkBstStatue = params => get('/course/information/buy-course-bst/statue', params);

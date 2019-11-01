@@ -1,6 +1,6 @@
 <template>
-    <div class="user-balance-log">
-        <van-list v-model="loading" finished-text="没有更多了" :finished="finished"
+    <div class="user-balance-log" v-show="show">
+        <van-list v-if="logs.length>0" v-model="loading" finished-text="没有更多了" :finished="finished"
                   :immediate-check="false" @load="listOnload">
             <cell v-for="(log,index) in logs" :key="index"
                   :title="log['details']" :label="setStatusText(log['status'])">
@@ -9,6 +9,10 @@
                 <div>{{log['createdAt']}}</div>
             </cell>
         </van-list>
+        <div v-else class="list-no-data">
+            <svg-icon class="no-data-icon" data="@icon/page-null.svg" color="#999"></svg-icon>
+            <div class="no-data-text">无交易记录</div>
+        </div>
     </div>
 </template>
 
@@ -23,6 +27,7 @@
         },
         data() {
             return {
+                show: false,
                 loading: false,
                 page: 1,
                 loadingTimes: 1,
@@ -49,6 +54,7 @@
                         this.finished = true;
                     } else {
                         await this.getWalletLog(this.loadingTimes);
+                        this.show = true;
                         Toast.clear();
                     }
                 }, 500);

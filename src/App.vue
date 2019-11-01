@@ -55,5 +55,27 @@
         width: 100vw;
         height: 100vh;
         position: fixed;
+
+        .list-no-data {
+            margin-top: 10px;
+            display: flex;
+            display: -webkit-flex;
+            justify-content: center;
+            -webkit-justify-content: center;
+            align-items: center;
+            -webkit-align-items: center;
+            flex-direction: column;
+
+            .no-data-icon {
+                width: 100px;
+                height: 100px;
+            }
+
+            .no-data-text {
+                color: #999;
+                margin-top: 10px;
+                font-size: 18px;
+            }
+        }
     }
 </style>

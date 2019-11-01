@@ -19,28 +19,45 @@
                     <course-comment :rate="rate" :is-apply="isApply"></course-comment>
                 </tab>
             </tabs>
-            <tabbar fixed>
-                <tabbar-item style="background-color: #1989fa" @click="applyCourse">
-                    <span class="bottom-btn-text">{{bottomText}}</span>
-                </tabbar-item>
-            </tabbar>
+            <div class="apply-btn">
+                <van-button v-if="bstConfirmBtnShow" type="info" size="large" disabled
+                            loading loading-text="账单确认中..."></van-button>
+                <van-button v-else type="info" size="large" @click="applyCourse">{{bottomText}}</van-button>
+            </div>
+            <action-sheet v-model="buySheetShow" description="请选择支付方式" class="buy-sheet">
+                <ul class="pay-type">
+                    <li class="pay-type-item" @click="applyByBalance">
+                        <svg-icon data="@icon/course-coin-square.svg" color="#1296db"></svg-icon>
+                        <span>课程币</span>
+                    </li>
+                    <li class="pay-type-item" @click="applyByBst">
+                        <svg-icon data="@icon/bst-coin-square.svg" color="#1afa29"></svg-icon>
+                        <span>B S T</span>
+                    </li>
+                </ul>
+                <div class="cancel-btn" @click="buySheetShow=false">取消</div>
+            </action-sheet>
         </div>
     </div>
 </template>
 
 <script>
-    import {NavBar, Icon, Tabs, Tab, Tabbar, TabbarItem, Button, Toast} from 'vant'
+    import {NavBar, Icon, Tabs, Tab, Button, ActionSheet, Toast} from 'vant'
     import CourseVideo from '@/components/CourseVideo'
     import CourseDetail from '@/components/CourseDetail'
     import CourseChapter from '@/components/CourseChapter'
     import CourseComment from '@/components/CourseComment'
-    import {checkApply, applyFree, collectCourse} from '@/api/course'
+    import {
+        checkApply, applyFree, collectCourse, applyCourseByBalance,
+        checkBstStatue, applyChargeByBst, checkBstConfirmation
+    } from '@/api/course'
+    import socketClient from 'socket.io-client'
 
     export default {
         name: "index",
         components: {
             CourseChapter, CourseDetail, CourseVideo, CourseComment,
-            Icon, NavBar, Tabs, Tab, Tabbar, TabbarItem, 'van-button': Button,
+            Icon, NavBar, Tabs, Tab, 'van-button': Button, ActionSheet,
         },
         data() {
             return {
@@ -52,7 +69,9 @@
                 headerShow: false,
                 isApply: false,
                 isLogin: false,
-                activeTab: 0
+                activeTab: 0,
+                bstConfirmBtnShow: false,
+                buySheetShow: false
             }
         },
         methods: {
@@ -63,6 +82,7 @@
                 this.live = val.live;
                 this.rate = val.rate;
                 this.collection = val.collection;
+                this.free = val.price === 0;
                 if (!this.isApply) this.bottomText = val.text;
                 else this.bottomText = '开始上课';
             },
@@ -82,7 +102,57 @@
                 if (this.isApply) this.activeTab = 1;
                 else if (this.free) {
                     const res = await applyFree({courseID: this.$route.params.id});
-                    if (res) this.isApply = true;
+                    if (res) {
+                        this.isApply = true;
+                        this.bottomText = '开始上课'
+                    }
+                } else {
+                    this.buySheetShow = true;
+                }
+            },
+            async applyByBalance() {
+                Toast.loading({
+                    message: '支付中，请稍等...',
+                    forbidClick: true,
+                    loadingType: 'spinner'
+                });
+                const res = await applyCourseByBalance({courseID: this.$route.params.id});
+                if (res) {
+                    Toast.clear();
+                    Toast.success(res.msg);
+                    this.isApply = true;
+                    this.buySheetShow = false;
+                    this.bottomText = '开始上课'
+                }
+            },
+            async applyByBst() {
+                let res = await checkBstStatue({courseID: this.$route.params.id});
+                if (res) {
+                    Toast.loading({
+                        message: '支付中，请稍等...',
+                        forbidClick: true,
+                        loadingType: 'spinner',
+                        duration: 10000
+                    });
+                    await applyChargeByBst({courseID: this.$route.params.id});
+                    const socketUrl = process.env.NODE_ENV === 'production' ?
+                        process.env.VUE_APP_WEBSOCKET_URL : location.host;
+                    const socket = socketClient.connect(socketUrl);
+                    socket.emit('buyCourseByBst');
+                    socket.on('message', data => {
+                        Toast.clear();
+                        if (data.status === 1) {
+                            Toast.success(data.msg);
+                            this.buySheetShow = false;
+                            this.bstConfirmBtnShow = true;
+                        } else Toast.fail('交易失败，请检查钱包ETH余额');
+                    });
+                    socket.on('buyCourseSuccess', data => {
+                        Toast.success(data.msg);
+                        this.isApply = true;
+                        this.bstConfirmBtnShow = false;
+                        this.bottomText = '开始上课'
+                    });
                 }
             },
             async collectCourse() {
@@ -101,9 +171,13 @@
             this.$emit('setTab', false);
         },
         created() {
-            checkApply({courseID: this.$route.params.id}).then(res => {
+            checkApply({courseID: this.$route.params.id}).then(async res => {
                 this.isApply = res.status === 1;
                 this.isLogin = res.status !== 401;
+                if (res.status === -1) {
+                    res = await checkBstConfirmation({courseID: this.$route.params.id});
+                    this.bstConfirmBtnShow = res.status === 3;
+                }
             });
         },
         beforeRouteLeave(to, from, next) {
@@ -150,9 +224,67 @@
             top: 45px;
         }
 
+        .apply-btn {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+            width: 100%;
+            height: 50px;
+        }
+
         .bottom-btn-text {
             font-size: 16px;
             color: #fff;
+        }
+
+        .buy-sheet {
+            .van-action-sheet__content {
+                padding: 0 30px;
+            }
+
+            .van-action-sheet__description {
+                color: #323233;
+                font-size: 16px;
+            }
+
+            .pay-type {
+                list-style: none;
+
+                svg {
+                    width: 24px;
+                    height: 24px;
+                }
+
+                span {
+                    margin-left: 10px;
+                    font-size: 18px;
+                }
+
+                .pay-type-item {
+                    margin-top: 20px;
+                    list-style: none;
+                    display: flex;
+                    display: -webkit-flex;
+                    align-items: center;
+                    -webkit-align-items: center;
+                    font-size: 14px;
+
+                    &:first-child {
+                        margin-top: 0;
+                    }
+                }
+            }
+
+            .cancel-btn {
+                width: 100%;
+                padding: 8px 0;
+                margin: 16px 0;
+                border-radius: 999px;
+                text-align: center;
+                color: #fff;
+                background-color: #909399;
+                font-size: 14px;
+            }
         }
     }
 </style>

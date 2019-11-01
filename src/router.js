@@ -104,6 +104,10 @@ export default new Router({
                 path: 'collection', name: 'user-collection',
                 component: () => import('@/views/user/Collection'),
                 meta: {title: '收藏', requireAuth: true}
+            }, {
+                path: 'course-manage', name: 'user-course-manage',
+                component: () => import('@/views/user/CourseManage'),
+                meta: {title: '课程管理', requireAuth: true}
             }]
         },
         {

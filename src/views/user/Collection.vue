@@ -34,15 +34,15 @@
                 </grid>
             </div>
         </template>
-        <div v-else class="no-collection">
-            <svg-icon class="page-null-icon" data="@icon/page-null.svg" color="#999"></svg-icon>
-            <div class="page-null-text">暂无收藏的课程</div>
+        <div v-else class="list-no-data">
+            <svg-icon class="no-data-icon" data="@icon/page-null.svg" color="#999"></svg-icon>
+            <div class="no-data-text">暂无收藏的课程</div>
         </div>
     </div>
 </template>
 
 <script>
-    import {Cell, CellGroup, Grid, GridItem, Checkbox, CheckboxGroup, Row, Col} from 'vant'
+    import {Cell, CellGroup, Grid, GridItem, Checkbox, CheckboxGroup, Row, Col, Toast} from 'vant'
     import {getCollection, deleteCollection} from "@/api/course"
     import {getImageUrl} from "@/utils/image"
 
@@ -74,6 +74,7 @@
                     if (res) {
                         this.list = res.courses;
                         this.show = true;
+                        Toast.clear();
                         if (this.list.length > 0) this.$emit('setNavBarRight', {
                             show: true,
                             text: '管理',
@@ -126,6 +127,11 @@
             }
         },
         created() {
+            Toast.loading({
+                message: '加载中...',
+                forbidClick: true,
+                loadingType: 'spinner'
+            });
             this.getCollectionCourse();
         }
     }
@@ -214,28 +220,6 @@
                 .van-grid-item__content {
                     color: #ff4343;
                 }
-            }
-        }
-
-        .no-collection {
-            margin-top: 10px;
-            display: flex;
-            display: -webkit-flex;
-            justify-content: center;
-            -webkit-justify-content: center;
-            align-items: center;
-            -webkit-align-items: center;
-            flex-direction: column;
-
-            .page-null-icon {
-                width: 100px;
-                height: 100px;
-            }
-
-            .page-null-text {
-                color: #999;
-                margin-top: 10px;
-                font-size: 18px;
             }
         }
     }

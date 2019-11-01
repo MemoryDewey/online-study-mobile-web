@@ -1,6 +1,6 @@
 <template>
-    <div class="wallet-bst-log">
-        <van-list v-model="loading" finished-text="没有更多了" :finished="finished"
+    <div v-show="show" class="wallet-bst-log">
+        <van-list v-if="logs.length>0" v-model="loading" finished-text="没有更多了" :finished="finished"
                   :immediate-check="false" @load="listOnload">
             <cell v-for="(log,index) in logs" :key="index" clickable @click="copyTxHash(log['txHash'])"
                   :title="setProductTypeText(log['productType'])">
@@ -10,11 +10,15 @@
                 <div>{{log['createdAt']}}</div>
             </cell>
         </van-list>
+        <div v-else class="list-no-data">
+            <svg-icon class="no-data-icon" data="@icon/page-null.svg" color="#999"></svg-icon>
+            <div class="no-data-text">无BST交易记录</div>
+        </div>
     </div>
 </template>
 
 <script>
-    import {List, Cell, Toast} from 'vant'
+    import {List, Cell, Toast, Notify} from 'vant'
     import {getBstWalletLog} from "@/api/wallet"
 
     export default {
@@ -24,6 +28,7 @@
         },
         data() {
             return {
+                show: false,
                 loading: false,
                 page: 1,
                 loadingTimes: 1,
@@ -50,6 +55,7 @@
                         this.finished = true;
                     } else {
                         await this.getWalletLog(this.loadingTimes);
+                        this.show = true;
                         Toast.clear();
                     }
                 }, 500);
@@ -66,9 +72,9 @@
             },
             copyTxHash(txHash) {
                 this.$copyText(txHash).then(() => {
-                    Toast.success('已成功复制区块信息');
+                    Notify({type: 'success', message: '已成功复制区块信息'});
                 }).catch(() => {
-                    Toast.fail('您的设备暂不支持复制功能');
+                    Notify({type: 'danger', message: '您的设备暂不支持复制功能'});
                 })
             }
         },

@@ -92,7 +92,8 @@
                     Toast.loading({
                         message: '支付中，请稍等...',
                         forbidClick: true,
-                        loadingType: 'spinner'
+                        loadingType: 'spinner',
+                        duration: 10000
                     });
                     let amount = this.rechargeCustom ? this.rechargeCustom : this.rechargeMoney;
                     let res = await recharge({amount});
@@ -224,7 +225,7 @@
 
             .pay-btn {
                 margin: 10px 16px;
-                padding: 6px 0;
+                padding: 10px 0;
                 border-radius: 4px;
                 background-color: @wallet-recharge-color;
                 font-size: 16px;

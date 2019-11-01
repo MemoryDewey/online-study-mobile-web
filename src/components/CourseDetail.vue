@@ -94,6 +94,7 @@
                         this.$store.commit('setCourseImage', res['course'].info['courseImage']);
                         this.$emit('setCourse', {
                             live: res['course'].info['courseForm'] === 'L',
+                            price: res['course'].info['price'],
                             text: res['course'].info['price'] > 0 ? '立即购买' : '免费报名',
                             rate: res['course'].info['favorableRate'],
                             collection: res.collection
@@ -159,7 +160,7 @@
         .detail-discount {
             height: 48px;
             margin-top: 12px;
-            background-color: #ff4343;
+            background-image: linear-gradient(to right, #e92758 0%, #ff9569 100%);
             color: #fff;
             padding: 0 10px;
             display: flex;

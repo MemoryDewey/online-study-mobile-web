@@ -19,7 +19,7 @@
                 </cell>
                 <cell class="header-second">
                     <grid :column-num="3" :border="false" clickable>
-                        <grid-item icon="orders-o" text="课程管理"></grid-item>
+                        <grid-item icon="orders-o" text="课程管理" :to="{name:'user-course-manage'}"></grid-item>
                         <grid-item icon="paid" text="我的钱包" :to="{name:'wallet-info'}"></grid-item>
                         <grid-item icon="like-o" text="收藏" :to="{name:'user-collection'}"></grid-item>
                     </grid>
@@ -41,7 +41,6 @@
         </section>
         <section>
             <cell-group :border="false">
-                <cell title="已购课程" is-link></cell>
                 <cell title="我的考试" is-link></cell>
                 <cell title="我的证书" is-link></cell>
             </cell-group>
@@ -49,15 +48,20 @@
         <section>
             <cell title="余额" is-link :to="{name:'user-balance'}">
                 <template slot>
-                    <svg-icon data="@icon/coin.svg" class="balance-icon" color="#969799"></svg-icon>
+                    <svg-icon data="@icon/coin.svg" class="cell-svg-right-icon" color="#969799"></svg-icon>
                     <span style="vertical-align: middle;margin-left: 1vw">{{balance}}</span>
                 </template>
             </cell>
         </section>
         <section>
-            <cell title="设置" clickable :to="{name:'user-information'}">
-                <icon slot="right-icon" name="setting-o" style="line-height: inherit;"></icon>
-            </cell>
+            <cell-group :border="false">
+                <cell title="反馈建议" clickable>
+                    <svg-icon data="@icon/feedback.svg" class="cell-svg-right-icon" color="#969799"></svg-icon>
+                </cell>
+                <cell title="设置" clickable :to="{name:'user-information'}">
+                    <icon slot="right-icon" name="setting-o" style="line-height: inherit;"></icon>
+                </cell>
+            </cell-group>
         </section>
     </div>
 </template>
@@ -215,9 +219,9 @@
             }
         }
 
-        .balance-icon {
-            width: 18px;
-            height: 18px;
+        .cell-svg-right-icon {
+            width: 14px;
+            height: 14px;
             line-height: inherit;
             vertical-align: middle;
         }

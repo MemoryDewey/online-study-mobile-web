@@ -47,6 +47,11 @@
                 liveInfo: {live: false, streamName: null, state: false, title: null}
             }
         },
+        watch:{
+            isApply(){
+                this.getChapter();
+            }
+        },
         methods: {
             setLive() {
                 if (!this.isApply) {
@@ -62,25 +67,25 @@
                 } else this.$store.commit('changeVideo', {
                     isLive: false, videoUrl: url
                 })
+            },
+            getChapter(){
+                getVideo({courseID: this.$route.params.id}).then(res => {
+                    this.chapters = res.data;
+                    this.videoNum = res.count;
+                    this.loadFinish = true;
+                });
+                if (this.live) {
+                    getLive({courseID: this.$route.params.id}).then(res => {
+                        this.liveInfo.state = res.state;
+                        this.liveInfo.live = res.live;
+                        this.liveInfo.streamName = res.streamName;
+                        this.liveInfo.title = res.title;
+                    });
+                }
             }
         },
         created() {
-            /*window.addEventListener("orientationchange", function(){
-                console.log(screen.orientation.type); // e.g. portrait
-            });*/
-            getVideo({courseID: this.$route.params.id}).then(res => {
-                this.chapters = res.data;
-                this.videoNum = res.count;
-                this.loadFinish = true;
-            });
-            if (this.live) {
-                getLive({courseID: this.$route.params.id}).then(res => {
-                    this.liveInfo.state = res.state;
-                    this.liveInfo.live = res.live;
-                    this.liveInfo.streamName = res.streamName;
-                    this.liveInfo.title = res.title;
-                });
-            }
+            this.getChapter();
         }
     }
 </script>
