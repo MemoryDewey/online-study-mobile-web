@@ -29,6 +29,9 @@
             overflow-y: hidden;
             position: relative;
             margin-bottom: -6px;
+            &::-webkit-scrollbar{
+                display: none;
+            }
         }
 
         .row-list {

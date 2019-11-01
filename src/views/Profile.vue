@@ -208,7 +208,6 @@
                 .study-content {
                     width: 85px;
                     font-size: 10px;
-                    height: 32px;
                     white-space: normal;
                     overflow: hidden;
                     text-overflow: ellipsis;

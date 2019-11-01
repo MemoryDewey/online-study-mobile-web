@@ -5,7 +5,7 @@
         </div>
         <div class="card-content">
             <div class="card-title">
-                <span>{{title}}</span>
+                {{title}}
             </div>
             <div class="card-info">
                 <van-row class="card-price">
@@ -99,7 +99,7 @@
                 text-overflow: ellipsis;
                 display: -webkit-box;
                 -webkit-box-orient: vertical;
-                -webkit-line-clamp: 2;
+                -webkit-line-clamp: 1;
             }
 
             .card-info {
