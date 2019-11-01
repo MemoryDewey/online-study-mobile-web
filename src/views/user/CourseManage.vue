@@ -1,7 +1,7 @@
 <template>
     <div v-show="show" class="course-manage">
         <tabs v-if="allCourse.courses.length>0" v-model="activeName" color="#1989fa"
-              title-active-color="#1989fa" sticky animated>
+              title-active-color="#1989fa" sticky animated swipeable>
             <tab title="全部课程" name="all">
                 <div class="course-manage-view">
                     <van-list v-model="allCourse.loading" finished-text="没有更多了" :finished="allCourse.finished"
@@ -29,8 +29,56 @@
                     </van-list>
                 </div>
             </tab>
-            <tab title="余额购买" name="balance"></tab>
-            <tab title="BST购买" name="bst"></tab>
+            <tab title="余额购买" name="balance">
+                <div class="course-manage-view">
+                    <van-list v-model="balanceCourse.loading" finished-text="没有更多了" :finished="balanceCourse.finished"
+                              @load="balanceListOnload">
+                        <li class="tab-list-item" v-for="(course,index) in balanceCourse.courses"
+                            :key="index">
+                            <div class="tab-item-status">购买成功</div>
+                            <div class="tab-item-time">
+                                <h3 class="tab-time">{{course['createdAt']}}</h3>
+                            </div>
+                            <div class="tab-item-content">
+                                <img class="tab-item-cover"
+                                     v-lazy="getImageUrl(course['CourseInformation']['courseImage'])"
+                                     alt>
+                                <div class="tab-item-main">
+                                    <h2 class="tab-item-title">{{course['CourseInformation']['courseName']}}</h2>
+                                    <p class="tab-item-price">{{`${course['amount']} 课程币`}}</p>
+                                </div>
+                            </div>
+                            <div class="tab-item-btn">
+                                <van-button size="small" type="info" round>评价课程</van-button>
+                            </div>
+                        </li>
+                    </van-list>
+                </div>
+            </tab>
+            <tab title="BST购买" name="bst">
+                <div class="course-manage-view">
+                    <van-list v-model="bstCourse.loading" finished-text="没有更多了" :finished="bstCourse.finished"
+                              @load="bstListOnload">
+                        <li class="tab-list-item" v-for="(course,index) in bstCourse.courses"
+                            :key="index">
+                            <div class="tab-item-status">购买成功</div>
+                            <div class="tab-item-time">
+                                <h3 class="tab-time">{{course['createdAt']}}</h3>
+                            </div>
+                            <div class="tab-item-content">
+                                <img class="tab-item-cover"
+                                     v-lazy="getImageUrl(course['CourseInformation']['courseImage'])"
+                                     alt>
+                                <div class="tab-item-main">
+                                    <h2 class="tab-item-title">{{course['CourseInformation']['courseName']}}</h2>
+                                    <p class="tab-item-price">{{`${course['amount']} BST`}}</p>
+                                </div>
+                            </div>
+                            <div class="tab-item-bottom">{{course['txHash']}}</div>
+                        </li>
+                    </van-list>
+                </div>
+            </tab>
         </tabs>
         <div v-else class="list-no-data">
             <svg-icon class="no-data-icon" data="@icon/page-null.svg" color="#999"></svg-icon>
@@ -207,7 +255,7 @@
             display: flex;
             display: -webkit-flex;
             position: relative;
-            border-bottom: 1px solid #ddd;
+            border-bottom: 1px solid rgba(221, 221, 221, 60%);
         }
 
         .tab-item-main {
@@ -261,6 +309,19 @@
                     margin-right: 10px;
                 }
             }
+        }
+
+        .tab-item-bottom {
+            height: 44px;
+            padding-top: 8px;
+            font-size: 14px;
+           word-wrap: break-word;
+            white-space: normal;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
         }
     }
 </style>
