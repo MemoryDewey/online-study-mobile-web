@@ -1,6 +1,6 @@
 <template>
     <div class="user-balance-log" v-show="show">
-        <van-list v-if="logs.length>0" v-model="loading" finished-text="没有更多了" :finished="finished"
+        <van-list v-if="logs.length>0" v-model="loading" finished-text="已经到底啦" :finished="finished"
                   :immediate-check="false" @load="listOnload">
             <cell v-for="(log,index) in logs" :key="index"
                   :title="log['details']" :label="setStatusText(log['status'])">

@@ -22,7 +22,7 @@
             <keep-alive>
                 <section>
                     <pull-refresh v-model="refreshLoading" @refresh="onRefresh">
-                        <list v-model="loading" error-text="请求失败，点击重新加载" finished-text="没有更多了"
+                        <list v-model="loading" error-text="请求失败，点击重新加载" finished-text="已经到底啦"
                               :error.sync="error" :finished="finished" @load="listOnload" :immediate-check="false">
                             <ul class="course-list">
                                 <li v-for="course in courses" :key="course['courseID']">

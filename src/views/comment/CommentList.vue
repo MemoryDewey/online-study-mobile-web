@@ -26,7 +26,7 @@
             </van-row>
         </div>
         <div class="comment-list-content">
-            <van-list v-model="loading" finished-text="没有更多了" :immediate-check="false"
+            <van-list v-model="loading" finished-text="已经到底啦" :immediate-check="false"
                       :finished="finished" @load="listOnload">
                 <comment-card v-for="comment in commentList" :key="comment.id"
                               :avatar="comment['UserInformation'].avatarUrl"

@@ -1,5 +1,5 @@
 <template>
-    <div id="user-balance">
+    <div class="user-balance">
         <section>
             <span>总余额</span>
             <div class="balance">
@@ -14,12 +14,10 @@
 </template>
 
 <script>
-    import {NavBar} from 'vant'
     import {getWalletInfo} from "@/api/wallet"
 
     export default {
         name: "Balance",
-        components: {NavBar},
         data() {
             return {
                 balance: 0
@@ -44,7 +42,7 @@
 </script>
 
 <style lang="less">
-    #user-balance {
+    .user-balance {
         section {
             margin-top: 50px;
             display: flex;

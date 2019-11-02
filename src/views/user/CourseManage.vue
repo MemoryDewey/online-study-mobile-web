@@ -4,7 +4,7 @@
               title-active-color="#1989fa" sticky animated swipeable>
             <tab title="全部课程" name="all">
                 <div class="course-manage-view">
-                    <van-list v-model="allCourse.loading" finished-text="没有更多了" :finished="allCourse.finished"
+                    <van-list v-model="allCourse.loading" finished-text="已经到底啦" :finished="allCourse.finished"
                               :immediate-check="false" @load="allListOnload">
                         <li class="tab-list-item" v-for="(course,index) in allCourse.courses"
                             :key="index">
@@ -35,7 +35,7 @@
             </tab>
             <tab title="余额购买" name="balance">
                 <div class="course-manage-view">
-                    <van-list v-model="balanceCourse.loading" finished-text="没有更多了" :finished="balanceCourse.finished"
+                    <van-list v-model="balanceCourse.loading" finished-text="已经到底啦" :finished="balanceCourse.finished"
                               @load="balanceListOnload">
                         <li class="tab-list-item" v-for="(course,index) in balanceCourse.courses"
                             :key="index">
@@ -64,7 +64,7 @@
             </tab>
             <tab title="BST购买" name="bst">
                 <div class="course-manage-view">
-                    <van-list v-model="bstCourse.loading" finished-text="没有更多了" :finished="bstCourse.finished"
+                    <van-list v-model="bstCourse.loading" finished-text="已经到底啦" :finished="bstCourse.finished"
                               @load="bstListOnload">
                         <li class="tab-list-item" v-for="(course,index) in bstCourse.courses"
                             :key="index">
