@@ -1,5 +1,5 @@
 <template>
-    <div class="user-balance-intro">
+    <div id="intro">
         <h1>余额说明</h1>
         <h2>一、什么是余额</h2>
         <p>余额是课堂内虚拟货币，可用于直接购买课程。余额的单位是课程币，1课程币=1人民币。</p>
@@ -21,50 +21,5 @@
 <script>
     export default {
         name: "BalanceIntro",
-        methods: {},
     }
 </script>
-
-<style lang="less">
-    .user-balance-intro {
-        padding: 0 16px;
-
-        h1, h2, p, ol {
-            margin: 0;
-        }
-
-        h1 {
-            margin-bottom: 10px;
-            font-size: 22px;
-            font-weight: 700;
-            line-height: 40px;
-            text-align: center;
-        }
-
-        h2 {
-            margin-top: 10px;
-            font-size: 18px;
-            font-weight: 700;
-            line-height: 32px;
-            margin-bottom: 10px;
-        }
-
-        p {
-            font-size: 14px;
-            line-height: 20px;
-            margin-bottom: 10px;
-        }
-
-        ol {
-            list-style: outside decimal;
-            margin-left: 20px;
-            font-size: 14px;
-            margin-bottom: 10px;
-
-            li {
-                line-height: 20px;
-                margin-bottom: 10px;
-            }
-        }
-    }
-</style>

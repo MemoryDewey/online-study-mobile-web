@@ -2,7 +2,10 @@
     <div id="user">
         <nav-bar v-if="navBarShow" left-arrow :title="this.$route.meta.title"
                  @click-left="routerGo" @click-right="clickRight">
-            <span v-if="navBarRightShow" slot="right">{{navBarRightText}}</span>
+            <template v-if="navBarRightShow" slot="right">
+                <icon v-if="navBarRightIcon" :name="navBarRightIcon"></icon>
+                <span v-else>{{navBarRightText}}</span>
+            </template>
         </nav-bar>
         <div class="user-view">
             <transition enter-active-class="animated slideInLeft faster">
@@ -13,16 +16,17 @@
 </template>
 
 <script>
-    import {NavBar} from 'vant'
+    import {NavBar, Icon} from 'vant'
     import animate from 'animate.css'
 
     export default {
         name: "User",
-        components: {NavBar},
+        components: {NavBar, Icon},
         data() {
             return {
                 navBarShow: true,
                 navBarRightShow: false,
+                navBarRightIcon: false,
                 navBarRightText: null,
                 navBarRightFuncName: ''
             }
@@ -37,6 +41,7 @@
             setNavBarRight(val) {
                 this.navBarRightShow = val.show;
                 this.navBarRightText = val.text;
+                this.navBarRightIcon = val.icon;
                 this.navBarRightFuncName = val.funcName;
             },
             clickRight() {

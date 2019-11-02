@@ -108,6 +108,14 @@ export default new Router({
                 path: 'course-manage', name: 'user-course-manage',
                 component: () => import('@/views/user/CourseManage'),
                 meta: {title: '课程管理', requireAuth: true}
+            }, {
+                path: 'invite', name: 'user-invite',
+                component: () => import('@/views/user/invite'),
+                meta: {title: '邀请好友', requireAuth: true}
+            }, {
+                path: 'invite-intro', name: 'user-invite-intro',
+                component: () => import('@/views/user/invite/InviteIntro'),
+                meta: {title: '邀请说明', requireAuth: true}
             }]
         },
         {

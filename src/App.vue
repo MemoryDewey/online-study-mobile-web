@@ -45,6 +45,7 @@
 
 <style lang="less">
     @import "assets/css/passport";
+    @import "assets/css/intro";
 
     #app {
         font-family: PingFang SC, 'Helvetica Neue', Helvetica, 'Avenir', Microsoft YaHei, Arial, sans-serif;
@@ -55,6 +56,10 @@
         width: 100vw;
         height: 100vh;
         position: fixed;
+
+        .van-nav-bar__left i {
+            color: #969799;
+        }
 
         .list-no-data {
             margin-top: 10px;
