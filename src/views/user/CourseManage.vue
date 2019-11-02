@@ -12,18 +12,22 @@
                             <div class="tab-item-time">
                                 <h3 class="tab-time">{{course['joinTime']}}</h3>
                             </div>
-                            <div class="tab-item-content">
+                            <router-link tag="div" class="tab-item-content"
+                                         :to="{name: 'course-study', params: {id: course['courseID']}}">
                                 <img class="tab-item-cover" v-lazy="getImageUrl(course['image'])" alt>
                                 <div class="tab-item-main">
                                     <h2 class="tab-item-title">{{course['courseName']}}</h2>
                                     <p class="tab-item-price" :class="{free:course['price']===0}">
                                         {{course['price']===0?'免费':`${course['price']} 课程币`}}</p>
                                 </div>
-                            </div>
+                            </router-link>
                             <div class="tab-item-btn">
-                                <van-button v-if="course['price']===0" size="small" type="warning" round>取消报名
+                                <van-button v-if="course['price']===0" @click="cancelCourse(course['courseID'])"
+                                            size="small" type="warning" round>取消报名
                                 </van-button>
-                                <van-button size="small" type="info" round>评价课程</van-button>
+                                <van-button size="small" type="info" round
+                                            :to="{name:'course-comment-commit',params:{id:course['courseID']}}">评价课程
+                                </van-button>
                             </div>
                         </li>
                     </van-list>
@@ -39,7 +43,8 @@
                             <div class="tab-item-time">
                                 <h3 class="tab-time">{{course['createdAt']}}</h3>
                             </div>
-                            <div class="tab-item-content">
+                            <router-link tag="div" class="tab-item-content"
+                                         :to="{name: 'course-study', params: {id: course['productID']}}">
                                 <img class="tab-item-cover"
                                      v-lazy="getImageUrl(course['CourseInformation']['courseImage'])"
                                      alt>
@@ -47,9 +52,11 @@
                                     <h2 class="tab-item-title">{{course['CourseInformation']['courseName']}}</h2>
                                     <p class="tab-item-price">{{`${course['amount']} 课程币`}}</p>
                                 </div>
-                            </div>
+                            </router-link>
                             <div class="tab-item-btn">
-                                <van-button size="small" type="info" round>评价课程</van-button>
+                                <van-button size="small" type="info" round
+                                            :to="{name:'course-comment-commit',params:{id:course['productID']}}">评价课程
+                                </van-button>
                             </div>
                         </li>
                     </van-list>
@@ -61,11 +68,12 @@
                               @load="bstListOnload">
                         <li class="tab-list-item" v-for="(course,index) in bstCourse.courses"
                             :key="index">
-                            <div class="tab-item-status">购买成功</div>
+                            <div class="tab-item-status">已确认</div>
                             <div class="tab-item-time">
                                 <h3 class="tab-time">{{course['createdAt']}}</h3>
                             </div>
-                            <div class="tab-item-content">
+                            <router-link tag="div" class="tab-item-content"
+                                         :to="{name: 'course-study', params: {id: course['productID']}}">
                                 <img class="tab-item-cover"
                                      v-lazy="getImageUrl(course['CourseInformation']['courseImage'])"
                                      alt>
@@ -73,8 +81,9 @@
                                     <h2 class="tab-item-title">{{course['CourseInformation']['courseName']}}</h2>
                                     <p class="tab-item-price">{{`${course['amount']} BST`}}</p>
                                 </div>
+                            </router-link>
+                            <div class="tab-item-bottom" @click="copyTxHash(course['txHash'])">{{course['txHash']}}
                             </div>
-                            <div class="tab-item-bottom">{{course['txHash']}}</div>
                         </li>
                     </van-list>
                 </div>
@@ -88,8 +97,8 @@
 </template>
 
 <script>
-    import {Tab, Tabs, List, Toast, Button} from "vant"
-    import {getCourse, getWalletBstCourse, getWalletCourse} from "@/api/profile"
+    import {Tab, Tabs, List, Button, Toast, Notify} from "vant"
+    import {cancelFree, getCourse, getWalletBstCourse, getWalletCourse} from "@/api/profile"
     import {getImageUrl} from "@/utils/image"
 
     export default {
@@ -190,6 +199,26 @@
                         await this.getBstCourse(this.bstCourse.loadingTimes);
                     }
                 }, 500);
+            },
+            async cancelCourse(courseID) {
+                let res = await cancelFree({courseID});
+                if (res) {
+                    this.allCourse = {
+                        loading: false,
+                        page: 1,
+                        loadingTimes: 1,
+                        finished: false,
+                        courses: []
+                    };
+                    this.allListOnload();
+                }
+            },
+            copyTxHash(txHash) {
+                this.$copyText(txHash).then(() => {
+                    Notify({type: 'success', message: '已成功复制区块信息'});
+                }).catch(() => {
+                    Notify({type: 'danger', message: '您的设备暂不支持复制功能'});
+                })
             }
         },
         created() {
@@ -233,6 +262,7 @@
             right: 16px;
             top: 14px;
             font-size: 12px;
+            color: #1989fa;
         }
 
         .tab-item-time {
@@ -315,7 +345,7 @@
             height: 44px;
             padding-top: 8px;
             font-size: 14px;
-           word-wrap: break-word;
+            word-wrap: break-word;
             white-space: normal;
             overflow: hidden;
             text-overflow: ellipsis;
