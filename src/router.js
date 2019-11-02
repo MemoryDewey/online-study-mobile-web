@@ -90,15 +90,15 @@ export default new Router({
                 meta: {title: '更换绑定手机', requireAuth: true}
             }, {
                 path: 'balance', name: 'user-balance',
-                component: () => import('@/views/user/Balance'),
+                component: () => import('@/views/user/balance'),
                 meta: {title: '我的余额', requireAuth: true}
             }, {
                 path: 'balance-intro', name: 'user-balance-intro',
-                component: () => import('@/views/user/BalanceIntro'),
+                component: () => import('@/views/user/balance/BalanceIntro'),
                 meta: {title: '余额说明', requireAuth: true}
             }, {
                 path: 'balance-log', name: 'user-balance-log',
-                component: () => import('@/views/user/BalanceLog'),
+                component: () => import('@/views/user/balance/BalanceLog'),
                 meta: {title: '余额明细', requireAuth: true}
             }, {
                 path: 'collection', name: 'user-collection',

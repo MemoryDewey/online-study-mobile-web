@@ -17,7 +17,7 @@
     import animate from 'animate.css'
 
     export default {
-        name: "index",
+        name: "User",
         components: {NavBar},
         data() {
             return {

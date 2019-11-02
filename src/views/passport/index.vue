@@ -21,7 +21,7 @@
     import {checkLogin} from '@/api/passport'
 
     export default {
-        name: "index",
+        name: "Passport",
         data() {
             return {
                 title: null,

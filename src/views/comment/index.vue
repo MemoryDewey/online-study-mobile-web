@@ -9,7 +9,7 @@
     import {NavBar} from 'vant'
 
     export default {
-        name: "index",
+        name: "Comment",
         components: {NavBar},
         data() {
             return {

@@ -9,7 +9,7 @@
     import {NavBar} from 'vant'
 
     export default {
-        name: "index",
+        name: "Wallet",
         components: {NavBar},
         methods: {
             routerGo() {
