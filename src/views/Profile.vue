@@ -27,7 +27,10 @@
             </cell-group>
         </section>
         <section>
-            <cell title="最近在学" :border="false"></cell>
+            <cell title="最近在学" :border="false">
+                <svg-icon slot="icon" data="@icon/history.svg" class="cell-svg-left-icon"
+                          color="#323233"></svg-icon>
+            </cell>
             <row-list :list-data="courses" class="nearly-study" v-if="isLogin">
                 <template v-slot:item="{item}">
                     <div class="study-item" @click="routerGO(item['courseID'])">
@@ -41,25 +44,30 @@
         </section>
         <section>
             <cell-group :border="false">
-                <cell title="我的考试" is-link></cell>
-                <cell title="我的证书" is-link></cell>
+                <cell title="我的考试" is-link>
+                    <svg-icon slot="icon" data="@icon/paper.svg" class="cell-svg-left-icon"
+                              color="#323233"></svg-icon>
+                </cell>
+                <cell title="我的证书" is-link>
+                    <svg-icon slot="icon" data="@icon/certificate.svg" class="cell-svg-left-icon"
+                              color="#323233"></svg-icon>
+                </cell>
             </cell-group>
         </section>
         <section>
-            <cell title="余额" is-link :to="{name:'user-balance'}">
-                <template slot>
-                    <svg-icon data="@icon/coin.svg" class="cell-svg-right-icon" color="#969799"></svg-icon>
-                    <span style="vertical-align: middle;margin-left: 1vw">{{balance}}</span>
-                </template>
+            <cell title="账户余额" is-link :to="{name:'user-balance'}">
+                <svg-icon slot="icon" data="@icon/coin.svg" class="cell-svg-left-icon" color="#323233"></svg-icon>
+                <span style="vertical-align: middle;margin-left: 1vw">{{balance}}</span>
             </cell>
         </section>
         <section>
             <cell-group :border="false">
-                <cell title="反馈建议" clickable>
-                    <svg-icon data="@icon/feedback.svg" class="cell-svg-right-icon" color="#969799"></svg-icon>
+                <cell title="邀请好友" clickable :to="{name:'user-invite'}" is-link>
+                    <svg-icon slot="icon" data="@icon/invite.svg" class="cell-svg-left-icon" color="#323233"></svg-icon>
                 </cell>
-                <cell title="设置" clickable :to="{name:'user-information'}">
-                    <icon slot="right-icon" name="setting-o" style="line-height: inherit;"></icon>
+                <cell title="反馈建议" clickable is-link>
+                    <svg-icon slot="icon" data="@icon/feedback.svg" class="cell-svg-left-icon"
+                              color="#323233"></svg-icon>
                 </cell>
             </cell-group>
         </section>
@@ -190,6 +198,11 @@
             background-color: #fff;
             padding: 0 16px;
             margin-top: -5px;
+            height: 92px;
+
+            .row-list {
+                padding: 5px 0 10px;
+            }
 
             .study-item {
                 height: 80px;
@@ -218,10 +231,10 @@
             }
         }
 
-        .cell-svg-right-icon {
-            width: 14px;
-            height: 14px;
-            line-height: inherit;
+        .cell-svg-left-icon {
+            width: 16px;
+            height: 24px;
+            margin-right: 10px;
             vertical-align: middle;
         }
     }
