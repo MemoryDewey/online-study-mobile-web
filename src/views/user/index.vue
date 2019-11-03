@@ -61,6 +61,10 @@
         background-color: #f6f6f6;
         height: 100%;
 
+        .van-nav-bar__right {
+            font-size: 18px;
+        }
+
         .user-view {
         }
     }
