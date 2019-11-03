@@ -6,7 +6,7 @@
                 <a class="van-ellipsis">{{nickname}}</a>
                 <rate v-model="rate" redonly color="#ffae05"></rate>
             </div>
-            <p>{{content}}</p>
+            <p v-html="content"></p>
             <div class="time">{{time}}</div>
         </div>
     </div>
@@ -40,7 +40,7 @@
         display: -webkit-flex;
         padding: 8px 16px;
         border-bottom: 1px solid #ebedf0;
-        height: 110px;
+        min-height: 110px;
 
 
         img {

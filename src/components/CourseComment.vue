@@ -1,7 +1,7 @@
 <template>
     <div class="course-study-comment">
         <div class="comment-head">
-            <div class="score">{{(rate*10).toFixed(1)}}</div>
+            <div class="score">{{rate===1?10:(rate*10).toFixed(1)}}</div>
             <div class="rating">
                 <div class="rate-star">
                     <div class="star-gray">
