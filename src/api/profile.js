@@ -11,3 +11,5 @@ export const cancelFree = params => get('/course/information/cancel-free', param
 export const getWalletCourse = params => get('/course/list/user-course-rmb', params);
 export const getWalletBstCourse = params => get('/course/list/user-course-bst', params);
 export const getLatestBrowseCourse = () => get('/course/list/latest-browse');
+export const getInvite = params => get('/profile/personal/invite', params);
+export const getInviteCode = () => get('/profile/personal/invite-code');

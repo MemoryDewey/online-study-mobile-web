@@ -61,7 +61,7 @@
         background-color: #f6f6f6;
         height: 100%;
 
-        .van-nav-bar__right {
+        .van-nav-bar__right i{
             font-size: 18px;
         }
 

@@ -116,6 +116,10 @@ export default new Router({
                 path: 'invite-intro', name: 'user-invite-intro',
                 component: () => import('@/views/user/invite/InviteIntro'),
                 meta: {title: '邀请说明', requireAuth: true}
+            }, {
+                path: 'invite-list', name: 'user-invite-list',
+                component: () => import('@/views/user/invite/InviteList'),
+                meta: {title: '邀请列表', requireAuth: true}
             }]
         },
         {
