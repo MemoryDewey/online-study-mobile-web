@@ -65,7 +65,7 @@
                 <cell title="邀请好友" clickable :to="{name:'user-invite'}" is-link>
                     <svg-icon slot="icon" data="@icon/invite.svg" class="cell-svg-left-icon" color="#323233"></svg-icon>
                 </cell>
-                <cell title="反馈建议" clickable is-link>
+                <cell title="反馈建议" clickable is-link :to="{name:'user-feedback'}">
                     <svg-icon slot="icon" data="@icon/feedback.svg" class="cell-svg-left-icon"
                               color="#323233"></svg-icon>
                 </cell>

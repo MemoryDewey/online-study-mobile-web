@@ -13,3 +13,5 @@ export const getWalletBstCourse = params => get('/course/list/user-course-bst', 
 export const getLatestBrowseCourse = () => get('/course/list/latest-browse');
 export const getInvite = params => get('/profile/personal/invite', params);
 export const getInviteCode = () => get('/profile/personal/invite-code');
+export const getFeedbackType = () => get('/profile/personal/feedback-type');
+export const submitFeedback = data => post('/profile/personal/feedback', data);

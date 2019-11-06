@@ -120,6 +120,10 @@ export default new Router({
                 path: 'invite-list', name: 'user-invite-list',
                 component: () => import('@/views/user/invite/InviteList'),
                 meta: {title: '邀请列表', requireAuth: true}
+            }, {
+                path: 'feedback', name: 'user-feedback',
+                component: () => import('@/views/user/Feedback'),
+                meta: {title: '用户反馈', requireAuth: true}
             }]
         },
         {
