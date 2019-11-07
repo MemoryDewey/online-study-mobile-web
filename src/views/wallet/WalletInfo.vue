@@ -283,7 +283,7 @@
             }
 
             .van-field {
-                background-color: #f6f6f6;
+                background-color: #f2f2f6;
                 margin-bottom: 20px;
             }
 

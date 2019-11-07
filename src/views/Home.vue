@@ -14,7 +14,25 @@
             </div>
             <div class="main-item">
                 <van-row>
-                    <van-col span="12" class="head">最新课程</van-col>
+                    <van-col span="12" class="head" style="color: #ff976a">
+                        <svg-icon data="@icon/time.svg" color="#ff976a"></svg-icon>
+                        限时抢购
+                    </van-col>
+                </van-row>
+                <row-list :list-data="discountCourse">
+                    <template v-slot:item="{item}">
+                        <course-card-row :title="item.title" :image="item.image" tag="限时抢购" :id="item.id"
+                                         :sales="item.sales" :price="item.price" :origin-price="item.originPrice"
+                                         bottom="马上抢购"></course-card-row>
+                    </template>
+                </row-list>
+            </div>
+            <div class="main-item">
+                <van-row>
+                    <van-col span="12" class="head" style="color: #07c160">
+                        <svg-icon data="@icon/new.svg" color="#07c160"></svg-icon>
+                        最新课程
+                    </van-col>
                     <van-col span="12" class="tail">
                         <router-link to="/course" tag="span">全部</router-link>
                     </van-col>
@@ -27,70 +45,19 @@
             </div>
             <div class="main-item">
                 <van-row>
-                    <van-col span="12" class="head">限时抢购</van-col>
+                    <van-col span="12" class="head" style="color: #ee0a24">
+                        <svg-icon data="@icon/hot.svg" color="#ee0a24"></svg-icon>
+                        热门课程
+                    </van-col>
                 </van-row>
-                <row-list :list-data="discountCourse">
-                    <template v-slot:item="{item}">
-                        <course-card-row :title="item.title" :image="item.image" tag="限时抢购" :id="item.id"
-                                         :sales="item.sales" :price="item.price" :origin-price="item.originPrice"
-                                         bottom="马上抢购"></course-card-row>
-                    </template>
-                </row-list>
+                <course-card-col v-for="course in recommendCourse" :key="course['courseID']" :id="course['courseID']"
+                                 :title="course['courseName']" :desc="course['courseDescription']"
+                                 :rate="course['favorableRate']" :sales="course['applyCount']"
+                                 :image="course['courseImage']" :price="course['price']">
+                </course-card-col>
             </div>
             <div class="main-item">
-                <van-row>
-                    <van-col span="12" class="head">行业资讯</van-col>
-                    <van-col span="12" class="tail">全部</van-col>
-                </van-row>
-                <div class="information">
-                    <ul class="info-list">
-                        <li class="info-item">
-                            <van-row>
-                                <van-col span="3">
-                                    <div class="info-image">
-                                        <img src="https://img.yzcdn.cn/vant/t-thirt.jpg" alt>
-                                    </div>
-                                </van-col>
-                                <van-col span="21">
-                                    <div class="info-title">What's you problem? Hello, thank you, thank you very
-                                        mach
-                                    </div>
-                                    <div class="info-read">999人已读</div>
-                                </van-col>
-                            </van-row>
-                        </li>
-                        <li class="info-item">
-                            <van-row>
-                                <van-col span="3">
-                                    <div class="info-image">
-                                        <img src="https://img.yzcdn.cn/vant/t-thirt.jpg" alt>
-                                    </div>
-                                </van-col>
-                                <van-col span="21">
-                                    <div class="info-title">What's you problem? Hello, thank you, thank you very
-                                        mach
-                                    </div>
-                                    <div class="info-read">999人已读</div>
-                                </van-col>
-                            </van-row>
-                        </li>
-                        <li class="info-item">
-                            <van-row>
-                                <van-col span="3">
-                                    <div class="info-image">
-                                        <img src="https://img.yzcdn.cn/vant/t-thirt.jpg" alt>
-                                    </div>
-                                </van-col>
-                                <van-col span="21">
-                                    <div class="info-title">What's you problem? Hello, thank you, thank you very
-                                        mach
-                                    </div>
-                                    <div class="info-read">999人已读</div>
-                                </van-col>
-                            </van-row>
-                        </li>
-                    </ul>
-                </div>
+                <divider>我也是有底线的</divider>
             </div>
         </main>
     </div>
@@ -100,17 +67,17 @@
     import CourseCardRow from "@/components/CourseCardRow"
     import CourseCardCol from "@/components/CourseCardCol"
     import RowList from "@/components/RowList"
-    import {NavBar, Swipe, SwipeItem, Search, Row, Col} from 'vant'
+    import {NavBar, Swipe, SwipeItem, Search, Row, Col, Divider} from 'vant'
     import {getIndexBanner, getIndexCourse} from "@/api/home"
     import {getImageUrl} from '@/utils/image'
-    import {getDiscount} from "@/api/course"
+    import {getDiscount, getRecommend} from "@/api/course"
 
     export default {
         name: 'home',
         components: {
             RowList,
             CourseCardCol, CourseCardRow,
-            SwipeItem, Swipe, Search, NavBar,
+            SwipeItem, Swipe, Search, NavBar, Divider,
             "van-row": Row, "van-col": Col
         },
         data() {
@@ -120,6 +87,7 @@
                 banners: [],
                 getImageUrl,
                 discountCourse: [],
+                recommendCourse: [],
                 searchValue: null,
                 height: 0
             }
@@ -151,6 +119,10 @@
                     }
                 }
             },
+            async getRecommendCourse() {
+                const res = await getRecommend();
+                if (res) this.recommendCourse = res['course'];
+            },
             searchCourse(value) {
                 this.$router.push({path: '/course', query: {search: value}});
             }
@@ -162,14 +134,7 @@
             this.getBanner();
             this.getNewCourse();
             this.getDiscountCourse();
-            this.height = window.innerHeight;
-            window.onresize = () => {
-                if (window.innerHeight < this.height) {
-                    this.$emit('setTab', false);
-                } else {
-                    this.$emit('setTab', true);
-                }
-            };
+            this.getRecommendCourse();
         }
     }
 </script>
@@ -193,12 +158,12 @@
             height: calc(100vh - 54px);
 
             .banner {
-                padding: 0 12px 10px;
+                padding: 0 0 12px;
 
                 .van-swipe {
                     .van-swipe-item {
                         img {
-                            width: 100%;
+                            width: 100vw;
                             height: calc(100vw / 16 * 9);
                         }
                     }
@@ -206,12 +171,18 @@
             }
 
             .main-item {
-                padding: 15px 10px 0;
+                padding: 10px 10px 0;
                 line-height: 15px;
 
                 .head {
                     font-size: 15px;
                     font-weight: 600;
+
+                    svg {
+                        width: 15px;
+                        height: 15px;
+                        margin-right: 10px;
+                    }
                 }
 
                 .tail {
@@ -224,43 +195,6 @@
                     padding-bottom: 50px;
                 }
 
-            }
-
-            .information {
-                padding: 10px 0;
-
-                .info-list {
-                    margin-bottom: 10px;
-                }
-
-                .info-item {
-                    margin-bottom: 10px;
-
-                    .info-image {
-                        width: 10vw;
-                        height: 10vw;
-
-                        img {
-                            width: 100%;
-                            height: 100%;
-                            object-fit: contain;
-                        }
-                    }
-
-                    .info-title {
-                        font-size: 13.5px;
-                        font-weight: 600;
-                        overflow: hidden;
-                        text-overflow: ellipsis;
-                        white-space: nowrap;
-                    }
-
-                    .info-read {
-                        font-size: 10px;
-                        margin-top: 5px;
-                        color: #999;
-                    }
-                }
             }
         }
     }

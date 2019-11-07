@@ -24,7 +24,7 @@
 
 <style lang="less">
     #wallet {
-        background-color: #f6f6f6;
+        background-color: #f2f2f6;
         height: 100%;
     }
 </style>

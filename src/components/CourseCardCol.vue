@@ -16,7 +16,7 @@
                 {{desc}}
             </div>
             <div class="card-bottom">
-                <span class="info">{{sales}}人报名 | 好评{{rate*100}}%</span>
+                <span class="info">{{sales}}人报名 {{rate?`| 好评${rate*100}%`:''}}</span>
                 <span v-if="price > 0" class="price" style="color: #ee0a24;">{{price}} 课程币</span>
                 <span v-else class="price" style="color: #42c02e;">免费</span>
             </div>

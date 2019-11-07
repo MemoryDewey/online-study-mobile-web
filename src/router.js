@@ -5,8 +5,8 @@ import Home from '@/views/Home.vue'
 Vue.use(Router);
 
 export default new Router({
-    mode: process.env.NODE_ENV === 'development' ? 'history' : 'hash',
-    base: process.env.BASE_URL,
+    mode: process.env.NODE_ENV === 'production' ? 'hash' : 'history',
+    base: process.env.NODE_ENV === 'test' ? '/m/' : '/',
     routes: [
         {
             path: '/', name: 'home',
@@ -124,6 +124,10 @@ export default new Router({
                 path: 'feedback', name: 'user-feedback',
                 component: () => import('@/views/user/Feedback'),
                 meta: {title: '用户反馈', requireAuth: true}
+            }, {
+                path: 'exam', name: 'user-exam',
+                component: () => import('@/views/user/exam'),
+                meta: {title: '考试列表', requireAuth: true}
             }]
         },
         {
@@ -143,6 +147,6 @@ export default new Router({
                 component: () => import('@/views/wallet/BSTLog'),
                 meta: {title: 'BST账单', requireAuth: true}
             }]
-        }
+        },
     ]
 })

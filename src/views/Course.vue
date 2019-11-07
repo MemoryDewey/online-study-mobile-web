@@ -264,7 +264,6 @@
             height: calc(100vh - 54px);
 
             section {
-                margin-top: 16px;
                 padding: 0 10px 50px;
 
                 .course-list {

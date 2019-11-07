@@ -218,7 +218,7 @@
 
         .teacher-avatar {
             width: 45px;
-            background-color: #f6f6f6;
+            background-color: #f2f2f6;
 
             .van-image {
                 width: 35px;

@@ -31,7 +31,7 @@
                 <svg-icon slot="icon" data="@icon/history.svg" class="cell-svg-left-icon"
                           color="#323233"></svg-icon>
             </cell>
-            <row-list :list-data="courses" class="nearly-study" v-if="isLogin">
+            <row-list :list-data="courses" class="nearly-study" v-if="isLogin && courses.length>0">
                 <template v-slot:item="{item}">
                     <div class="study-item" @click="routerGO(item['courseID'])">
                         <div class="study-image">
@@ -137,7 +137,7 @@
 <style lang="less">
     #profile {
         height: 100%;
-        background-color: #f6f6f6;
+        background-color: #f2f2f6;
 
         section {
             margin-bottom: 12px;
@@ -160,7 +160,7 @@
         }
 
         .not-login {
-            background-color: #f6f6f6;
+            background-color: #f2f2f6;
             display: table-cell;
             vertical-align: middle;
             text-align: center;
