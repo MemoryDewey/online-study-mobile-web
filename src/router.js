@@ -128,6 +128,10 @@ export default new Router({
                 path: 'exam', name: 'user-exam',
                 component: () => import('@/views/user/exam'),
                 meta: {title: '考试列表', requireAuth: true}
+            }, {
+                path: '/exam/:id', name: 'user-exam-question',
+                component: () => import('@/views/user/exam/Exam'),
+                meta: {title: '课程考试', requireAuth: true}
             }]
         },
         {

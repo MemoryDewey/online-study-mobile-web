@@ -21,3 +21,5 @@ export const checkBstConfirmation = params => get('/course/information/check-bst
 export const applyCourseByBalance = data => post('/course/information/buy-course', data);
 export const applyChargeByBst = data => post('/course/information/buy-course-bst', data);
 export const checkBstStatue = params => get('/course/information/buy-course-bst/statue', params);
+export const getExam = data => post('/examine/exam', data);
+export const addExam = data => post('/examine/add', data);

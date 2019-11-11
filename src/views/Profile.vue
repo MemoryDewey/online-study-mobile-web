@@ -44,7 +44,7 @@
         </section>
         <section>
             <cell-group :border="false">
-                <cell title="我的考试" is-link>
+                <cell title="我的考试" is-link :to="{name:'user-exam'}">
                     <svg-icon slot="icon" data="@icon/paper.svg" class="cell-svg-left-icon"
                               color="#323233"></svg-icon>
                 </cell>

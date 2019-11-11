@@ -2,7 +2,7 @@ const path = require('path');
 const svgFilePath = path.join(__dirname, './src/assets/icons/svg');
 module.exports = {
     assetsDir: 'static',  //静态资源目录
-    publicPath: process.env.NODE_ENV === 'test' ? '/m/' : './',
+    publicPath: process.env.NODE_ENV === 'test' ? '/m/' : process.env.NODE_ENV === 'development' ? '/' : './',
     productionSourceMap: false,
     devServer: {
         open: true,
