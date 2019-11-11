@@ -19,3 +19,5 @@ yarn-error.log*
 *.njsproj
 *.sln
 *.sw?
+src/assets/css/passport.css
+src/assets/css/passport.css.map

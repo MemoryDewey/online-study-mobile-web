@@ -4,11 +4,11 @@
             <div class="title">{{index+1}}. {{item.title}}({{item.score}}分)</div>
             <radio-group v-model="radio[index]">
                 <cell-group>
-                    <cell v-for="(section,ind) in item.section" :key="ind"
+                    <cell v-for="section in item.section" :key="section['choose']"
                           clickable :title="section['content']"
                           @click="radio[index]=section['choose']">
                         <i slot="icon" class="section">{{section['choose']}}</i>
-                        <radio slot="right-icon" :name="section['choose']"/>
+                        <radio slot="right-icon" :name="section['choose']" shape="square"/>
                     </cell>
                 </cell-group>
             </radio-group>
@@ -33,13 +33,23 @@
                 radio: []
             }
         },
+        methods: {
+            test(id, c) {
+                //console.log(id, c);
+                this.radio[1] = c
+                console.log(typeof this.radio)
+                console.log(this.radio)
+            }
+        },
         beforeCreate() {
             this.$emit('setTab', false);
         },
         created() {
             getExam({courseID: this.$route.params.id}).then(res => {
+                //for (let i in res.exam) this.radio.push('');
+                this.exam = res.exam;
                 if (res.finished.state) {
-                    this.exam = res.exam;
+
                 } else {
 
                 }
