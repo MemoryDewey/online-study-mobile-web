@@ -1,9 +1,9 @@
 import axios from 'axios'
 import {Toast} from 'vant';
+import {getRequestBaseUrl} from "@/utils/url";
 
 const service = axios.create({
-    baseURL: process.env.NODE_ENV === 'production' ?
-        process.env.VUE_APP_PRODUCTION_API : process.env.VUE_APP_BASE_API,
+    baseURL: getRequestBaseUrl(),
     timeout: 5000
 });
 

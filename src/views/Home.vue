@@ -69,7 +69,7 @@
     import RowList from "@/components/RowList"
     import {NavBar, Swipe, SwipeItem, Search, Row, Col, Divider} from 'vant'
     import {getIndexBanner, getIndexCourse} from "@/api/home"
-    import {getImageUrl} from '@/utils/image'
+    import {getImageUrl} from '@/utils/url'
     import {getDiscount, getRecommend} from "@/api/course"
 
     export default {

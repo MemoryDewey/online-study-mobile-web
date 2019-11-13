@@ -25,7 +25,7 @@
 </template>
 
 <script>
-    import {getImageUrl} from "@/utils/image"
+    import {getImageUrl} from "@/utils/url"
     import {Tag} from 'vant'
 
     export default {

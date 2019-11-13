@@ -121,7 +121,7 @@
     import FileUpload from 'vue-upload-component'
     import VueCropper from 'vue-cropperjs'
     import 'cropperjs/dist/cropper.css'
-    import {getImageUrl} from "@/utils/image"
+    import {getImageUrl, getRequestBaseUrl} from "@/utils/url"
     import {deleteEmail, logout} from "@/api/passport";
 
     export default {
@@ -398,8 +398,7 @@
             }
         },
         created() {
-            this.postUrl = process.env.NODE_ENV === 'development' ?
-                process.env.VUE_APP_BASE_API : process.env.VUE_APP_PRODUCTION_API;
+            this.postUrl = getRequestBaseUrl();
             this.userInfo = this.$store.state.userInfo;
             this.getInfo();
         },

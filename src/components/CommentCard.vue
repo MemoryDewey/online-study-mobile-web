@@ -14,7 +14,7 @@
 
 <script>
     import {Rate} from 'vant'
-    import {getImageUrl} from "@/utils/image"
+    import {getImageUrl} from "@/utils/url"
 
     export default {
         name: "CommentCard",

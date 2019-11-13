@@ -15,7 +15,7 @@
 </template>
 
 <script>
-    import {PasswordInput, NumberKeyboard, CountDown, Toast} from 'vant'
+    import {PasswordInput, NumberKeyboard, CountDown, Toast, Notify} from 'vant'
     import {login, reset, sendMessage} from "@/api/passport";
 
     export default {
@@ -46,13 +46,21 @@
                     let res = false;
                     switch (this.$route.query.option) {
                         case 'login':
-                            res = await login({code, phone: this.$route.query.phone});
+                            res = await login({
+                                code,
+                                phone: this.$route.query.phone,
+                                invite: this.$route.query.invite
+                            });
                             if (res) {
                                 Toast.clear();
-                                localStorage.setItem('token', res.token);
-                                let path = this.$route.query.origin;
-                                if (!path) await this.$router.push('/profile');
-                                else await this.$router.push({path});
+                                if (!this.$route.query.invite) {
+                                    localStorage.setItem('token', res.token);
+                                    let path = this.$route.query.origin;
+                                    if (!path) await this.$router.push('/profile');
+                                    else await this.$router.push({path});
+                                } else {
+                                    window.open(res.download);
+                                }
                             }
                             break;
                         case 'reset':
@@ -80,10 +88,11 @@
             },
             async resend() {
                 this.canResend = false;
-                this.$nextTick(()=>{
+                this.$nextTick(() => {
                     this.$refs['countDown'].reset();
                 });
-                await sendMessage({account: this.$route.query.phone, option: this.$route.query.option});
+                let res = await sendMessage({account: this.$route.query.phone, option: this.$route.query.option});
+                if (res['development']) if (res['development']) Notify({type: 'success', message: res.msg});
             }
         },
         beforeCreate() {

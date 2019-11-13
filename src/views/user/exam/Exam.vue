@@ -2,43 +2,52 @@
     <div id="exam">
         <div class="question" v-for="(item,index) in exam" :key="index">
             <div class="title">{{index+1}}. {{item.title}}({{item.score}}分)</div>
-            <radio-group v-model="radio[index]">
+            <radio-group v-model="radio[index]" :disabled="disabled">
                 <cell-group>
                     <cell v-for="section in item.section" :key="section['choose']"
-                          clickable :title="section['content']"
-                          @click="radio[index]=section['choose']">
+                          :title="section['content']">
                         <i slot="icon" class="section">{{section['choose']}}</i>
                         <radio slot="right-icon" :name="section['choose']" shape="square"/>
                     </cell>
                 </cell-group>
             </radio-group>
         </div>
-
+        <van-button size="large" type="info" @click="submitExam" v-if="radio.length>0 && !disabled">提交</van-button>
     </div>
 </template>
 
 <script>
-    import {getExam} from "@/api/course";
-    import {Toast, CellGroup, Cell, RadioGroup, Radio} from "vant"
+    import {getExam, addExam} from "@/api/course";
+    import {CellGroup, Cell, RadioGroup, Radio, Button, Dialog} from "vant"
 
     export default {
         name: "Exam",
         components: {
-            Cell, CellGroup, Radio, RadioGroup
+            Cell, CellGroup, Radio, RadioGroup, 'van-button': Button
         },
         data() {
             return {
                 exam: [],
                 result: [],
-                radio: []
+                radio: [],
+                disabled: false
             }
         },
         methods: {
-            test(id, c) {
-                //console.log(id, c);
-                this.radio[1] = c
-                console.log(typeof this.radio)
-                console.log(this.radio)
+            submitExam() {
+                Dialog.confirm({
+                    title: '提交试卷',
+                    message: '确认提交试卷？提交后不可更改'
+                }).then(async () => {
+                    let res = await addExam({
+                        courseID: this.$route.params.id,
+                        answer: this.radio,
+                        exam: {type: 'exam', id: this.$route.params.id},
+                    });
+                    if (res) {
+                        this.$router.go(-1);
+                    }
+                })
             }
         },
         beforeCreate() {
@@ -46,12 +55,13 @@
         },
         created() {
             getExam({courseID: this.$route.params.id}).then(res => {
-                //for (let i in res.exam) this.radio.push('');
+                for (let i in res.exam) this.radio.push('');
                 this.exam = res.exam;
                 if (res.finished.state) {
-
+                    this.disabled = true;
+                    this.radio = res.finished.result.map(x => x['choose']);
                 } else {
-
+                    this.disabled = false;
                 }
             });
         }

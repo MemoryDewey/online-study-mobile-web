@@ -10,7 +10,7 @@
 <script>
     import {Tag} from 'vant'
     import Player from '@/components/Player'
-    import {getImageUrl} from '@/utils/image'
+    import {getImageUrl} from '@/utils/url'
     import {mapGetters} from 'vuex';
 
     export default {

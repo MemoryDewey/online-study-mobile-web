@@ -35,7 +35,7 @@
 <script>
     import {getExamList} from "@/api/profile"
     import {Toast, List, Button, Notify} from "vant"
-    import {getImageUrl} from "@/utils/image"
+    import {getImageUrl} from "@/utils/url"
 
     export default {
         name: "Exam",
@@ -93,9 +93,8 @@
                 }, 500);
             },
             gotoExam(courseID, state) {
-                if (state === 1)
+                if (state === 1 || state === 2)
                     this.$router.push({name: 'user-exam-question', params: {id: courseID}});
-                else if (state === 2) Notify({type: 'warning', message: '你已完成该课程的考试'});
                 else if (state === 0) Notify({type: 'warning', message: '该课程考试未开始'});
                 else Notify({type: 'warning', message: '该课程考试已结束'})
             }

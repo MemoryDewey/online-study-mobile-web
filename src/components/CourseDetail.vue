@@ -49,7 +49,7 @@
 <script>
     import {Image, CountDown, Col, Row} from 'vant'
     import {getInfo} from '@/api/course'
-    import {getImageUrl} from '@/utils/image'
+    import {getImageUrl} from '@/utils/url'
 
     export default {
         name: "CourseDetail",

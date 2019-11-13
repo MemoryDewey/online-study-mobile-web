@@ -52,6 +52,7 @@
         checkBstStatue, applyChargeByBst, checkBstConfirmation
     } from '@/api/course'
     import socketClient from 'socket.io-client'
+    import {getWebsocketUrl} from "@/utils/url";
 
     export default {
         name: "index",
@@ -135,8 +136,7 @@
                         duration: 10000
                     });
                     await applyChargeByBst({courseID: this.$route.params.id});
-                    const socketUrl = process.env.NODE_ENV === 'production' ?
-                        process.env.VUE_APP_WEBSOCKET_URL : location.host;
+                    const socketUrl = getWebsocketUrl();
                     const socket = socketClient.connect(socketUrl);
                     socket.emit('buyCourseByBst');
                     socket.on('message', data => {

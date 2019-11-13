@@ -99,7 +99,7 @@
 <script>
     import {Tab, Tabs, List, Button, Toast, Notify} from "vant"
     import {cancelFree, getCourse, getWalletBstCourse, getWalletCourse} from "@/api/profile"
-    import {getImageUrl} from "@/utils/image"
+    import {getImageUrl} from "@/utils/url"
 
     export default {
         name: "CourseManage",

@@ -29,7 +29,7 @@
 
 <script>
     import {Button, Row, Col} from 'vant'
-    import {getImageUrl} from '@/utils/image'
+    import {getImageUrl} from '@/utils/url'
 
     export default {
         name: "CourseCardRow",

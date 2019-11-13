@@ -20,6 +20,7 @@
     import {Toast} from 'vant'
     import QRCode from 'qrcode'
     import {getInviteCode} from "@/api/profile"
+    import {getInviteUrl} from "@/utils/url";
 
     export default {
         name: "Invite",
@@ -38,7 +39,7 @@
                 let res = await getInviteCode();
                 if (res) {
                     this.inviteCode = res.code;
-                    this.inviteUrl = `${location.origin}/passport/login-phone?invite=${this.inviteCode}`;
+                    this.inviteUrl = getInviteUrl(`/passport/login-phone?invite=${this.inviteCode}`);
                     QRCode.toDataURL(this.inviteUrl).then(url => {
                         this.qrCodeUrl = url;
                     }).catch(err => {
@@ -48,7 +49,7 @@
             },
             copyInviteUrl() {
                 this.$copyText(this.inviteUrl).then(() => {
-                    Toast.success('已复制钱包地址');
+                    Toast.success('已复制邀请地址');
                 }).catch((err) => {
                     console.log(err);
                     Toast.fail('您的设备暂不支持复制功能');

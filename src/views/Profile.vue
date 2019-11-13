@@ -78,7 +78,7 @@
     import {CellGroup, Icon, Cell, Row, Col, Grid, GridItem} from 'vant'
     import RowList from "@/components/RowList"
     import {checkLogin} from "@/api/passport"
-    import {getImageUrl} from '@/utils/image'
+    import {getImageUrl} from '@/utils/url'
     import {getLatestBrowseCourse} from "@/api/profile"
     import {getWalletInfo} from "@/api/wallet"
 

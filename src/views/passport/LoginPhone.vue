@@ -1,6 +1,6 @@
 <template>
     <div class="login-form">
-        <span style="margin-left: 16px">首次登录手机号将在验证后生成新账号</span>
+        <span style="margin-left: 16px">*首次登录手机号将在验证后生成新账号</span>
         <van-input v-model="phone" placeholder="请输入手机号" maxlength="11" :border="false" clearable></van-input>
         <div class="passport-btn">
             <van-button type="info" size="large" :disabled="!phoneCheck" @click="getShortMessageCode">获取验证码</van-button>
@@ -12,7 +12,7 @@
 </template>
 
 <script>
-    import {Field, Button} from 'vant'
+    import {Field, Button, Notify} from 'vant'
     import {sendMessage} from "@/api/passport";
 
     export default {
@@ -34,12 +34,16 @@
         methods: {
             async getShortMessageCode() {
                 const res = await sendMessage({account: this.phone, option: 'login'});
-                if (res)
+                if (res) {
+                    if (res['development']) Notify({type: 'success', message: res.msg});
                     await this.$router.push({
-                        name: 'short-message', query: {
-                            phone: this.phone, option: 'login', origin: this.$route.query.origin
+                        name: 'short-message',
+                        query: {
+                            phone: this.phone, option: 'login', origin: this.$route.query.origin,
+                            invite: this.$route.query.invite
                         }
                     })
+                }
             }
         },
         beforeCreate() {

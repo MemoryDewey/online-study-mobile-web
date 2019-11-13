@@ -44,7 +44,7 @@
 <script>
     import {Cell, CellGroup, Grid, GridItem, Checkbox, CheckboxGroup, Row, Col, Toast} from 'vant'
     import {getCollection, deleteCollection} from "@/api/course"
-    import {getImageUrl} from "@/utils/image"
+    import {getImageUrl} from "@/utils/url"
 
     export default {
         name: "Collection",

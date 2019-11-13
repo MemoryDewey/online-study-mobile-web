@@ -33,6 +33,7 @@
     import {Grid, GridItem, Toast, Field, Icon} from 'vant'
     import {getBstValue, getWalletInfo, recharge} from "@/api/wallet"
     import socketClient from 'socket.io-client'
+    import {getWebsocketUrl} from "@/utils/url";
 
     export default {
         name: "Recharge",
@@ -98,8 +99,7 @@
                     let amount = this.rechargeCustom ? this.rechargeCustom : this.rechargeMoney;
                     let res = await recharge({amount});
                     if (!res) return;
-                    const socketUrl = process.env.NODE_ENV === 'production' ?
-                        process.env.VUE_APP_WEBSOCKET_URL : location.host;
+                    const socketUrl = getWebsocketUrl();
                     const socket = socketClient.connect(socketUrl);
                     socket.emit('recharge');
                     socket.on('rechargeMessage', data => {

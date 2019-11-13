@@ -5,7 +5,8 @@ import Home from '@/views/Home.vue'
 Vue.use(Router);
 
 export default new Router({
-    mode: process.env.NODE_ENV === 'production' ? 'hash' : 'history',
+    mode: process.env.NODE_ENV === 'production' || process.env.NODE_ENV === 'beta'
+        ? 'hash' : 'history',
     base: process.env.NODE_ENV === 'test' ? '/m/' : '/',
     routes: [
         {
