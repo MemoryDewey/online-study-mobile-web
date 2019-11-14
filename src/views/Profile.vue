@@ -29,7 +29,7 @@
         <section>
             <cell title="最近在学" :border="false">
                 <svg-icon slot="icon" data="@icon/history.svg" class="cell-svg-left-icon"
-                          color="#323233"></svg-icon>
+                          color="#3f98eb"></svg-icon>
             </cell>
             <row-list :list-data="courses" class="nearly-study" v-if="isLogin && courses.length>0">
                 <template v-slot:item="{item}">
@@ -46,28 +46,28 @@
             <cell-group :border="false">
                 <cell title="我的考试" is-link :to="{name:'user-exam'}">
                     <svg-icon slot="icon" data="@icon/paper.svg" class="cell-svg-left-icon"
-                              color="#323233"></svg-icon>
+                              color="#ff2121"></svg-icon>
                 </cell>
                 <cell title="我的证书" is-link>
                     <svg-icon slot="icon" data="@icon/certificate.svg" class="cell-svg-left-icon"
-                              color="#323233"></svg-icon>
+                              color="#ffdf0c"></svg-icon>
                 </cell>
             </cell-group>
         </section>
         <section>
             <cell title="账户余额" is-link :to="{name:'user-balance'}">
-                <svg-icon slot="icon" data="@icon/coin.svg" class="cell-svg-left-icon" color="#323233"></svg-icon>
+                <svg-icon slot="icon" data="@icon/coin.svg" class="cell-svg-left-icon" color="#ffdf0c"></svg-icon>
                 <span style="vertical-align: middle;margin-left: 1vw">{{balance}}</span>
             </cell>
         </section>
         <section>
             <cell-group :border="false">
                 <cell title="邀请好友" clickable :to="{name:'user-invite'}" is-link>
-                    <svg-icon slot="icon" data="@icon/invite.svg" class="cell-svg-left-icon" color="#323233"></svg-icon>
+                    <svg-icon slot="icon" data="@icon/invite.svg" class="cell-svg-left-icon" color="#00f6d0"></svg-icon>
                 </cell>
                 <cell title="反馈建议" clickable is-link :to="{name:'user-feedback'}">
                     <svg-icon slot="icon" data="@icon/feedback.svg" class="cell-svg-left-icon"
-                              color="#323233"></svg-icon>
+                              color="#3f98eb"></svg-icon>
                 </cell>
             </cell-group>
         </section>
