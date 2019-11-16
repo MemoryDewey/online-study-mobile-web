@@ -38,7 +38,7 @@
             async getInviteCode() {
                 let res = await getInviteCode();
                 if (res) {
-                    this.inviteCode = res.code;
+                    this.inviteCode = res.inviteCode;
                     this.inviteUrl = getInviteUrl(`/passport/login-phone?invite=${this.inviteCode}`);
                     QRCode.toDataURL(this.inviteUrl).then(url => {
                         this.qrCodeUrl = url;
