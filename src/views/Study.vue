@@ -172,11 +172,11 @@
         },
         created() {
             checkApply({courseID: this.$route.params.id}).then(async res => {
-                this.isApply = res.status === 1;
-                this.isLogin = res.status !== 401;
-                if (res.status === -1) {
+                this.isApply = res.code === 1000;
+                this.isLogin = res.code !== 401;
+                if (res.code === 2000) {
                     res = await checkBstConfirmation({courseID: this.$route.params.id});
-                    this.bstConfirmBtnShow = res.status === 3;
+                    this.bstConfirmBtnShow = res.code === 1003;
                 }
             });
         },

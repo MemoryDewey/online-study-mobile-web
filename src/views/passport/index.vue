@@ -41,9 +41,9 @@
         },
         beforeRouteEnter(to, from, next) {
             checkLogin().then(res => {
-                if (res.status === 1) next('/');
+                if (res.code === 1000) next('/');
                 else next();
-            }).catch(() => next());
+            })
         }
     }
 </script>

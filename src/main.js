@@ -28,7 +28,7 @@ router.beforeEach((to, from, next) => {
         if (store.state.loginState) next();
         else {
             checkLogin().then(res => {
-                if (res.status === 1) {
+                if (res.code === 1000) {
                     store.commit('login', {
                         nickname: res.data.nickname, avatarUrl: res.data.avatarUrl
                     });

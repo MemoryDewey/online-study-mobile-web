@@ -14,15 +14,14 @@ service.interceptors.request.use(config => {
 });
 service.interceptors.response.use(
     response => {
-        const res = response.data;
-        if (res.status === 0) {
-            Toast.fail({
-                forbidClick: true,
-                loadingType: 'spinner',
-                message: res.msg || '错误'
-            });
-            return false;
-        } else return res;
+        return response.data;
+    },
+    error => {
+        if (error.response.data.code) Toast.fail({
+            forbidClick: true,
+            loadingType: 'spinner',
+            message: error.response.data.msg || '错误'
+        });
     }
 );
 

@@ -247,7 +247,7 @@
                         if (newFile.success) {
                             Toast.clear();
                             const response = newFile.response;
-                            if (response.status === 1) {
+                            if (response) {
                                 Toast.success('修改成功');
                                 this.userInfo.avatarUrl = response.avatarUrl;
                                 this.$store.commit('changeInfo', {key: 'avatarUrl', value: response.avatarUrl});
@@ -267,7 +267,7 @@
                     if (newFile.success !== oldFile.success) {
                         Toast.clear();
                         const response = newFile.response;
-                        if (response.status === 1) {
+                        if (response) {
                             Toast.success('修改成功');
                             this.userInfo.avatarUrl = response.avatarUrl;
                             this.$store.commit('changeInfo', {key: 'avatarUrl', value: response.avatarUrl});

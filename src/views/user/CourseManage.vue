@@ -8,7 +8,7 @@
                               :immediate-check="false" @load="allListOnload">
                         <li class="tab-list-item" v-for="(course,index) in allCourse.courses"
                             :key="index">
-                            <div class="tab-item-status">报名成功</div>
+                            <div class="tab-item-">报名成功</div>
                             <div class="tab-item-time">
                                 <h3 class="tab-time">{{course['joinTime']}}</h3>
                             </div>
