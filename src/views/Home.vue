@@ -68,9 +68,8 @@
     import CourseCardCol from "@/components/CourseCardCol"
     import RowList from "@/components/RowList"
     import {NavBar, Swipe, SwipeItem, Search, Row, Col, Divider} from 'vant'
-    import {getIndexBanner, getIndexCourse} from "@/api/home"
+    import {getIndexBanner, getIndexCourse, getHomeCourse} from "@/api/home"
     import {getImageUrl} from '@/utils/url'
-    import {getDiscount, getRecommend} from "@/api/course"
 
     export default {
         name: 'home',
@@ -93,35 +92,27 @@
             }
         },
         methods: {
-            async getNewCourse() {
-                const res = await getIndexCourse();
-                if (res) this.newCourses = res['courses'];
-            },
             async getBanner() {
                 const res = await getIndexBanner();
                 if (res) this.banners = res.banners;
                 this.indexShow = true;
             },
-            async getDiscountCourse() {
-                const res = await getDiscount();
-                if (res) {
-                    for (let course of res.courses) {
-                        if (new Date(course['discountTime']).getTime() > new Date().getTime()) {
-                            this.discountCourse.push({
-                                id: course['courseID'],
-                                title: course['courseName'],
-                                image: course['courseImage'],
-                                sales: course['applyCount'],
-                                originPrice: course['price'],
-                                price: (course['price'] * course['discount'] / 100).toFixed(2)
-                            })
-                        }
+            async getHomeCourse() {
+                const res = await getHomeCourse();
+                this.newCourses = res['newest'];
+                this.recommendCourse = res['recommend'];
+                for (let course of res['discount']) {
+                    if (new Date(course['discountTime']).getTime() > new Date().getTime()) {
+                        this.discountCourse.push({
+                            id: course['courseID'],
+                            title: course['courseName'],
+                            image: course['courseImage'],
+                            sales: course['applyCount'],
+                            originPrice: course['price'],
+                            price: (course['price'] * course['discount'] / 100).toFixed(2)
+                        })
                     }
                 }
-            },
-            async getRecommendCourse() {
-                const res = await getRecommend();
-                if (res) this.recommendCourse = res['course'];
             },
             searchCourse(value) {
                 this.$router.push({path: '/course', query: {search: value}});
@@ -132,9 +123,7 @@
         },
         async created() {
             this.getBanner();
-            this.getNewCourse();
-            this.getDiscountCourse();
-            this.getRecommendCourse();
+            this.getHomeCourse();
         }
     }
 </script>

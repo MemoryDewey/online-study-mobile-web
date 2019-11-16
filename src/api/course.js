@@ -3,8 +3,6 @@ import {get, post} from "@/utils/request";
 export const getCourseSystemType = () => get('/course/list/system-type');
 export const getListPage = data => post('/course/list/page', data);
 export const getList = params => get('/course/list', params);
-export const getRecommend = () => get('/course/list/recommend');
-export const getDiscount = () => get('/course/list/discount');
 export const getCollection = () => get('/course/list/collection-all');
 
 export const getInfo = params => get('/course/information', params);
