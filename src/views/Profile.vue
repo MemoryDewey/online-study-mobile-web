@@ -108,7 +108,7 @@
         created() {
             if (!this.$store.state.loginState) {
                 checkLogin().then(res => {
-                    if (res) {
+                    if (res.code === 1000) {
                         this.isLogin = true;
                         this.userInfo = res.data;
                         this.$store.commit('login', res.data);
