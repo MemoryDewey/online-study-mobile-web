@@ -140,7 +140,7 @@
                 if (res) {
                     this.allCourse.page = res['pageSum'];
                     this.allCourse.loading = false;
-                    for (let course of res['course']) {
+                    for (let course of res['courses']) {
                         this.allCourse.courses.push(course);
                     }
                     this.allCourse.loadingTimes++;
