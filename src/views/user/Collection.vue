@@ -7,17 +7,17 @@
                         <checkbox v-if="!titleSet" :name="item['courseID']" ref="checkboxes" slot="icon"/>
                         <van-row class="collection-cell">
                             <van-col :span="titleSet?9:10">
-                                <img v-lazy="getImageUrl(item['CourseInformation']['courseImage'])" alt>
+                                <img v-lazy="getImageUrl(item['courseImage'])" alt>
                             </van-col>
                             <van-col :span="titleSet?15:14">
-                                <h3 class="course-name">{{item['CourseInformation']['courseName']}}</h3>
+                                <h3 class="course-name">{{item['courseName']}}</h3>
                                 <p class="course-info">
-                                <span class="course-price" :class="{free:item['CourseInformation']['price']===0}">
+                                <span class="course-price" :class="{free:item['price']===0}">
                                     {{
-                                    item['CourseInformation']['price']===0?'免费'
-                                    : `${item['CourseInformation']['price']} 课程币`
+                                    item['price']===0?'免费'
+                                    : `${item['price']} 课程币`
                                     }}</span>
-                                    <span class="course-apply">{{item['CourseInformation']['applyCount']}}人报名</span>
+                                    <span class="course-apply">{{item['applyCount']}}人报名</span>
                                 </p>
                             </van-col>
                         </van-row>
