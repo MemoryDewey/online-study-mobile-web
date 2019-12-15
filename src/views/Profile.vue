@@ -35,9 +35,9 @@
                 <template v-slot:item="{item}">
                     <div class="study-item" @click="routerGO(item['courseID'])">
                         <div class="study-image">
-                            <img v-lazy="getImageUrl(item['CourseInformation']['courseImage'])" alt>
+                            <img v-lazy="getImageUrl(item['courseImage'])" alt>
                         </div>
-                        <div class="study-content">{{item['CourseInformation']['courseName']}}</div>
+                        <div class="study-content">{{item['courseName']}}</div>
                     </div>
                 </template>
             </row-list>
