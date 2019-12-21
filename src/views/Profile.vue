@@ -124,7 +124,7 @@
                 this.isLogin = true;
                 this.userInfo = this.$store.state.userInfo;
                 getLatestBrowseCourse().then(res => {
-                    this.courses = res['course'];
+                    this.courses = res.courses;
                 });
                 getWalletInfo().then(res => {
                     if (res) this.balance = parseFloat(res['wallet'].balance).toFixed(2);

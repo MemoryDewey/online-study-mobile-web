@@ -2,13 +2,13 @@
     <div class="wallet-info" v-show="show">
         <div class="flex-top">
             <div class="wallet-balance course-coin">
-                <svg-icon data="@icon/coin.svg" class="coin-svg" color="#fff"></svg-icon>
+                <svg-icon data="@icon/coin.svg" class="coin-svg" color="#fff"/>
                 <span class="wallet-balance-info">课程币</span>
                 <span class="wallet-balance-info balance">{{balance}}</span>
                 <span class="balance-btn" @click="toRecharge">充值</span>
             </div>
             <div class="wallet-balance bst">
-                <svg-icon data="@icon/bst-coin.svg" class="coin-svg" color="#fff"></svg-icon>
+                <svg-icon data="@icon/bst-coin.svg" class="coin-svg" color="#fff"/>
                 <span class="wallet-balance-info">B S T</span>
                 <span class="wallet-balance-info balance">{{bstBalance===-1?'未绑定':bstBalance}}</span>
                 <span class="balance-btn" @click="getBstBalance(true)">刷新</span>
@@ -17,12 +17,12 @@
         <cell-group>
             <template v-if="bstAddress">
                 <cell title="钱包账号" icon="paid" @click="openWalletInfoDialog" is-link/>
-                <cell title="更换账号" icon="exchange" @click="bindDialogShow=true" is-link></cell>
+                <cell title="更换账号" icon="exchange" @click="bindDialogShow=true" is-link/>
             </template>
-            <cell v-else title="添加账号" icon="add-o" @click="bindDialogShow=true" is-link></cell>
-            <cell title="交易记录" icon="orders-o" is-link :to="{name:'user-balance-log'}"></cell>
+            <cell v-else title="添加账号" icon="add-o" @click="bindDialogShow=true" is-link/>
+            <cell title="交易记录" icon="orders-o" is-link :to="{name:'user-balance-log'}"/>
             <cell title="BST账单" :to="{name:'wallet-bst-log'}" is-link>
-                <svg-icon data="@icon/bst-orders.svg" slot="icon"></svg-icon>
+                <svg-icon data="@icon/bst-orders.svg" slot="icon"/>
             </cell>
         </cell-group>
         <van-dialog v-model="walletInfoShow" class="wallet-info-dialog" show-cancel-button
@@ -39,8 +39,7 @@
         <van-dialog v-model="bindDialogShow" title="请输入 BST 钱包密钥" class="wallet-change-dialog"
                     @confirm="setBstAddress" show-cancel-button>
             <div class="dialog-hint">只有绑定钱包后才能进行购买课程操作</div>
-            <van-input v-model="bindAddress" clearable
-                       placeholder="每个用户只能绑定一个钱包哦"></van-input>
+            <van-input v-model="bindAddress" clearable placeholder="每个用户只能绑定一个钱包哦"/>
         </van-dialog>
     </div>
 </template>
