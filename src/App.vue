@@ -32,14 +32,6 @@
         components: {
             Tabbar, TabbarItem
         },
-        mounted() {
-            document.addEventListener("deviceready", onDeviceReady, false);
-            let _this = this;
-
-            function onDeviceReady() {
-                _this.msg = "cordove device ready.";
-            }
-        },
     }
 </script>
 

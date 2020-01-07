@@ -5,7 +5,7 @@
             <section>
                 <cell-group>
                     <cell title="头像" is-link class="cell-avatar" @click="avatarDialogShow = true">
-                        <van-image :src="getImageUrl(userInfo.avatarUrl)" round></van-image>
+                        <van-image :src="getImageUrl(userInfo.avatarUrl)" round/>
                     </cell>
                     <cell title="昵称" is-link :to="{name:'user-change-nickname'}">{{userInfo.nickname}}</cell>
                     <cell title="姓名" is-link :to="{name:'user-change-real-name'}">{{realName}}</cell>
@@ -18,28 +18,25 @@
             <section>
                 <cell-group>
                     <cell title="绑定手机" value="去修改" is-link
-                          :to="{name:'user-change-phone',query:{phone:this.$store.state.userInfo.mobile}}"></cell>
-                    <cell title="绑定邮箱" :value="email?'解除绑定':'去绑定'" @click="bindEmail" is-link></cell>
+                          :to="{name:'user-change-phone',query:{phone:this.$store.state.userInfo.mobile}}"/>
+                    <cell title="绑定邮箱" :value="email?'解除绑定':'去绑定'" @click="bindEmail" is-link/>
                 </cell-group>
             </section>
             <section>
-                <cell title="注销" @click="logout" is-link></cell>
+                <cell title="注销" @click="logout" is-link/>
             </section>
             <van-dialog v-model="avatarDialogShow" title="头像选择" confirmButtonText="取消">
-                <grid :column-num="3" clickable square>
-                    <grid-item text="拍照" @click="capturePicture">
-                        <svg-icon slot="icon" data="@icon/camera.svg"></svg-icon>
-                    </grid-item>
+                <grid :column-num="2" clickable square>
                     <label class="van-grid-item van-grid-item--square" :for="'avatar'"
-                           style="flex-basis: 33.3333%; padding-top: 33.3333%;">
+                           style="flex-basis: 50%; padding-top: 50%;">
                         <div class="van-grid-item__content van-grid-item__content--center
                          van-grid-item__content--square van-grid-item__content--clickable van-hairline">
-                            <svg-icon data="@icon/picture.svg"></svg-icon>
+                            <svg-icon data="@icon/picture.svg"/>
                             <span class="van-grid-item__text">相册</span>
                         </div>
                     </label>
                     <grid-item text="默认" @click="setDefaultAvatar">
-                        <svg-icon slot="icon" data="@icon/round-picture.svg"></svg-icon>
+                        <svg-icon slot="icon" data="@icon/round-picture.svg"/>
                     </grid-item>
                 </grid>
             </van-dialog>
@@ -53,24 +50,24 @@
             <van-dialog v-model="birthdayDialogShow" title="生日选择" :close-on-click-overlay="true"
                         class="dialog-border" @confirm="setBirthday">
                 <datetime-picker v-model="birthday" type="date" :min-date="minDate" :max-date="maxDate"
-                                 :show-toolbar="false" :visible-item-count="3"></datetime-picker>
+                                 :show-toolbar="false" :visible-item-count="3"/>
             </van-dialog>
             <van-dialog v-model="sexDialogShow" title="性别选择" :close-on-click-overlay="true"
                         :showConfirmButton="false">
                 <grid :column-num="3" clickable square>
                     <grid-item @click="setSex('M')">
-                        <svg-icon slot="icon" data="@icon/male.svg" color="#1296db"></svg-icon>
+                        <svg-icon slot="icon" data="@icon/male.svg" color="#1296db"/>
                         <span slot="text" class="item-text" style="color: #1296db">男</span>
                     </grid-item>
                     <grid-item @click="setSex('S')">
                         <template slot="icon">
-                            <svg-icon data="@icon/question.svg" color="#515151"></svg-icon>
+                            <svg-icon data="@icon/question.svg" color="#515151"/>
                             <span slot="text" class="item-text" style="color: #515151">保密</span>
                         </template>
                     </grid-item>
                     <grid-item @click="setSex('F')">
                         <template slot="icon">
-                            <svg-icon data="@icon/female.svg" color="#d4237a"></svg-icon>
+                            <svg-icon data="@icon/female.svg" color="#d4237a"/>
                             <span slot="text" class="item-text" style="color: #d4237a">女</span>
                         </template>
                     </grid-item>
@@ -79,8 +76,8 @@
         </main>
         <article v-else>
             <nav-bar title="裁剪" @click-left="edit = false" @click-right="cropImage">
-                <svg-icon class="nav-bar-icon" slot="left" data="@icon/close.svg"></svg-icon>
-                <svg-icon class="nav-bar-icon" slot="right" data="@icon/choose.svg"></svg-icon>
+                <svg-icon class="nav-bar-icon" slot="left" data="@icon/close.svg"/>
+                <svg-icon class="nav-bar-icon" slot="right" data="@icon/choose.svg"/>
             </nav-bar>
             <vue-cropper
                     ref="cropper" :view-mode="1" class="cropper-dialog" :auto-crop-area="1"
@@ -89,22 +86,22 @@
             </vue-cropper>
             <tabbar fixed>
                 <tabbar-item @click="rotate(-90)">
-                    <svg-icon slot="icon" data="@icon/rotate-left.svg" class="tab-bar-icon"></svg-icon>
+                    <svg-icon slot="icon" data="@icon/rotate-left.svg" class="tab-bar-icon"/>
                 </tabbar-item>
                 <tabbar-item @click="rotate(90)">
-                    <svg-icon slot="icon" data="@icon/rotate-right.svg" class="tab-bar-icon"></svg-icon>
+                    <svg-icon slot="icon" data="@icon/rotate-right.svg" class="tab-bar-icon"/>
                 </tabbar-item>
                 <tabbar-item @click="reset">
-                    <svg-icon slot="icon" data="@icon/reset.svg" class="tab-bar-icon"></svg-icon>
+                    <svg-icon slot="icon" data="@icon/reset.svg" class="tab-bar-icon"/>
                 </tabbar-item>
                 <tabbar-item @click.prevent="flipX">
-                    <svg-icon slot="icon" data="@icon/flip.svg" class="tab-bar-icon"></svg-icon>
+                    <svg-icon slot="icon" data="@icon/flip.svg" class="tab-bar-icon"/>
                 </tabbar-item>
                 <tabbar-item @click="zoom(0.2)">
-                    <svg-icon slot="icon" data="@icon/zoom-in.svg" class="tab-bar-icon"></svg-icon>
+                    <svg-icon slot="icon" data="@icon/zoom-in.svg" class="tab-bar-icon"/>
                 </tabbar-item>
                 <tabbar-item @click="zoom(-0.2)">
-                    <svg-icon slot="icon" data="@icon/zoom-out.svg" class="tab-bar-icon"></svg-icon>
+                    <svg-icon slot="icon" data="@icon/zoom-out.svg" class="tab-bar-icon"/>
                 </tabbar-item>
             </tabbar>
         </article>
@@ -188,28 +185,6 @@
                     this.sex = res.data.sex;
                     this.realName = res.data.realName;
                     this.email = res.data.email;
-                }
-            },
-            capturePicture() {
-                if (!navigator.camera) Toast.fail('您的设备暂时不支持此功能');
-                else {
-                    let _this = this;
-                    navigator.camera.getPicture(onSuccess, onFail, {
-                        quality: 50,
-                        destinationType: Camera.DestinationType.FILE_URI,
-                        sourceType: 1
-                    });
-
-                    function onSuccess(imageURI) {
-                        _this.edit = true;
-                        _this.cropperImageUrl = imageURI;
-                        _this.avatarDialogShow = false;
-                        _this.capture = true;
-                    }
-
-                    function onFail() {
-                        this.edit = false;
-                    }
                 }
             },
             fileInputFilter(newFile, oldFile, prevent) {

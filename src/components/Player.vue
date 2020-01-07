@@ -1,6 +1,6 @@
 <template>
     <div id="vue-player">
-        <video ref="player" playsinline controls></video>
+        <video ref="player" playsinline controls/>
     </div>
 </template>
 
@@ -56,19 +56,9 @@
             };
             this.player.on('enterfullscreen', event => {
                 document.getElementsByClassName("plyr__volume")[0].hidden = false;
-                screen.orientation.lock('landscape').then(() => {
-                    StatusBar.hide();
-                }).catch(err => {
-                    console.log("error:" + err);
-                });
             });
             this.player.on('exitfullscreen', event => {
                 document.getElementsByClassName("plyr__volume")[0].hidden = true;
-                screen.orientation.lock('portrait').then(() => {
-                    StatusBar.show();
-                }).catch(err => {
-                    console.log("error:" + err);
-                });
             });
         },
         watch: {
