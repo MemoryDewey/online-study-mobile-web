@@ -10,7 +10,7 @@
                       :title="log['Invited'].nickname"
                       :value="log['Invited']['UserPassport'].phone"
                       :label="log['createdAt']"
-                      clickable></cell>
+                      clickable/>
             </van-list>
         </div>
     </div>

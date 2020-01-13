@@ -132,6 +132,10 @@ export default new Router({
                 path: '/exam/:id', name: 'user-exam-question',
                 component: () => import('@/views/user/exam/Exam'),
                 meta: {title: '课程考试', requireAuth: true}
+            }, {
+                path: '/certificate', name: 'user-certificate',
+                component: () => import('@/views/user/Certificates'),
+                meta: {title: '我的证书', requireAuth: true}
             }]
         },
         {

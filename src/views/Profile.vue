@@ -6,7 +6,7 @@
                     <van-row class="avatar-info">
                         <van-col :span="6">
                             <div class="avatar" :class="{'not-login':!isLogin}">
-                                <icon v-if="!isLogin" name="manager" size="30px"></icon>
+                                <icon v-if="!isLogin" name="manager" size="30px"/>
                                 <img v-else :src="getImageUrl(userInfo.avatarUrl)" alt>
                             </div>
                         </van-col>
@@ -19,9 +19,9 @@
                 </cell>
                 <cell class="header-second">
                     <grid :column-num="3" :border="false" clickable>
-                        <grid-item icon="orders-o" text="课程管理" :to="{name:'user-course-manage'}"></grid-item>
-                        <grid-item icon="paid" text="我的钱包" :to="{name:'wallet-info'}"></grid-item>
-                        <grid-item icon="like-o" text="收藏" :to="{name:'user-collection'}"></grid-item>
+                        <grid-item icon="orders-o" text="课程管理" :to="{name:'user-course-manage'}"/>
+                        <grid-item icon="paid" text="我的钱包" :to="{name:'wallet-info'}"/>
+                        <grid-item icon="like-o" text="收藏" :to="{name:'user-collection'}"/>
                     </grid>
                 </cell>
             </cell-group>
@@ -29,7 +29,7 @@
         <section>
             <cell title="最近在学" :border="false">
                 <svg-icon slot="icon" data="@icon/history.svg" class="cell-svg-left-icon"
-                          color="#3f98eb"></svg-icon>
+                          color="#3f98eb"/>
             </cell>
             <row-list :list-data="courses" class="nearly-study" v-if="isLogin && courses.length>0">
                 <template v-slot:item="{item}">
@@ -46,28 +46,28 @@
             <cell-group :border="false">
                 <cell title="我的考试" is-link :to="{name:'user-exam'}">
                     <svg-icon slot="icon" data="@icon/paper.svg" class="cell-svg-left-icon"
-                              color="#ff2121"></svg-icon>
+                              color="#ff2121"/>
                 </cell>
-                <cell title="我的证书" is-link>
+                <cell title="我的证书" is-link :to="{name:'user-certificate'}">
                     <svg-icon slot="icon" data="@icon/certificate.svg" class="cell-svg-left-icon"
-                              color="#ffdf0c"></svg-icon>
+                              color="#ffdf0c"/>
                 </cell>
             </cell-group>
         </section>
         <section>
             <cell title="账户余额" is-link :to="{name:'user-balance'}">
-                <svg-icon slot="icon" data="@icon/coin.svg" class="cell-svg-left-icon" color="#ffdf0c"></svg-icon>
+                <svg-icon slot="icon" data="@icon/coin.svg" class="cell-svg-left-icon" color="#ffdf0c"/>
                 <span style="vertical-align: middle;margin-left: 1vw">{{balance}}</span>
             </cell>
         </section>
         <section>
             <cell-group :border="false">
                 <cell title="邀请好友" clickable :to="{name:'user-invite'}" is-link>
-                    <svg-icon slot="icon" data="@icon/invite.svg" class="cell-svg-left-icon" color="#00f6d0"></svg-icon>
+                    <svg-icon slot="icon" data="@icon/invite.svg" class="cell-svg-left-icon" color="#00f6d0"/>
                 </cell>
                 <cell title="反馈建议" clickable is-link :to="{name:'user-feedback'}">
                     <svg-icon slot="icon" data="@icon/feedback.svg" class="cell-svg-left-icon"
-                              color="#3f98eb"></svg-icon>
+                              color="#3f98eb"/>
                 </cell>
             </cell-group>
         </section>

@@ -4,6 +4,7 @@ export const getCourseSystemType = () => get('/course/list/system-type');
 export const getListPage = data => post('/course/list/page', data);
 export const getList = params => get('/course/list', params);
 export const getCollection = () => get('/course/list/collection-all');
+export const getCertificate = params => get('/course/list/certificate', params);
 
 export const getInfo = params => get('/course/information', params);
 export const getLive = params => get('/course/information/live', params);
