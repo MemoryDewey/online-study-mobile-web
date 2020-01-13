@@ -90,7 +90,7 @@
             </tab>
         </tabs>
         <div v-else class="list-no-data">
-            <svg-icon class="no-data-icon" data="@icon/page-null.svg" color="#999"></svg-icon>
+            <svg-icon class="no-data-icon" data="@icon/page-null.svg" color="#999"/>
             <div class="no-data-text">暂无报名的课程</div>
         </div>
     </div>
