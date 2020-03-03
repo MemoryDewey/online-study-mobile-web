@@ -10,7 +10,7 @@
 
 <script>
     import {NavBar, Field, Toast} from 'vant'
-    import {updatePersonal} from "@/api/profile";
+    import {updatePersonal} from "@/api/personal";
 
     export default {
         name: "ChangeName",

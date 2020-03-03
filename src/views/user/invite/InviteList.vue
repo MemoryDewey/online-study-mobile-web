@@ -18,7 +18,7 @@
 
 <script>
     import {List, Cell, Toast} from 'vant'
-    import {getInvite} from "@/api/profile";
+    import {getInvite} from "@/api/personal";
 
     export default {
         name: "InviteList",

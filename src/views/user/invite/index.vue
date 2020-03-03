@@ -19,7 +19,7 @@
 <script>
     import {Toast} from 'vant'
     import QRCode from 'qrcode'
-    import {getInviteCode} from "@/api/profile"
+    import {getInviteCode} from "@/api/personal"
     import {getInviteUrl} from "@/utils/url";
 
     export default {

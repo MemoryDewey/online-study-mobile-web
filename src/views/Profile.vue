@@ -79,7 +79,7 @@
     import RowList from "@/components/RowList"
     import {checkLogin} from "@/api/passport"
     import {getImageUrl} from '@/utils/url'
-    import {getLatestBrowseCourse} from "@/api/profile"
+    import {getLatestBrowseCourse} from "@/api/personal"
     import {getWalletInfo} from "@/api/wallet"
 
     export default {

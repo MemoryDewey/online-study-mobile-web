@@ -29,7 +29,7 @@
 
 <script>
     import {Radio, RadioGroup, CellGroup, Cell, Field, Button, Toast} from "vant"
-    import {getFeedbackType, submitFeedback} from "@/api/profile";
+    import {getFeedbackType, submitFeedback} from "@/api/personal";
 
     export default {
         name: "Feedback",

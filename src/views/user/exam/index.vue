@@ -33,7 +33,7 @@
 </template>
 
 <script>
-    import {getExamList} from "@/api/profile"
+    import {getExamList} from "@/api/personal"
     import {Toast, List, Button, Notify} from "vant"
     import {getImageUrl} from "@/utils/url"
 

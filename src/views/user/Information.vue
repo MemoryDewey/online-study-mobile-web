@@ -114,7 +114,7 @@
         GridItem, Grid, Cell, Dialog, DatetimePicker, Toast
     } from 'vant'
     import {parseTime} from '@/utils/time'
-    import {getPersonalInfo, setDefaultAvatar, updatePersonal} from "@/api/profile"
+    import {getPersonalInfo, setDefaultAvatar, updatePersonal} from "@/api/personal"
     import FileUpload from 'vue-upload-component'
     import VueCropper from 'vue-cropperjs'
     import 'cropperjs/dist/cropper.css'

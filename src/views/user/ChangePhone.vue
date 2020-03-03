@@ -51,7 +51,7 @@
 <script>
     import {Field, Button, CountDown, Toast} from 'vant'
     import {sendMessage} from "@/api/passport";
-    import {changePhone} from "@/api/profile";
+    import {changePhone} from "@/api/personal";
 
     export default {
         name: "ChangePhone",

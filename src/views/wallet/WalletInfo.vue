@@ -47,7 +47,7 @@
 <script>
     import {Cell, CellGroup, Button, Field, Toast, Dialog} from 'vant'
     import {getBstBalance, getKey, getWalletInfo, refreshRecharge} from "@/api/wallet"
-    import {deleteBstWalletAddress, getPersonalInfo, setBstWalletAddress} from "@/api/profile"
+    import {deleteBstWalletAddress, getPersonalInfo, setBstWalletAddress} from "@/api/personal"
     import {getImageUrl} from '@/utils/url'
     import QRCode from 'qrcode'
     import NodeRSA from 'node-rsa'
