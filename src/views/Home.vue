@@ -37,10 +37,10 @@
                         <router-link to="/course" tag="span">全部</router-link>
                     </van-col>
                 </van-row>
-                <course-card-col v-for="course in newCourses" :key="course['courseID']" :id="course['courseID']"
-                                 :title="course['courseName']" :desc="course['courseDescription']"
-                                 :rate="course['favorableRate']" :sales="course['applyCount']"
-                                 :image="course['courseImage']" :price="course['price']">
+                <course-card-col v-for="course in newCourses" :key="course.id" :id="course.id"
+                                 :title="course.name" :desc="course.description"
+                                 :rate="course.rate" :sales="course['apply']"
+                                 :image="course.image" :price="course.price">
                 </course-card-col>
             </div>
             <div class="main-item">
@@ -50,10 +50,10 @@
                         热门课程
                     </van-col>
                 </van-row>
-                <course-card-col v-for="course in recommendCourse" :key="course['courseID']" :id="course['courseID']"
-                                 :title="course['courseName']" :desc="course['courseDescription']"
-                                 :rate="course['favorableRate']" :sales="course['applyCount']"
-                                 :image="course['courseImage']" :price="course['price']">
+                <course-card-col v-for="course in recommendCourse" :key="course.id" :id="course.id"
+                                 :title="course.name" :desc="course.description"
+                                 :rate="course.rate" :sales="course['apply']"
+                                 :image="course.image" :price="course.price">
                 </course-card-col>
             </div>
             <div class="main-item">
@@ -68,7 +68,7 @@
     import CourseCardCol from "@/components/CourseCardCol"
     import RowList from "@/components/RowList"
     import {NavBar, Swipe, SwipeItem, Search, Row, Col, Divider} from 'vant'
-    import {getIndexBanner, getIndexCourse, getHomeCourse} from "@/api/home"
+    import {getIndexBanner, getHomeCourse} from "@/api/home"
     import {getImageUrl} from '@/utils/url'
 
     export default {
@@ -101,15 +101,15 @@
                 const res = await getHomeCourse();
                 this.newCourses = res['newest'];
                 this.recommendCourse = res['recommend'];
-                for (let course of res['discount']) {
-                    if (new Date(course['discountTime']).getTime() > new Date().getTime()) {
+                for (let course of res.discount) {
+                    if (new Date(course.discountTime).getTime() > new Date().getTime()) {
                         this.discountCourse.push({
-                            id: course['courseID'],
-                            title: course['courseName'],
-                            image: course['courseImage'],
-                            sales: course['applyCount'],
-                            originPrice: course['price'],
-                            price: (course['price'] * course['discount'] / 100).toFixed(2)
+                            id: course.id,
+                            title: course.name,
+                            image: course.image,
+                            sales: course.apply,
+                            originPrice: course.price,
+                            price: (course.price * course.discount / 100).toFixed(2)
                         })
                     }
                 }

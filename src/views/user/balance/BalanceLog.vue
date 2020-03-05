@@ -6,7 +6,7 @@
                   :title="log['details']" :label="setStatusText(log['status'])">
                 <span :style="{color:log['type']==='Income'?'#1989fa':'#323233'}">{{
                     `${log['type']==='Income'?'+':'-'}${log['amount']}`}}</span>
-                <div>{{log['createdAt']}}</div>
+                <div>{{log.time}}</div>
             </cell>
         </van-list>
         <div v-else class="list-no-data">

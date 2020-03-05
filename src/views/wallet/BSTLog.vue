@@ -7,7 +7,7 @@
                 <div slot="label" class="tx-hash van-ellipsis">{{log['txHash']}}</div>
                 <span :style="{color:log['productType']==='Expend'?'#1989fa':'#323233'}">{{
                     `${log['productType']==='Expend'?'+':'-'}${log['amount']}`}} BST</span>
-                <div>{{log['createdAt']}}</div>
+                <div>{{log.time}}</div>
             </cell>
         </van-list>
         <div v-else class="list-no-data">

@@ -10,18 +10,18 @@
             <li class="tab-list-item" v-for="(certificate,index) in certificates"
                 :key="index">
                 <div class="tab-item-time">
-                    <h3 class="tab-time">{{certificate['createdAt']}}</h3>
+                    <h3 class="tab-time">{{certificate.time}}</h3>
                 </div>
                 <router-link tag="div" class="tab-item-content"
-                             :to="{name: 'course-study', params: {id: certificate['productID']}}">
+                             :to="{name: 'course-study', params: {id: certificate['courseId']}}">
                     <img class="tab-item-cover"
-                         v-lazy="getImageUrl(certificate['CourseInformation']['courseImage'])"
+                         v-lazy="getImageUrl(certificate['courseImage'])"
                          alt>
                     <div class="tab-item-main">
-                        <h2 class="tab-item-title">{{certificate['CourseInformation']['courseName']}}</h2>
+                        <h2 class="tab-item-title">{{certificate['courseName']}}</h2>
                     </div>
                 </router-link>
-                <div class="tab-item-bottom">证书编号：{{certificate['id']}}</div>
+                <div class="tab-item-bottom">证书编号：{{certificate.id}}</div>
             </li>
         </van-list>
     </div>

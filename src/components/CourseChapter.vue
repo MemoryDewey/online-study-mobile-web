@@ -18,7 +18,7 @@
                 <collapse-item v-for="chapter in chapters" :key="chapter.number"
                                :name="chapter.number" :title="chapter.name">
                     <cell v-for="video in chapter.video" :key="video.id" class="van-ellipsis" :title="video.name"
-                          :label="`${video.duration}分钟`" :border="false" clickable @click="setVideo(video.url)">
+                          :label="`${video.duration}分钟`" :border="false" clickable @click="setVideo(video['mediaUrl'])">
                         <svg-icon class="video-icon" slot="icon" data="@icon/video.svg"></svg-icon>
                     </cell>
                 </collapse-item>
@@ -47,8 +47,8 @@
                 liveInfo: {live: false, streamName: null, state: false, title: null}
             }
         },
-        watch:{
-            isApply(){
+        watch: {
+            isApply() {
                 this.getChapter();
             }
         },
@@ -68,18 +68,18 @@
                     isLive: false, videoUrl: url
                 })
             },
-            getChapter(){
-                getVideo({courseID: this.$route.params.id}).then(res => {
+            getChapter() {
+                getVideo({id: this.$route.params.id}).then(res => {
                     this.chapters = res.data;
-                    this.videoNum = res.count;
+                    this.videoNum = res['count'];
                     this.loadFinish = true;
                 });
                 if (this.live) {
-                    getLive({courseID: this.$route.params.id}).then(res => {
-                        this.liveInfo.state = res.state;
-                        this.liveInfo.live = res.live;
-                        this.liveInfo.streamName = res.streamName;
-                        this.liveInfo.title = res.title;
+                    getLive({id: this.$route.params.id}).then(res => {
+                        this.liveInfo.state = res['state'];
+                        this.liveInfo.live = res['live'];
+                        this.liveInfo.streamName = res['streamName'];
+                        this.liveInfo.title = res['title'];
                     });
                 }
             }

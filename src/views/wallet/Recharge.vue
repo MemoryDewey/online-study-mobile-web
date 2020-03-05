@@ -56,7 +56,7 @@
         methods: {
             async getBstPrice() {
                 let res = await getBstValue();
-                if (res) this.bstPrice = res['bstValue'];
+                if (res) this.bstPrice = res.price;
                 this.rechargeValue = `${(50 / this.bstPrice).toFixed(2)} BST`
             },
             async getWallet() {

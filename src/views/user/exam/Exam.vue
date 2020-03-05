@@ -40,7 +40,7 @@
                     message: '确认提交试卷？提交后不可更改'
                 }).then(async () => {
                     let res = await addExam({
-                        courseID: this.$route.params.id,
+                        id: this.$route.params.id,
                         answer: this.radio,
                         exam: {type: 'exam', id: this.$route.params.id},
                     });
@@ -54,12 +54,12 @@
             this.$emit('setTab', false);
         },
         created() {
-            getExam({courseID: this.$route.params.id}).then(res => {
-                for (let i in res.exam) this.radio.push('');
-                this.exam = res.exam;
-                if (res.finished.state) {
+            getExam({id: this.$route.params.id}).then(res => {
+                for (let i in res['exam']) this.radio.push('');
+                this.exam = res['exam'];
+                if (res['finished'].state) {
                     this.disabled = true;
-                    this.radio = res.finished.result.map(x => x['choose']);
+                    this.radio = res['finished'].result.map(x => x['choose']);
                 } else {
                     this.disabled = false;
                 }

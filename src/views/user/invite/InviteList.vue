@@ -7,9 +7,9 @@
             <van-list v-model="loading" finished-text="已经到底啦" :finished="finished"
                       @load="listOnload">
                 <cell v-for="(log,index) in logs" :key="index"
-                      :title="log['Invited'].nickname"
-                      :value="log['Invited']['UserPassport'].phone"
-                      :label="log['createdAt']"
+                      :title="log.nickname"
+                      :value="log.phone"
+                      :label="log.time"
                       clickable/>
             </van-list>
         </div>

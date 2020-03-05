@@ -25,11 +25,11 @@
                         <list v-model="loading" error-text="请求失败，点击重新加载" finished-text="已经到底啦"
                               :error.sync="error" :finished="finished" @load="listOnload" :immediate-check="false">
                             <ul class="course-list">
-                                <li v-for="course in courses" :key="course['courseID']">
-                                    <course-card-col :title="course['courseName']" :id="course['courseID']"
-                                                     :desc="course['courseDescription']" :price="course['price']"
-                                                     :rate="course['favorableRate']" :sales="course['applyCount']"
-                                                     :image="course['courseImage']" :discount="!!course['discount']">
+                                <li v-for="course in courses" :key="course.id">
+                                    <course-card-col :title="course.name" :id="course.id"
+                                                     :desc="course.description" :price="course.price"
+                                                     :rate="course.rate" :sales="course['apply']"
+                                                     :image="course.image" :discount="!!course.discount">
                                     </course-card-col>
                                 </li>
                             </ul>
@@ -170,15 +170,15 @@
                 if (res) {
                     for (let system of res.data) {
                         let children = [];
-                        for (let type of system['CourseTypes']) {
+                        for (let type of system.types) {
                             children.push({
-                                id: type['typeID'],
-                                text: type['typeName']
+                                id: type.id,
+                                text: type.name
                             })
                         }
                         this.items.push({
-                            id: system['systemID'],
-                            text: system['systemName'],
+                            id: system.id,
+                            text: system.name,
                             children
                         })
                     }
@@ -189,7 +189,7 @@
                 const res = await getList(this.$route.query);
                 if (res) {
                     this.loading = false;
-                    for (let course of res.course) {
+                    for (let course of res['course']) {
                         this.courses.push(course);
                     }
                     this.loadingTimes++;

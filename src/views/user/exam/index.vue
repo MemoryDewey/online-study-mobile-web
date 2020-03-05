@@ -12,7 +12,7 @@
                                 {{course.time['startTime']}} - {{course.time['endTime']}}
                             </h3>
                         </div>
-                        <div class="tab-item-content" @click="gotoExam(course['courseID'],course.state)">
+                        <div class="tab-item-content" @click="gotoExam(course['courseId'],course.state)">
                             <img class="tab-item-cover" v-lazy="getImageUrl(course['image'])" alt>
                             <div class="tab-item-main">
                                 <h2 class="tab-item-title">{{course['courseName']}}</h2>

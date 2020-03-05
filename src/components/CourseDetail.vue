@@ -79,25 +79,25 @@
         },
         methods: {
             getDetail() {
-                getInfo({courseID: this.$route.params.id}).then(res => {
+                getInfo({id: this.$route.params.id}).then(res => {
                     if (res) {
-                        this.title = res['course'].info['courseName'];
-                        this.price = res['course'].info['price'];
-                        this.rate = res['course'].info['favorableRate'];
-                        this.apply = res['course'].info['applyCount'];
-                        this.content = res['course'].details['detail'];
-                        this.detailCover = res['course'].details['coverUrl'];
+                        this.title = res['course'].info.name;
+                        this.price = res['course'].info.price;
+                        this.rate = res['course'].info.rate;
+                        this.apply = res['course'].info['apply'];
+                        this.content = res['course'].detail.detail;
+                        this.detailCover = res['course'].detail['coverUrl'];
                         this.discountTime = res['course'].info.discountTime;
                         this.discount = res['course'].info.discount;
-                        this.teacherAvatar = res['course'].details['UserInformation'].avatarUrl;
-                        this.teacherName = res['course'].details['UserInformation'].nickname;
-                        this.$store.commit('setCourseImage', res['course'].info['courseImage']);
+                        this.teacherAvatar = res['course'].detail['teacher'].avatarUrl;
+                        this.teacherName = res['course'].detail['teacher'].nickname;
+                        this.$store.commit('setCourseImage', res['course'].info.image);
                         this.$emit('setCourse', {
-                            live: res['course'].info['courseForm'] === 'L',
-                            price: res['course'].info['price'],
-                            text: res['course'].info['price'] > 0 ? '立即购买' : '免费报名',
-                            rate: res['course'].info['favorableRate'],
-                            collection: res.collection
+                            live: res['course'].info.form === 'L',
+                            price: res['course'].info.price,
+                            text: res['course'].info.price > 0 ? '立即购买' : '免费报名',
+                            rate: res['course'].info.rate,
+                            collection: res['collection']
                         });
                         this.loadFinish = true;
                     }

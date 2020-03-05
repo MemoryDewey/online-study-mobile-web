@@ -43,7 +43,7 @@
             <file-upload v-model="files"
                          ref="upload" name="avatar" accept="image/jpeg" extensions="jpg,jpeg"
                          :timeout="30 * 1000" :size="2 * 1024 * 1024" :drop="!edit"
-                         :post-action="`${postUrl}/profile/personal/avatar`" :headers="headers"
+                         :post-action="`${postUrl}/profile/avatar`" :headers="headers"
                          @input-file="inputFile"
                          @input-filter="fileInputFilter">
             </file-upload>

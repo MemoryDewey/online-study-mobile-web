@@ -110,7 +110,7 @@
                 else {
                     let res = await getKey();
                     const rsa = new NodeRSA();
-                    rsa.importKey(res.key, 'pkcs8-public');
+                    rsa.importKey(res.publicKey, 'pkcs8-public');
                     res = await setBstWalletAddress({address: rsa.encrypt(this.bindAddress, 'base64', 'utf8')});
                     if (res) {
                         Toast.success(res.msg);

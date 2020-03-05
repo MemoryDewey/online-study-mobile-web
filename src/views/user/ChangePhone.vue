@@ -86,7 +86,7 @@
             },
             async changePhone() {
                 let data = this.step === 0 ?
-                    {verifyCode: this.verifyCode} : {account: this.newPhone, verifyCode: this.verifyCode};
+                    {verify: this.verifyCode} : {account: this.newPhone, verify: this.verifyCode};
                 const res = await changePhone({data, step: this.step});
                 if (res) {
                     if (this.step === 0) {

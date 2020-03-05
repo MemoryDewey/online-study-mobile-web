@@ -102,7 +102,7 @@
                 if (!this.isLogin) await this.$router.push({name: 'login-phone', query: {origin: this.$route.path}});
                 if (this.isApply) this.activeTab = 1;
                 else if (this.free) {
-                    const res = await applyFree({courseID: this.$route.params.id});
+                    const res = await applyFree({id: this.$route.params.id});
                     if (res) {
                         this.isApply = true;
                         this.bottomText = '开始上课'
@@ -117,7 +117,7 @@
                     forbidClick: true,
                     loadingType: 'spinner'
                 });
-                const res = await applyCourseByBalance({courseID: this.$route.params.id});
+                const res = await applyCourseByBalance({id: this.$route.params.id});
                 if (res) {
                     Toast.clear();
                     Toast.success(res.msg);
@@ -127,7 +127,7 @@
                 }
             },
             async applyByBst() {
-                let res = await checkBstStatue({courseID: this.$route.params.id});
+                let res = await checkBstStatue({id: this.$route.params.id});
                 if (res) {
                     Toast.loading({
                         message: '支付中，请稍等...',
@@ -135,7 +135,7 @@
                         loadingType: 'spinner',
                         duration: 10000
                     });
-                    await applyChargeByBst({courseID: this.$route.params.id});
+                    await applyChargeByBst({id: this.$route.params.id});
                     const socketUrl = getWebsocketUrl();
                     const socket = socketClient.connect(socketUrl);
                     socket.emit('buyCourseByBst');
@@ -159,7 +159,7 @@
                 const value = this.collection ? 0 : 1;
                 if (!localStorage.getItem('token')) Toast.fail('需要登录才能收藏该课程');
                 else {
-                    const res = await collectCourse({courseID: this.$route.params.id, value});
+                    const res = await collectCourse({id: this.$route.params.id, value});
                     if (res) {
                         Toast.success(res.msg);
                         this.collection = !this.collection;
@@ -171,12 +171,12 @@
             this.$emit('setTab', false);
         },
         created() {
-            checkApply({courseID: this.$route.params.id}).then(async res => {
-                this.isApply = res.code === 1000;
-                this.isLogin = res.code !== 401;
-                if (res.code === 2000) {
-                    res = await checkBstConfirmation({courseID: this.$route.params.id});
-                    this.bstConfirmBtnShow = res.code === 1003;
+            checkApply({id: this.$route.params.id}).then(async res => {
+                this.isApply = res['code'] === 1000;
+                this.isLogin = res['code'] !== 401;
+                if (res['code'] === 2000) {
+                    res = await checkBstConfirmation({id: this.$route.params.id});
+                    this.bstConfirmBtnShow = res['code'] === 1003;
                 }
             });
         },

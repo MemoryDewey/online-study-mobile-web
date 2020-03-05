@@ -63,6 +63,7 @@
         },
         watch: {
             src(val) {
+                console.log(val)
                 if (this.live) {
                     this.hls.loadSource(src);
                     this.hls.attachMedia(this.$refs['player'])

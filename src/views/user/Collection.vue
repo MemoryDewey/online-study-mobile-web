@@ -3,21 +3,21 @@
         <template v-if="list.length>0">
             <checkbox-group v-model="result" ref="checkboxGroup">
                 <cell-group>
-                    <cell v-for="(item, index) in list" clickable :key="item['courseID']" @click="toggle(index)">
-                        <checkbox v-if="!titleSet" :name="item['courseID']" ref="checkboxes" slot="icon"/>
+                    <cell v-for="(item, index) in list" clickable :key="item.id" @click="toggle(index)">
+                        <checkbox v-if="!titleSet" :name="item.id" ref="checkboxes" slot="icon"/>
                         <van-row class="collection-cell">
                             <van-col :span="titleSet?9:10">
-                                <img v-lazy="getImageUrl(item['courseImage'])" alt>
+                                <img v-lazy="getImageUrl(item.image)" alt>
                             </van-col>
                             <van-col :span="titleSet?15:14">
-                                <h3 class="course-name">{{item['courseName']}}</h3>
+                                <h3 class="course-name">{{item.name}}</h3>
                                 <p class="course-info">
-                                <span class="course-price" :class="{free:item['price']===0}">
+                                <span class="course-price" :class="{free:item.price===0}">
                                     {{
-                                    item['price']===0?'免费'
-                                    : `${item['price']} 课程币`
+                                    item.price===0?'免费'
+                                    : `${item.price} 课程币`
                                     }}</span>
-                                    <span class="course-apply">{{item['applyCount']}}人报名</span>
+                                    <span class="course-apply">{{item['apply']}}人报名</span>
                                 </p>
                             </van-col>
                         </van-row>

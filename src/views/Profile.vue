@@ -33,11 +33,11 @@
             </cell>
             <row-list :list-data="courses" class="nearly-study" v-if="isLogin && courses.length>0">
                 <template v-slot:item="{item}">
-                    <div class="study-item" @click="routerGO(item['courseID'])">
+                    <div class="study-item" @click="routerGO(item.id)">
                         <div class="study-image">
-                            <img v-lazy="getImageUrl(item['courseImage'])" alt>
+                            <img v-lazy="getImageUrl(item.image)" alt>
                         </div>
-                        <div class="study-content">{{item['courseName']}}</div>
+                        <div class="study-content">{{item.name}}</div>
                     </div>
                 </template>
             </row-list>
@@ -98,8 +98,8 @@
             }
         },
         methods: {
-            routerGO(courseID) {
-                this.$router.push({name: 'course-study', params: {id: courseID}})
+            routerGO(courseId) {
+                this.$router.push({name: 'course-study', params: {id: courseId}})
             }
         },
         beforeCreate() {
@@ -108,12 +108,12 @@
         created() {
             if (!this.$store.state.loginState) {
                 checkLogin().then(res => {
-                    if (res.code === 1000) {
+                    if (res['code'] === 1000) {
                         this.isLogin = true;
-                        this.userInfo = res.data;
-                        this.$store.commit('login', res.data);
+                        this.userInfo = res['info'];
+                        this.$store.commit('login', res['info']);
                         getLatestBrowseCourse().then(res => {
-                            this.courses = res.courses;
+                            this.courses = res;
                         });
                         getWalletInfo().then(res => {
                             if (res) this.balance = parseFloat(res['wallet'].balance).toFixed(2);
@@ -124,7 +124,7 @@
                 this.isLogin = true;
                 this.userInfo = this.$store.state.userInfo;
                 getLatestBrowseCourse().then(res => {
-                    this.courses = res.courses;
+                    this.courses = res;
                 });
                 getWalletInfo().then(res => {
                     if (res) this.balance = parseFloat(res['wallet'].balance).toFixed(2);

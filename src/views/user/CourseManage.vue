@@ -10,23 +10,23 @@
                             :key="index">
                             <div class="tab-item-">报名成功</div>
                             <div class="tab-item-time">
-                                <h3 class="tab-time">{{course['joinTime']}}</h3>
+                                <h3 class="tab-time">{{course.time}}</h3>
                             </div>
                             <router-link tag="div" class="tab-item-content"
-                                         :to="{name: 'course-study', params: {id: course['courseID']}}">
-                                <img class="tab-item-cover" v-lazy="getImageUrl(course['image'])" alt>
+                                         :to="{name: 'course-study', params: {id: course.id}}">
+                                <img class="tab-item-cover" v-lazy="getImageUrl(course.image)" alt>
                                 <div class="tab-item-main">
-                                    <h2 class="tab-item-title">{{course['courseName']}}</h2>
-                                    <p class="tab-item-price" :class="{free:course['price']===0}">
-                                        {{course['price']===0?'免费':`${course['price']} 课程币`}}</p>
+                                    <h2 class="tab-item-title">{{course.name}}</h2>
+                                    <p class="tab-item-price" :class="{free:course.price===0}">
+                                        {{course.price===0?'免费':`${course.price} 课程币`}}</p>
                                 </div>
                             </router-link>
                             <div class="tab-item-btn">
-                                <van-button v-if="course['price']===0" @click="cancelCourse(course['courseID'])"
+                                <van-button v-if="course.price===0" @click="cancelCourse(course.id)"
                                             size="small" type="warning" round>取消报名
                                 </van-button>
                                 <van-button size="small" type="info" round
-                                            :to="{name:'course-comment-commit',params:{id:course['courseID']}}">评价课程
+                                            :to="{name:'course-comment-commit',params:{id:course.id}}">评价课程
                                 </van-button>
                             </div>
                         </li>
@@ -41,21 +41,21 @@
                             :key="index">
                             <div class="tab-item-status">购买成功</div>
                             <div class="tab-item-time">
-                                <h3 class="tab-time">{{course['createdAt']}}</h3>
+                                <h3 class="tab-time">{{course.time}}</h3>
                             </div>
                             <router-link tag="div" class="tab-item-content"
-                                         :to="{name: 'course-study', params: {id: course['productID']}}">
+                                         :to="{name: 'course-study', params: {id: course['productId']}}">
                                 <img class="tab-item-cover"
-                                     v-lazy="getImageUrl(course['CourseInformation']['courseImage'])"
+                                     v-lazy="getImageUrl(course.image)"
                                      alt>
                                 <div class="tab-item-main">
-                                    <h2 class="tab-item-title">{{course['CourseInformation']['courseName']}}</h2>
-                                    <p class="tab-item-price">{{`${course['amount']} 课程币`}}</p>
+                                    <h2 class="tab-item-title">{{course.name}}</h2>
+                                    <p class="tab-item-price">{{`${course.amount} 课程币`}}</p>
                                 </div>
                             </router-link>
                             <div class="tab-item-btn">
                                 <van-button size="small" type="info" round
-                                            :to="{name:'course-comment-commit',params:{id:course['productID']}}">评价课程
+                                            :to="{name:'course-comment-commit',params:{id:course['productId']}}">评价课程
                                 </van-button>
                             </div>
                         </li>
@@ -70,16 +70,16 @@
                             :key="index">
                             <div class="tab-item-status">已确认</div>
                             <div class="tab-item-time">
-                                <h3 class="tab-time">{{course['createdAt']}}</h3>
+                                <h3 class="tab-time">{{course.time}}</h3>
                             </div>
                             <router-link tag="div" class="tab-item-content"
-                                         :to="{name: 'course-study', params: {id: course['productID']}}">
+                                         :to="{name: 'course-study', params: {id: course['productId']}}">
                                 <img class="tab-item-cover"
-                                     v-lazy="getImageUrl(course['CourseInformation']['courseImage'])"
+                                     v-lazy="getImageUrl(course.image)"
                                      alt>
                                 <div class="tab-item-main">
-                                    <h2 class="tab-item-title">{{course['CourseInformation']['courseName']}}</h2>
-                                    <p class="tab-item-price">{{`${course['amount']} BST`}}</p>
+                                    <h2 class="tab-item-title">{{course.name}}</h2>
+                                    <p class="tab-item-price">{{`${course.amount} BST`}}</p>
                                 </div>
                             </router-link>
                             <div class="tab-item-bottom" @click="copyTxHash(course['txHash'])">{{course['txHash']}}
@@ -200,8 +200,8 @@
                     }
                 }, 500);
             },
-            async cancelCourse(courseID) {
-                let res = await cancelFree({courseID});
+            async cancelCourse(id) {
+                let res = await cancelFree({id});
                 if (res) {
                     this.allCourse = {
                         loading: false,
