@@ -29,8 +29,8 @@
             <van-list v-model="loading" finished-text="已经到底啦" :immediate-check="false"
                       :finished="finished" @load="listOnload">
                 <comment-card v-for="comment in commentList" :key="comment.id"
-                              :avatar="comment['UserInformation'].avatarUrl"
-                              :nickname="comment['UserInformation'].nickname"
+                              :avatar="comment.avatar"
+                              :nickname="comment.user"
                               :rate="comment.star" :content="comment.content"
                               :time="comment.time"></comment-card>
             </van-list>
@@ -67,7 +67,7 @@
         },
         methods: {
             async getComment(filter, page) {
-                const res = await getComment({courseID: this.$route.params.id, filter, page});
+                const res = await getComment({id: this.$route.params.id, filter, page});
                 if (res) {
                     this.loading = false;
                     for (let comment of res.comments) {
@@ -100,7 +100,7 @@
             this.$emit('changeTitle', this.$route.meta.title);
         },
         created() {
-            getCommentCount({courseID: this.$route.params.id}).then(res => {
+            getCommentCount({id: this.$route.params.id}).then(res => {
                 if (res) {
                     this.commentCount = res.count;
                     this.page = res.count.all % 5 === 0 ?

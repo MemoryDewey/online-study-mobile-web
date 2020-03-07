@@ -36,8 +36,8 @@
         <div class="comment-body">
             <template v-if="count>0">
                 <comment-card v-for="comment in comments" :key="comment.id"
-                              :avatar="comment['UserInformation'].avatarUrl"
-                              :nickname="comment['UserInformation'].nickname"
+                              :avatar="comment.avatar"
+                              :nickname="comment.user"
                               :rate="comment.star" :content="comment.content"
                               :time="comment.time">
                 </comment-card>
@@ -95,10 +95,10 @@
                 }
             },
             async getComment() {
-                let res = await getCommentCount({courseID: this.$route.params.id});
+                let res = await getCommentCount({id: this.$route.params.id});
                 if (res) this.count = res.count.all;
                 res = await getComment({
-                    courseID: this.$route.params.id,
+                    id: this.$route.params.id,
                     filter: 0, page: 1
                 });
                 if (res) {

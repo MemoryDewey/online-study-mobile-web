@@ -76,7 +76,7 @@
                     Toast.fail('评论长度需在15到1000字');
                 } else {
                     const res = await addComment({
-                        courseID: this.$route.params.id,
+                        id: this.$route.params.id,
                         star: this.rate,
                         comment: this.comment
                     });
